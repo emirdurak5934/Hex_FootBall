@@ -40,9 +40,9 @@ jobs:
       - name: Validate Xcode simulator build
         run: >-
           xcodebuild
-          -workspace ios/App/App.xcworkspace
+          -project ios/App/App.xcodeproj
           -scheme App
-          -sdk iphonesimulator
+          -destination 'generic/platform=iOS Simulator'
           -configuration Debug
           CODE_SIGNING_ALLOWED=NO
           build

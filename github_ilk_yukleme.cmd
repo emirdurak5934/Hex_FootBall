@@ -42,7 +42,7 @@ if errorlevel 1 (
 
 git add --all
 git diff --cached --quiet
-if errorlevel 1 git commit -m "Initial EDYN Football mobile and server setup"
+if errorlevel 1 git commit -m "Update EDYN Football project"
 
 echo.
 echo GitHub giris ekrani acilirsa emirdurak5934 hesabi ile giris yapin.
