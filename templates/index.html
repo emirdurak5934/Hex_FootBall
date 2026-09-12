@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="
+            width=device-width,
+            initial-scale=1.0,
+            maximum-scale=1.0,
+            user-scalable=no
+        "
+    >
+
+    <title>
+        Football Hex
+    </title>
+
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+<link rel="stylesheet" href="{{ url_for('static', filename='online_answer.css', v='20260912-4') }}">
+
+</head>
+
+
+<body>
+
+<div id="onlineAnswerToast" class="online-answer-toast hidden" role="status" aria-live="polite">
+    <strong id="onlineAnswerAccount" class="online-answer-account"></strong>
+    <span id="onlineAnswerPlayer" class="online-answer-player"></span>
+    <span id="onlineAnswerResult" class="online-answer-result"></span>
+</div>
+
+
+<!-- ==================================================
+APP
+================================================== -->
+
+<div
+    id="app"
+    class="app hidden"
+>
+
+
+    <!-- ==================================================
+    ÜST PANEL
+    ================================================== -->
+
+    <header
+        class="game-header"
+    >
+
+
+        <!-- ==================================================
+        OYUNCU 1
+        ================================================== -->
+
+        <div
+            class="player-panel player-one-panel"
+        >
+
+            <div
+                id="playerOneName"
+                class="player-name"
+            >
+                OYUNCU 1
+            </div>
+
+
+            <div
+                id="playerOneScore"
+                class="player-score"
+            >
+                0
+            </div>
+
+
+            <div
+                class="player-score-label"
+            >
+                PETEK
+            </div>
+
+
+            <div
+                id="playerOneClock"
+                class="player-clock player-one-clock"
+            >
+                04:00
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+        ORTA
+        ================================================== -->
+
+        <div
+            class="center-hud"
+        >
+
+            <div
+                id="turnIndicator"
+                class="turn-indicator player-one-turn"
+            >
+                SIRA: OYUNCU 1
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+        OYUNCU 2
+        ================================================== -->
+
+        <div
+            class="player-panel player-two-panel"
+        >
+
+            <div
+                id="playerTwoName"
+                class="player-name"
+            >
+                OYUNCU 2
+            </div>
+
+
+            <div
+                id="playerTwoScore"
+                class="player-score"
+            >
+                0
+            </div>
+
+
+            <div
+                class="player-score-label"
+            >
+                PETEK
+            </div>
+
+
+            <div
+                id="playerTwoClock"
+                class="player-clock player-two-clock"
+            >
+                04:00
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+        NASIL OYNANIR
+        ================================================== -->
+
+        <button
+            id="helpButton"
+            class="help-button"
+            type="button"
+            aria-label="Nasıl oynanır"
+        >
+            ?
+        </button>
+
+        <button
+            id="forfeitMenuButton"
+            class="forfeit-menu-button"
+            type="button"
+            aria-label="Ana menüye dön"
+            data-home-url="{{ url_for('home') }}"
+        >
+            ←
+        </button>
+
+
+    </header>
+
+
+    <!-- ==================================================
+    BOARD
+    ================================================== -->
+
+    <main
+        class="game-main"
+    >
+
+
+        <div
+            id="board"
+            class="board"
+        >
+
+
+            {% for row in rows %}
+
+                <div
+                    class="
+                        hex-row
+                        {% if loop.index0 % 2 == 1 %}
+                            hex-row-wide
+                        {% endif %}
+                    "
+                >
+
+
+                    {% for index in row %}
+
+                        {% set condition = conditions[index] %}
+
+
+                        <button
+                            class="hex"
+                            type="button"
+
+                            data-index="{{ index }}"
+                            data-owner="0"
+
+                            data-label="{{ condition.label }}"
+                            data-type="{{ condition.type }}"
+                            data-value="{{ condition.value }}"
+                            data-image="{{ condition.image }}"
+                        >
+
+
+                            <div
+                                class="hex-inner"
+                            >
+
+
+                                {% if condition.image %}
+
+                                    <img
+                                        class="hex-image"
+                                        src="{{ condition.image }}"
+                                        alt="{{ condition.label }}"
+                                        draggable="false"
+                                    >
+
+                                {% endif %}
+
+
+                                <div
+                                    class="hex-label"
+                                >
+                                    {{ condition.label }}
+                                </div>
+
+
+                            </div>
+
+
+                        </button>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- ==================================================
+    ALT BİLGİ
+    ================================================== -->
+
+    <div
+        class="game-bottom-status"
+    >
+
+        <div
+            class="remaining-wrapper"
+        >
+
+            <span>
+                KALAN PETEK
+            </span>
+
+            <strong
+                id="remainingCount"
+            >
+                31
+            </strong>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+OYUN MODAL
+================================================== -->
+
+<div
+    id="gameModal"
+    class="game-modal hidden"
+>
+
+
+    <div
+        class="game-modal-backdrop"
+        id="gameModalBackdrop"
+    ></div>
+
+
+    <div
+        class="game-modal-card"
+    >
+
+
+        <!-- ==================================================
+        KAPAT
+        ================================================== -->
+
+        <button
+            id="closeModalButton"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <!-- ==================================================
+        BAŞLIK
+        ================================================== -->
+
+        <div
+            class="modal-eyebrow"
+        >
+            PETEK SEÇİLDİ
+        </div>
+
+
+        <!-- ==================================================
+        SEÇİLEN PETEK
+        ================================================== -->
+
+        <div
+            class="selected-condition"
+        >
+
+
+            <div
+                class="selected-condition-image-wrapper"
+            >
+
+                <img
+                    id="selectedConditionImage"
+                    class="selected-condition-image"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <div
+                id="selectedConditionLabel"
+                class="selected-condition-label"
+            >
+                -
+            </div>
+
+
+        </div>
+
+
+        <!-- ==================================================
+        KOMŞULAR
+        ================================================== -->
+
+        <div
+            class="neighbors-section"
+        >
+
+            <div
+                class="modal-section-title"
+            >
+                KOMŞU PETEKLER
+            </div>
+
+
+            <div
+                id="neighborHexes"
+                class="neighbor-hexes"
+            ></div>
+
+        </div>
+
+
+        <!-- ==================================================
+        CEVAP
+        ================================================== -->
+
+        <div
+            class="answer-section"
+        >
+
+            <div
+                class="modal-section-title"
+            >
+                FUTBOLCUYU YAZ
+            </div>
+
+
+            <div
+                class="player-search-wrapper"
+            >
+
+
+                <input
+                    id="playerInput"
+                    class="player-input"
+                    type="text"
+
+                    placeholder="Futbolcu adı yaz..."
+
+                    autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                >
+
+
+                <input
+                    id="selectedPlayerId"
+                    type="hidden"
+                    value=""
+                >
+
+
+                <div
+                    id="playerSuggestions"
+                    class="player-suggestions hidden"
+                ></div>
+
+
+            </div>
+
+
+            <button
+                id="checkAnswerButton"
+                class="check-answer-button"
+                type="button"
+            >
+                KONTROL ET
+            </button>
+
+
+            <div
+                id="answerMessage"
+                class="answer-message"
+            ></div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+NASIL OYNANIR MODAL
+================================================== -->
+
+<div
+    id="helpModal"
+    class="help-modal hidden"
+>
+
+
+    <div
+        id="helpModalBackdrop"
+        class="help-modal-backdrop"
+    ></div>
+
+
+    <div
+        class="help-card"
+    >
+
+
+        <button
+            id="closeHelpButton"
+            class="modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            NASIL OYNANIR?
+        </h2>
+
+
+        <p>
+            Sadece boş bir petek seçebilirsin.
+        </p>
+
+
+        <p>
+            Seçtiğin peteğin şartını karşılayan
+            bir futbolcu yaz.
+        </p>
+
+
+        <p>
+            Yazdığın futbolcu komşu peteklerin
+            şartlarını da karşılıyorsa o petekleri
+            de aynı hamlede ele geçirirsin.
+        </p>
+
+
+        <p>
+            Rakibin peteğine doğrudan cevap
+            yazamazsın. Rakip petekler yalnızca
+            komşu bağlantısı üzerinden çalınabilir.
+        </p>
+
+
+        <p>
+            Aynı futbolcu farklı hamlelerde
+            tekrar kullanılabilir.
+        </p>
+
+
+        <p>
+            31 peteğin tamamı dolduğunda
+            en fazla peteğe sahip oyuncu kazanır.
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+OYUNDAN ÇIKIŞ MODAL
+================================================== -->
+
+<div id="forfeitModal" class="help-modal hidden" role="dialog" aria-modal="true" aria-labelledby="forfeitTitle">
+    <div id="forfeitModalBackdrop" class="help-modal-backdrop"></div>
+    <div class="help-card forfeit-card">
+        <h2 id="forfeitTitle">Oyundan çıkmak istediğine emin misin?</h2>
+        <div class="forfeit-actions">
+            <button id="confirmForfeitButton" class="forfeit-confirm-button" type="button">Pes Et</button>
+            <button id="cancelForfeitButton" class="forfeit-cancel-button" type="button">İptal Et</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ==================================================
+MAÇ SONU MODAL
+================================================== -->
+
+<div
+    id="gameOverModal"
+    class="game-over-modal hidden"
+>
+
+
+    <div
+        class="game-over-backdrop"
+    ></div>
+
+
+    <div
+        class="game-over-card"
+    >
+
+
+        <div
+            id="gameOverReason"
+            class="game-over-small"
+        >
+            MAÇ BİTTİ
+        </div>
+
+
+        <h2
+            id="gameOverTitle"
+        >
+            OYUNCU 1 KAZANDI
+        </h2>
+
+
+        <div
+            class="final-score"
+        >
+
+            <div>
+
+                <span>
+                    OYUNCU 1
+                </span>
+
+                <strong
+                    id="finalPlayerOneScore"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div
+                class="final-score-divider"
+            >
+                -
+            </div>
+
+
+            <div>
+
+                <span>
+                    OYUNCU 2
+                </span>
+
+                <strong
+                    id="finalPlayerTwoScore"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="game-over-actions">
+
+            <button
+                id="playAgainButton"
+                class="game-over-button game-over-button-primary"
+                type="button"
+            >
+                TEKRAR OYNA
+            </button>
+
+            <button
+                id="mainMenuButton"
+                class="game-over-button game-over-button-secondary"
+                type="button"
+            >
+                ANA MENÜ
+            </button>
+
+        </div>
+
+
+        <div
+            id="rematchStatus"
+            class="rematch-status"
+            aria-live="polite"
+        ></div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+MULTIPLAYER MENU
+================================================== -->
+
+<div
+    id="multiplayerMenu"
+    class="multiplayer-menu"
+>
+
+
+    <div
+        class="multiplayer-card"
+    >
+
+        <div class="lobby-brand" aria-hidden="true">FM</div>
+
+        <div id="lobbyMainActions">
+            <div class="lobby-kicker">2 OYUNCULU FUTBOL BİLGİ OYUNU</div>
+
+            <h2>ALTIN PETEK</h2>
+
+            <p class="lobby-description">
+                Rakibini seç ve alanı ele geçir.
+            </p>
+
+
+        <button
+            id="createRoomButton"
+            class="multiplayer-button"
+            type="button"
+        >
+            ODA KUR
+        </button>
+
+        <button
+            id="findRandomMatchButton"
+            class="multiplayer-button"
+            type="button"
+        >
+            RASTGELE RAKİP BUL
+        </button>
+
+        <button
+            id="showJoinRoomButton"
+            class="multiplayer-button multiplayer-button-secondary"
+            type="button"
+        >
+            ODAYA KATIL
+        </button>
+
+            <button
+                id="possessionHomeButton"
+                class="multiplayer-menu-home"
+                type="button"
+            >
+                ANA MENÜ
+            </button>
+        </div>
+
+        <div id="joinRoomPanel" class="join-room-panel hidden">
+            <div class="lobby-kicker">ALTIN PETEK</div>
+            <h2>ODA KODUNU GİR</h2>
+
+            <input
+                id="roomCodeInput"
+                class="room-code-input"
+                type="text"
+                inputmode="text"
+                maxlength="6"
+                placeholder="______"
+                aria-label="Oda kodu"
+                autocomplete="off"
+                autocorrect="off"
+                spellcheck="false"
+            >
+
+            <button
+                id="joinRoomButton"
+                class="multiplayer-button"
+                type="button"
+            >
+                KATIL
+            </button>
+
+            <button
+                id="joinLobbyBackButton"
+                class="multiplayer-menu-home"
+                type="button"
+            >
+                GERİ
+            </button>
+        </div>
+
+
+        <div
+            id="roomStatus"
+            class="room-status"
+        ></div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+ODA BEKLEME EKRANI
+================================================== -->
+
+<div
+    id="roomWaitingScreen"
+    class="room-waiting-screen hidden"
+>
+
+
+    <div
+        class="room-waiting-card"
+    >
+
+        <div id="waitingTitle" class="waiting-ready-title">ODA HAZIR</div>
+
+        <div id="roomCodeBlock">
+        <div
+            class="waiting-small"
+        >
+            ODA KODU
+        </div>
+
+
+        <div
+            id="createdRoomCode"
+            class="created-room-code"
+        >
+            ------
+        </div>
+
+        <button
+            id="copyRoomCodeButton"
+            class="copy-room-code-button"
+            type="button"
+        >
+            KODU KOPYALA
+        </button>
+
+        <div id="copyRoomCodeStatus" class="copy-room-code-status" aria-live="polite"></div>
+        </div>
+
+
+            <div
+                id="waitingMessage"
+            class="waiting-message"
+        >
+            Rakip bekleniyor...
+        </div>
+
+        <div id="matchmakingPlayers" class="copy-room-code-status" aria-live="polite"></div>
+
+
+        <button
+            id="leaveRoomButton"
+            class="leave-room-button"
+            type="button"
+        >
+            ODADAN ÇIK
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+PYTHON -> JAVASCRIPT DATA
+================================================== -->
+
+<script>
+
+    window.GAME_DATA = {
+
+        conditions:
+            {{ conditions | tojson }},
+
+        rows:
+            {{ rows | tojson }},
+
+        neighbors:
+            {{ neighbors | tojson }}
+
+    };
+
+</script>
+
+
+<!-- ==================================================
+SOCKET.IO
+ÖNCE SOCKET.IO
+SONRA GAME.JS
+================================================== -->
+
+<script
+    src="https://cdn.socket.io/4.8.1/socket.io.min.js">
+</script>
+
+<script src="{{ url_for('match_ads.client_script') }}"></script>
+
+<script
+    src="{{ url_for('static', filename='game.js', v='20260912-4') }}">
+</script>
+
+
+</body>
+
+</html>

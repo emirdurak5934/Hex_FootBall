@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Football Match — Kayıp 11</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='missing_xi.css', v='2') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='missing_xi_wordle.css', v='2') }}">
+</head>
+<body>
+  <main class="missing-app">
+    <header class="game-header">
+      <a href="/" class="back" aria-label="Ana menü">‹</a>
+      <div><small>TEK OYUNCULU</small><div class="title-row"><h1>KAYIP 11</h1><button id="helpButton" class="help" type="button">?</button></div></div>
+      <div class="counters"><span>DOĞRU <b id="correctCount">0/11</b></span><span>HATA <b id="errorCount">0</b></span></div>
+    </header>
+    <div id="fieldView" class="game-view field-view">
+      <section class="match-card">
+        <strong>{{ match.home_team }} <em>{{ match.score }}</em> {{ match.away_team }}</strong>
+        <span>{{ match.date }}</span><span>{{ match.competition }}</span>
+        <small>{{ match.target_team }} · {{ match.formation }}</small>
+      </section>
+      <section id="pitch" class="pitch team-{{ match.target_team|lower|replace(' ', '-') }}" aria-label="{{ match.formation }} dizilişinde 11 oyuncu">
+        <div class="halfway"></div><div class="center-circle"></div><div class="box top-box"></div><div class="box bottom-box"></div>
+        {% for player in match.lineup %}
+        <button class="player-slot{% if player.position == 'GK' %} is-goalkeeper{% endif %}" type="button" data-slot="{{ player.slot }}" data-position="{{ player.position }}" data-letter-count="{{ player.letter_count }}">
+          <span class="position">{{ player.position }}</span>
+          <span class="mini-shirt" aria-label="{{ player.shirt_number }} numaralı forma"><strong>{{ player.shirt_number }}</strong></span>
+          <span class="answer-length" aria-label="{{ player.letter_count }} harfli cevap">{% for _ in range(player.letter_count) %}<i></i>{% endfor %}</span>
+          <b class="player-answer"></b>
+        </button>
+        {% endfor %}
+      </section>
+    </div>
+    <section id="wordleView" class="game-view wordle-view hidden" aria-label="Wordle tahmin ekranı">
+      <button id="wordleBack" class="wordle-back" type="button">← GERİ</button>
+      <div class="wordle-heading"><small>POZİSYON</small><h2 id="slotTitle">LB</h2><span id="attemptLabel">TAHMİN 1/6</span></div>
+      <div id="wordleGrid" class="wordle-grid" aria-label="6 tahmin satırı"></div>
+      <p id="answerMessage" class="wordle-message" aria-live="polite"></p>
+      <div id="screenKeyboard" class="screen-keyboard" aria-label="Ekran klavyesi">
+        <div class="keyboard-row" data-keys="QWERTYUIOP"></div>
+        <div class="keyboard-row" data-keys="ASDFGHJKL"></div>
+        <div class="keyboard-row" data-keys="ZXCVBNM" data-actions="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="helpModal" class="modal hidden"><button class="backdrop" data-close="help" aria-label="Kapat"></button><section class="modal-card help-card" role="dialog" aria-modal="true"><button class="close" data-close="help">×</button><small>KAYIP 11</small><h2>NASIL OYNANIR?</h2><ol><li>Boş pozisyonu seç.</li><li>O pozisyonda oynayan futbolcuyu tahmin et.</li><li><b class="green-text">Yeşil</b> = doğru harf, doğru yer.</li><li><b class="yellow-text">Sarı</b> = doğru harf, yanlış yer.</li><li><b class="gray-text">Gri</b> = harf isimde yok.</li><li>Her slot için 6 tahmin hakkın var.</li><li>İlk 11'i mümkün olduğunca az hatayla tamamla.</li></ol></section></div>
+  <div id="resultModal" class="modal hidden"><section class="modal-card result-card" role="dialog" aria-modal="true"><small>TAMAMLANDI</small><h2>KAYIP 11 TAMAMLANDI</h2><strong id="finalCorrect">0/11</strong><p>Kaçırılan: <b id="finalMissed">0</b></p><p>Toplam hata: <b id="finalErrors">0</b></p><button id="newMatch" class="primary">YENİ MAÇ</button><a href="/">ANA MENÜ</a></section></div>
+  <script>window.MISSING_XI_DATA={{ {'match': match, 'gameToken': game_token}|tojson }};</script>
+  <script src="{{ url_for('static', filename='missing_xi.js', v='2') }}"></script>
+</body>
+</html>

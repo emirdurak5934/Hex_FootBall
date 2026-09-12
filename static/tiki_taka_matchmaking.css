@@ -1,0 +1,30 @@
+.mode-panel > .random-match-button {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #2468b4, var(--blue));
+    color: white;
+}
+
+.online-player-names {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: #0d1622;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.online-player-names span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.online-player-names span:first-child { color: #8fc0ff; }
+.online-player-names span:last-child { color: #ff97a2; }
+.online-player-names b { color: var(--muted); font-size: 9px; }

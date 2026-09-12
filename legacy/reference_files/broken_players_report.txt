@@ -1,0 +1,148 @@
+Sağlam oyuncu: 14007
+Bozuk oyuncu: 4
+
+1. BOZUK KAYIT
+Oyuncu: Ivaylo Petkov
+ID: Q2423196
+Kayıt başlangıç satırı: 256648
+Hata satırı: 256664
+Hata: Expecting ':' delimiter
+----------------------------------------------------------------------
+{
+    "id": "Q2423196",
+    "name": "Ivaylo Petkov",
+    "birthDate": "1976-03-24",
+    "nationality": "Bulgaria",
+    "positions": [
+      "Defender"
+    ],
+    "clubs": [
+      "FC Kuban Krasnodar",
+      "FC Lovech",
+      "İstanbulspor A.Ş.",
+      "MKE Ankaragücü",
+      "PFC Spartak Pleven",
+      "Fenerbahçe Istanbul"
+    ],
+    "tr`"id": "Q36967671",
+    "name": "Kadir Kaan Özdemir",
+    "birthDate": "1998-03-01",
+    "nationality": "Turkey",
+    "positions": [
+      "Defender"
+    ],
+    "clubs": [
+      "Fenerbahçe Istanbul"
+    ],
+    "trophies": [],
+    "trophies_checked": true,
+    "team_trophies_checked_v2": true,
+    "transfermarkt_id": "315223",
+    "position_checked": true
+  }
+======================================================================
+
+2. BOZUK KAYIT
+Oyuncu: Levent Mercan
+ID: Q66391676
+Kayıt başlangıç satırı: 256936
+Hata satırı: 256946
+Hata: Expecting value
+----------------------------------------------------------------------
+{
+    "id": "Q66391676",
+    "name": "Levent Mercan",
+    "birthDate": "2000-12-10",
+    "nationality": "Germany",
+    "positions": [
+      "Defender"
+    ],
+    "clubs": [
+      "Schalke 04",
+    ,ity": "Turkey",
+    "positions": [
+      "Goalkeeper"
+    ],
+    "clubs": [
+      "Fenerbahçe Istanbul"
+    ],
+    "trophies": [],
+    "team_trophies_checked_v2": true,
+    "transfermarkt_id": "572972",
+    "position_checked": true
+  }
+======================================================================
+
+3. BOZUK KAYIT
+Oyuncu: ADI BULUNAMADI
+ID: ID BULUNAMADI
+Kayıt başlangıç satırı: 257497
+Hata satırı: 257498
+Hata: Expecting ':' delimiter
+----------------------------------------------------------------------
+{
+    "i` "Botafogo F.R.",
+      "Sociedade Esportiva Palmeiras",
+      "Cruzeiro E.C.",
+      "Sport Club do Recife",
+      "Grêmio FBPA",
+      "Clube Atlético Mineiro",
+      "Associação Atlética Internacional",
+      "América Futebol Clube",
+      "Sociedade Esportiva do Gama",
+      "Club Athletico Paranaense",
+      "Cerro Porteño",
+      "Malatyaspor",
+      "União São João E.C.",
+      "Fenerbahçe Istanbul"
+    ],
+    "trophies": [
+      "Brazilian champion",
+      "Brazilian cup winner"
+    ],
+    "trophies_checked": true,
+    "team_trophies_checked_v2": true,
+    "transfermarkt_id": "135371",
+    "position_checked": true
+  }
+======================================================================
+
+4. BOZUK KAYIT
+Oyuncu: Burak Kaplan
+ID: Q942760
+Kayıt başlangıç satırı: 258015
+Hata satırı: 258041
+Hata: Expecting ':' delimiter
+----------------------------------------------------------------------
+{
+    "id": "Q942760",
+    "name": "Burak Kaplan",
+    "birthDate": "1990-02-01",
+    "nationality": "Turkey",
+    "positions": [
+      "Midfielder"
+    ],
+    "clubs": [
+      "Bayer 04 Leverkusen",
+      "SpVgg Greuther Fürth",
+      "KFC Uerdingen 05",
+      "Beşiktaş J.K. (Football)",
+      "SG Wattenscheid 09",
+      "SV Babelsberg 03",
+      "Fethiyespor",
+      "Bayer 04 Leverkusen II"
+    ],
+    "trophies": [
+      "German Under-19 cup winner",
+      "Westphalia Cup winner"
+    ],
+    "trophies_checked": true,
+    "transfermarkt_id": "61003",
+    "team_trophies_checked_v2": true,
+    "nationality_checked": true,
+    "positionb52787",
+    "team_trophies_checked_v2": true,
+    "position_checked": true
+  }
+======================================================================
+

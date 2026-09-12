@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1480" viewBox="0 0 1600 1480" role="img" aria-labelledby="title desc">
+  <title id="title">FootballDatabase V2 iş akışı ve mimari şeması</title>
+  <desc id="desc">Kullanıcıdan Flask ve Socket.IO katmanlarına, oyun modlarına, veri kaynaklarına, hesap sistemine ve geliştirme sürecine uzanan proje akışı.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#667085"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { font: 700 34px Arial, sans-serif; fill: #172b4d; text-anchor: middle; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #667085; text-anchor: middle; }
+      .section { font: 700 19px Arial, sans-serif; fill: #344054; }
+      .node { fill: #0969a9; stroke: #075985; stroke-width: 2; }
+      .node-alt { fill: #0f766e; stroke: #115e59; stroke-width: 2; }
+      .node-data { fill: #7c3aed; stroke: #6d28d9; stroke-width: 2; }
+      .node-tool { fill: #b45309; stroke: #92400e; stroke-width: 2; }
+      .node-start { fill: #073b66; stroke: #062f52; stroke-width: 2; }
+      .node-end { fill: #15803d; stroke: #166534; stroke-width: 2; }
+      .decision { fill: #58b968; stroke: #348a46; stroke-width: 2; }
+      .label { font: 600 15px Arial, sans-serif; fill: #fff; text-anchor: middle; }
+      .small { font: 400 13px Arial, sans-serif; fill: #fff; text-anchor: middle; }
+      .edge { fill: none; stroke: #667085; stroke-width: 2; marker-end: url(#arrow); }
+      .edge-dash { fill: none; stroke: #98a2b3; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .edge-label { font: 600 13px Arial, sans-serif; fill: #475467; text-anchor: middle; }
+      .group { fill: #fff; stroke: #d0d5dd; stroke-width: 2; rx: 18; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="1480"/>
+  <text class="title" x="800" y="48">FOOTBALLDATABASE V2 — YAŞAYAN İŞ AKIŞI</text>
+  <text class="subtitle" x="800" y="78">Her yeni modül ve geliştirmeden sonra güncellenecek ana proje haritası</text>
+
+  <text class="section" x="55" y="125">ÇALIŞAN UYGULAMA</text>
+  <rect class="group" x="40" y="140" width="1520" height="630"/>
+
+  <rect class="node-start" x="650" y="165" width="300" height="68" rx="34"/>
+  <text class="label" x="800" y="194">Kullanıcı / Tarayıcı</text>
+  <text class="small" x="800" y="208">Başlatıcı: server_olusturucu.py</text>
+  <text class="small" x="800" y="223">Cloudflare HTTPS tüneli veya yerel ağ</text>
+
+  <path class="edge" d="M730 233 L555 285"/>
+  <path class="edge" d="M870 233 L1045 285"/>
+
+  <rect class="node" x="390" y="285" width="330" height="82" rx="12"/>
+  <text class="label" x="555" y="318">Flask HTTP Katmanı</text>
+  <text class="small" x="555" y="340">server/ üzerinden sayfalar, API ve oturum — app.py</text>
+
+  <rect class="node-alt" x="880" y="285" width="330" height="82" rx="12"/>
+  <text class="label" x="1045" y="318">Socket.IO Katmanı</text>
+  <text class="small" x="1045" y="340">server/ üzerinden oda, eşleşme, davet ve rövanş</text>
+
+  <path class="edge" d="M555 367 L555 420"/>
+  <path class="edge" d="M1045 367 L1045 420"/>
+
+  <rect class="node" x="90" y="420" width="250" height="88" rx="12"/>
+  <text class="label" x="215" y="452">Arayüz</text>
+  <text class="small" x="215" y="474">templates/ + static/</text>
+  <text class="small" x="215" y="492">HTML, CSS ve JavaScript</text>
+
+  <rect class="node" x="410" y="420" width="290" height="88" rx="12"/>
+  <text class="label" x="555" y="452">Oyun Merkezi</text>
+  <text class="small" x="555" y="474">Dört futbol bilgi modu</text>
+
+  <rect class="node-alt" x="900" y="420" width="290" height="88" rx="12"/>
+  <text class="label" x="1045" y="452">Çevrimiçi Maç Durumu</text>
+  <text class="small" x="1045" y="474">Ortak game_state + petek cevabı</text>
+  <text class="small" x="1045" y="492">ads.py maç sonu politikası</text>
+
+  <rect class="node-alt" x="1260" y="420" width="250" height="88" rx="12"/>
+  <text class="label" x="1385" y="452">Hesap ve Sosyal</text>
+  <text class="small" x="1385" y="474">Profil, arkadaşlık, XP</text>
+  <text class="small" x="1385" y="492">ve liderlik tablosu</text>
+
+  <path class="edge" d="M390 326 L215 326 L215 420"/>
+  <path class="edge" d="M720 326 L1385 326 L1385 420"/>
+  <path class="edge" d="M985 508 L220 545 L220 560"/>
+  <path class="edge" d="M1105 508 L1105 535 L1060 560"/>
+  <path class="edge" d="M1385 508 L1385 650"/>
+
+  <rect class="node" x="105" y="560" width="230" height="78" rx="12"/>
+  <text class="label" x="220" y="591">Possession</text>
+  <text class="small" x="220" y="613">Hex tahta + multiplayer</text>
+
+  <rect class="node" x="385" y="560" width="230" height="78" rx="12"/>
+  <text class="label" x="500" y="591">Heatmap</text>
+  <text class="small" x="500" y="613">Kombo + Heat Density</text>
+
+  <rect class="node" x="665" y="560" width="230" height="78" rx="12"/>
+  <text class="label" x="780" y="591">Missing XI</text>
+  <text class="small" x="780" y="613">Tarihî 11 + Wordle</text>
+
+  <rect class="node" x="945" y="560" width="230" height="78" rx="12"/>
+  <text class="label" x="1060" y="591">Tiki Taka Toe</text>
+  <text class="small" x="1060" y="613">3 × 3 kriter gridi</text>
+
+  <path class="edge" d="M555 508 L220 560"/>
+  <path class="edge" d="M555 508 L500 560"/>
+  <path class="edge" d="M555 508 L780 560"/>
+  <path class="edge" d="M555 508 L1060 560"/>
+
+  <rect class="node-data" x="330" y="675" width="350" height="68" rx="34"/>
+  <text class="label" x="505" y="704">Futbolcu ve Kriter Verisi</text>
+  <text class="small" x="505" y="725">players.json + criterion_engine.py</text>
+
+  <rect class="node-data" x="760" y="675" width="300" height="68" rx="34"/>
+  <text class="label" x="910" y="704">Missing XI Maç Verisi</text>
+  <text class="small" x="910" y="725">missing_xi_matches.json</text>
+
+  <ellipse class="node-data" cx="1385" cy="695" rx="125" ry="48"/>
+  <text class="label" x="1385" y="690">SQLite</text>
+  <text class="small" x="1385" y="713">Kullanıcı ve istatistik</text>
+
+  <path class="edge" d="M220 638 L430 675"/>
+  <path class="edge" d="M500 638 L505 675"/>
+  <path class="edge" d="M780 638 L600 675"/>
+  <path class="edge" d="M1060 638 L680 704"/>
+  <path class="edge" d="M780 638 L860 675"/>
+
+  <text class="section" x="55" y="820">VERİ BAKIMI VE GELİŞTİRME DÖNGÜSÜ</text>
+  <rect class="group" x="40" y="835" width="1520" height="365"/>
+
+  <rect class="node-tool" x="75" y="885" width="220" height="76" rx="12"/>
+  <text class="label" x="185" y="915">Haricî Kaynaklar</text>
+  <text class="small" x="185" y="937">Wikidata / Transfermarkt</text>
+
+  <rect class="node-tool" x="350" y="885" width="230" height="76" rx="12"/>
+  <text class="label" x="465" y="915">Toplama ve</text>
+  <text class="label" x="465" y="936">Zenginleştirme</text>
+
+  <polygon class="decision" points="720,865 850,923 720,981 590,923"/>
+  <text class="label" x="720" y="918">Audit başarılı mı?</text>
+  <text class="small" x="720" y="940">Veri güvenli ve geçerli mi?</text>
+
+  <rect class="node-tool" x="930" y="885" width="220" height="76" rx="12"/>
+  <text class="label" x="1040" y="915">Yedekle ve</text>
+  <text class="label" x="1040" y="936">Temizle / Birleştir</text>
+
+  <rect class="node-data" x="1210" y="885" width="285" height="76" rx="12"/>
+  <text class="label" x="1352" y="915">Güncel players.json</text>
+  <text class="small" x="1352" y="937">Uygulamanın ana veri kaynağı</text>
+
+  <path class="edge" d="M295 923 L350 923"/>
+  <path class="edge" d="M580 923 L590 923"/>
+  <path class="edge" d="M850 923 L930 923"/>
+  <text class="edge-label" x="890" y="912">Evet</text>
+  <path class="edge" d="M1150 923 L1210 923"/>
+  <path class="edge-dash" d="M720 981 L720 1035 L465 1035 L465 961"/>
+  <text class="edge-label" x="610" y="1025">Hayır — düzelt ve tekrar denetle</text>
+
+  <rect class="node-start" x="75" y="1080" width="220" height="68" rx="34"/>
+  <text class="label" x="185" y="1108">Yeni İstek / Modül</text>
+  <text class="small" x="185" y="1129">Kapsamı belirle</text>
+
+  <rect class="node" x="350" y="1080" width="230" height="68" rx="12"/>
+  <text class="label" x="465" y="1108">Uygula</text>
+  <text class="small" x="465" y="1129">En küçük güvenli değişiklik</text>
+
+  <polygon class="decision" points="720,1060 850,1114 720,1168 590,1114"/>
+  <text class="label" x="720" y="1109">Testler başarılı mı?</text>
+  <text class="small" x="720" y="1131">Açılış + davranış</text>
+
+  <rect class="node" x="930" y="1080" width="220" height="68" rx="12"/>
+  <text class="label" x="1040" y="1108">Belgeleri Güncelle</text>
+  <text class="small" x="1040" y="1129">README + bu şema</text>
+
+  <rect class="node-end" x="1210" y="1080" width="285" height="68" rx="34"/>
+  <text class="label" x="1352" y="1108">Değişiklik Tamamlandı</text>
+  <text class="small" x="1352" y="1129">Günlüğe tarihli kayıt ekle</text>
+
+  <path class="edge" d="M295 1114 L350 1114"/>
+  <path class="edge" d="M580 1114 L590 1114"/>
+  <path class="edge" d="M850 1114 L930 1114"/>
+  <text class="edge-label" x="890" y="1103">Evet</text>
+  <path class="edge" d="M1150 1114 L1210 1114"/>
+  <path class="edge-dash" d="M720 1168 L720 1185 L465 1185 L465 1148"/>
+  <text class="edge-label" x="610" y="1178">Hayır — düzelt</text>
+
+  <text class="section" x="55" y="1260">WINDOWS → BULUT macOS → TESTFLIGHT → APP STORE HEDEFİ</text>
+  <rect class="group" x="40" y="1275" width="1520" height="155"/>
+
+  <rect class="node" x="75" y="1320" width="245" height="70" rx="12"/>
+  <text class="label" x="197" y="1348">Windows Geliştirme</text>
+  <text class="small" x="197" y="1370">Web istemcisi + Flask API</text>
+
+  <rect class="node-alt" x="375" y="1320" width="245" height="70" rx="12"/>
+  <text class="label" x="497" y="1348">Capacitor iOS Kabuğu</text>
+  <text class="small" x="497" y="1370">Native köprü + AdService</text>
+
+  <rect class="node" x="675" y="1320" width="245" height="70" rx="12"/>
+  <text class="label" x="797" y="1348">Özel Git Deposu</text>
+  <text class="small" x="797" y="1370">Kaynak + CI tanımı</text>
+
+  <rect class="node-tool" x="975" y="1320" width="245" height="70" rx="12"/>
+  <text class="label" x="1097" y="1348">Bulut macOS / Xcode</text>
+  <text class="small" x="1097" y="1370">Build + signing + upload</text>
+
+  <rect class="node-end" x="1275" y="1320" width="245" height="70" rx="34"/>
+  <text class="label" x="1397" y="1348">TestFlight → App Store</text>
+  <text class="small" x="1397" y="1370">iPhone 13 testi ve yayın</text>
+
+  <path class="edge" d="M320 1355 L375 1355"/>
+  <path class="edge" d="M620 1355 L675 1355"/>
+  <path class="edge" d="M920 1355 L975 1355"/>
+  <path class="edge" d="M1220 1355 L1275 1355"/>
+</svg>

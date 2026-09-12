@@ -1,0 +1,17 @@
+{
+  "name": "edyn-football-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "mobile:sync": "cap sync ios",
+    "mobile:copy": "cap copy ios",
+    "mobile:doctor": "cap doctor"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  }
+}

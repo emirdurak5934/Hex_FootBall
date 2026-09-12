@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+instance/
+tools/bin/cloudflared.exe
+node_modules/
+.pnpm-store/
+.idea/
+server.stdout.log
+server.stderr.log
+
+# Uygulamanın çalışması için yalnız bu iki veri dosyası gereklidir.
+data/*
+!data/players.json
+!data/missing_xi_matches.json

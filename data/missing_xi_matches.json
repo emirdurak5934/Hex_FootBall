@@ -1,0 +1,1101 @@
+[
+  {
+    "id": "ucl-final-2011-barcelona",
+    "date": "28 MAYIS 2011",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "BARCELONA",
+    "away_team": "MANCHESTER UNITED",
+    "score": "3–1",
+    "target_team": "BARCELONA",
+    "formation": "4-3-3",
+    "lineup": [
+      {"player_id":"Q47548","name":"Víctor Valdés","answer":"Valdes","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q172720","name":"Daniel Alves","answer":"Dani Alves","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q17507","name":"Gerard Piqué","answer":"Pique","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q161571","name":"Javier Mascherano","answer":"Mascherano","position":"CB","shirt_number":14,"slot":3},
+      {"player_id":"Q1935","name":"Eric Abidal","answer":"Abidal","position":"LB","shirt_number":22,"slot":4},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":16,"slot":5},
+      {"player_id":"Q17500","name":"Xavi Hernández","answer":"Xavi","position":"CM","shirt_number":6,"slot":6},
+      {"player_id":"Q43729","name":"Andrés Iniesta","answer":"Iniesta","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q179773","name":"Pedro","answer":"Pedro","position":"RW","shirt_number":17,"slot":8},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"CF","shirt_number":10,"slot":9},
+      {"player_id":"Q83006","name":"David Villa","answer":"Villa","position":"LW","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2011-manchester-united",
+    "date": "28 MAYIS 2011",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "BARCELONA",
+    "away_team": "MANCHESTER UNITED",
+    "score": "3-1",
+    "target_team": "MANCHESTER UNITED",
+    "formation": "4-4-2",
+    "lineup": [
+      {"player_id":"Q482955","name":"Edwin van der Sar","answer":"Van der Sar","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q213401","name":"Fabio","answer":"Fabio","position":"RB","shirt_number":20,"slot":1},
+      {"player_id":"Q483417","name":"Rio Ferdinand","answer":"Ferdinand","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q163564","name":"Nemanja Vidic","answer":"Vidic","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q1916","name":"Patrice Evra","answer":"Evra","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q174486","name":"Antonio Valencia","answer":"Valencia","position":"RM","shirt_number":25,"slot":5},
+      {"player_id":"Q29566","name":"Michael Carrick","answer":"Carrick","position":"CM","shirt_number":16,"slot":6},
+      {"player_id":"Q10524","name":"Ryan Giggs","answer":"Giggs","position":"CM","shirt_number":11,"slot":7},
+      {"player_id":"Q50603","name":"Park Ji-Sung","answer":"Park","position":"LM","shirt_number":13,"slot":8},
+      {"player_id":"Q266613","name":"Wayne Rooney","answer":"Rooney","position":"ST","shirt_number":10,"slot":9},
+      {"player_id":"Q165125","name":"Javier Hernandez","answer":"Hernandez","position":"ST","shirt_number":14,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2009-barcelona",
+    "date": "27 MAYIS 2009",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "BARCELONA",
+    "away_team": "MANCHESTER UNITED",
+    "score": "2–0",
+    "target_team": "BARCELONA",
+    "formation": "4-3-3",
+    "lineup": [
+      {"player_id":"Q47548","name":"Víctor Valdés","answer":"Valdes","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"tm_missing_7594","name":"Carles Puyol","answer":"Puyol","position":"RB","shirt_number":5,"slot":1},
+      {"player_id":"Q17507","name":"Gerard Piqué","answer":"Pique","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q184277","name":"Yaya Touré","answer":"Yaya Toure","position":"CB","shirt_number":24,"slot":3},
+      {"player_id":"Q312002","name":"Sylvinho","answer":"Sylvinho","position":"LB","shirt_number":16,"slot":4},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":28,"slot":5},
+      {"player_id":"Q17500","name":"Xavi Hernández","answer":"Xavi","position":"CM","shirt_number":6,"slot":6},
+      {"player_id":"Q43729","name":"Andrés Iniesta","answer":"Iniesta","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"RW","shirt_number":10,"slot":8},
+      {"player_id":"Q1255625","name":"Samuel Eto'o","answer":"Eto'o","position":"CF","shirt_number":9,"slot":9},
+      {"player_id":"Q45901","name":"Thierry Henry","answer":"Henry","position":"LW","shirt_number":14,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2018-real-madrid",
+    "date": "26 MAYIS 2018",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "REAL MADRID",
+    "away_team": "LIVERPOOL",
+    "score": "3–1",
+    "target_team": "REAL MADRID",
+    "formation": "4-3-1-2",
+    "lineup": [
+      {"player_id":"Q969423","name":"Keylor Navas","answer":"Navas","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q489039","name":"Raphaël Varane","answer":"Varane","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q483309","name":"Sergio Ramos","answer":"Ramos","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q38136","name":"Marcelo Vieira","answer":"Marcelo","position":"LB","shirt_number":12,"slot":4},
+      {"player_id":"Q616664","name":"Casemiro","answer":"Casemiro","position":"DM","shirt_number":14,"slot":5},
+      {"player_id":"rm_missing_87","name":"Luka Modrić","answer":"Modric","position":"CM","shirt_number":10,"slot":6},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q80892","name":"Isco","answer":"Isco","position":"AM","shirt_number":22,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2007-milan",
+    "date": "23 MAYIS 2007",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "MILAN",
+    "away_team": "LIVERPOOL",
+    "score": "2-1",
+    "target_team": "MILAN",
+    "formation": "4-3-2-1",
+    "lineup": [
+      {"player_id":"Q188544","name":"Dida","answer":"Dida","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q125438","name":"Massimo Oddo","answer":"Oddo","position":"RB","shirt_number":44,"slot":1},
+      {"player_id":"Q227892","name":"Alessandro Nesta","answer":"Nesta","position":"CB","shirt_number":13,"slot":2},
+      {"player_id":"Q483027","name":"Paolo Maldini","answer":"Maldini","position":"CB","shirt_number":3,"slot":3},
+      {"player_id":"Q200868","name":"Marek Jankulovski","answer":"Jankulovski","position":"LB","shirt_number":18,"slot":4},
+      {"player_id":"Q116980","name":"Gennaro Gattuso","answer":"Gattuso","position":"DM","shirt_number":8,"slot":5},
+      {"player_id":"Q43926","name":"Andrea Pirlo","answer":"Pirlo","position":"CM","shirt_number":21,"slot":6},
+      {"player_id":"Q188564","name":"Massimo Ambrosini","answer":"Ambrosini","position":"CM","shirt_number":23,"slot":7},
+      {"player_id":"Q531814","name":"Kaka","answer":"Kaka","position":"AM","shirt_number":22,"slot":8},
+      {"player_id":"Q484909","name":"Clarence Seedorf","answer":"Seedorf","position":"AM","shirt_number":10,"slot":9},
+      {"player_id":"Q126503","name":"Filippo Inzaghi","answer":"Inzaghi","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2006-barcelona","date":"17 MAYIS 2006","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BARCELONA","away_team":"ARSENAL","score":"2-1","target_team":"BARCELONA","formation":"4-3-3","lineup":[
+      {"player_id":"Q47548","name":"Victor Valdes","answer":"Valdes","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q313682","name":"Oleguer","answer":"Oleguer","position":"RB","shirt_number":23,"slot":1},
+      {"player_id":"tm_missing_7594","name":"Carles Puyol","answer":"Puyol","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"tm_missing_2904","name":"Rafael Marquez","answer":"Marquez","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q173360","name":"Giovanni van Bronckhorst","answer":"Van Bronckhorst","position":"LB","shirt_number":12,"slot":4},
+      {"player_id":"Q296058","name":"Edmilson","answer":"Edmilson","position":"DM","shirt_number":15,"slot":5},
+      {"player_id":"Q151853","name":"Mark van Bommel","answer":"Van Bommel","position":"CM","shirt_number":17,"slot":6},
+      {"player_id":"Q659634","name":"Deco","answer":"Deco","position":"CM","shirt_number":20,"slot":7},
+      {"player_id":"Q219771","name":"Ludovic Giuly","answer":"Giuly","position":"RW","shirt_number":8,"slot":8},
+      {"player_id":"Q1255625","name":"Samuel Eto'o","answer":"Eto'o","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q39444","name":"Ronaldinho","answer":"Ronaldinho","position":"LW","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2006-arsenal","date":"17 MAYIS 2006","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BARCELONA","away_team":"ARSENAL","score":"2-1","target_team":"ARSENAL","formation":"4-5-1","lineup":[
+      {"player_id":"Q57114","name":"Jens Lehmann","answer":"Lehmann","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q192856","name":"Emmanuel Eboue","answer":"Eboue","position":"RB","shirt_number":27,"slot":1},
+      {"player_id":"Q214734","name":"Sol Campbell","answer":"Campbell","position":"CB","shirt_number":23,"slot":2},
+      {"player_id":"Q147589","name":"Kolo Toure","answer":"Kolo Toure","position":"CB","shirt_number":28,"slot":3},
+      {"player_id":"Q133556","name":"Ashley Cole","answer":"Ashley Cole","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q190142","name":"Gilberto Silva","answer":"Gilberto Silva","position":"DM","shirt_number":19,"slot":5},
+      {"player_id":"Q17499","name":"Cesc Fabregas","answer":"Fabregas","position":"CM","shirt_number":15,"slot":6},
+      {"player_id":"Q10560","name":"Freddie Ljungberg","answer":"Ljungberg","position":"RM","shirt_number":8,"slot":7},
+      {"player_id":"Q188542","name":"Alexander Hleb","answer":"Hleb","position":"AM","shirt_number":13,"slot":8},
+      {"player_id":"Q113156","name":"Robert Pires","answer":"Pires","position":"LM","shirt_number":7,"slot":9},
+      {"player_id":"Q45901","name":"Thierry Henry","answer":"Henry","position":"ST","shirt_number":14,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-r16-2007-liverpool","date":"6 MART 2007","competition":"CHAMPIONS LEAGUE SON 16","home_team":"LIVERPOOL","away_team":"BARCELONA","score":"0-1","target_team":"LIVERPOOL","formation":"4-4-2","lineup":[
+      {"player_id":"Q163666","name":"Pepe Reina","answer":"Reina","position":"GK","shirt_number":25,"slot":0},
+      {"player_id":"Q239914","name":"Steve Finnan","answer":"Finnan","position":"RB","shirt_number":3,"slot":1},
+      {"player_id":"Q172211","name":"Jamie Carragher","answer":"Carragher","position":"CB","shirt_number":23,"slot":2},
+      {"player_id":"Q184205","name":"Daniel Agger","answer":"Agger","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q250901","name":"Alvaro Arbeloa","answer":"Arbeloa","position":"LB","shirt_number":2,"slot":4},
+      {"player_id":"Q459830","name":"Steven Gerrard","answer":"Gerrard","position":"RM","shirt_number":8,"slot":5},
+      {"player_id":"Q208104","name":"Xabi Alonso","answer":"Xabi Alonso","position":"CM","shirt_number":14,"slot":6},
+      {"player_id":"Q216557","name":"Mohamed Sissoko","answer":"Sissoko","position":"CM","shirt_number":22,"slot":7},
+      {"player_id":"Q189827","name":"John Arne Riise","answer":"Riise","position":"LM","shirt_number":6,"slot":8},
+      {"player_id":"Q190515","name":"Craig Bellamy","answer":"Bellamy","position":"ST","shirt_number":17,"slot":9},
+      {"player_id":"Q294214","name":"Dirk Kuyt","answer":"Kuyt","position":"ST","shirt_number":18,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2008-chelsea","date":"21 MAYIS 2008","competition":"CHAMPIONS LEAGUE FINAL","home_team":"CHELSEA","away_team":"MANCHESTER UNITED","score":"1-1 (PEN. 5-6)","target_team":"CHELSEA","formation":"4-3-3","lineup":[
+      {"player_id":"Q483137","name":"Petr Cech","answer":"Cech","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q969520","name":"Michael Essien","answer":"Essien","position":"RB","shirt_number":5,"slot":1},
+      {"player_id":"Q570811","name":"Ricardo Carvalho","answer":"Carvalho","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q83456","name":"John Terry","answer":"Terry","position":"CB","shirt_number":26,"slot":3},
+      {"player_id":"Q133556","name":"Ashley Cole","answer":"Ashley Cole","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q184362","name":"Claude Makelele","answer":"Makelele","position":"DM","shirt_number":4,"slot":5},
+      {"player_id":"Q11948","name":"Michael Ballack","answer":"Ballack","position":"CM","shirt_number":13,"slot":6},
+      {"player_id":"Q41533","name":"Frank Lampard","answer":"Lampard","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q184946","name":"Joe Cole","answer":"Joe Cole","position":"RW","shirt_number":10,"slot":8},
+      {"player_id":"Q48892","name":"Didier Drogba","answer":"Drogba","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q1913","name":"Florent Malouda","answer":"Malouda","position":"LW","shirt_number":15,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2008-manchester-united","date":"21 MAYIS 2008","competition":"CHAMPIONS LEAGUE FINAL","home_team":"CHELSEA","away_team":"MANCHESTER UNITED","score":"1-1 (PEN. 5-6)","target_team":"MANCHESTER UNITED","formation":"4-4-2","lineup":[
+      {"player_id":"Q482955","name":"Edwin van der Sar","answer":"Van der Sar","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q83756","name":"Wes Brown","answer":"Brown","position":"RB","shirt_number":6,"slot":1},
+      {"player_id":"Q483417","name":"Rio Ferdinand","answer":"Ferdinand","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q163564","name":"Nemanja Vidic","answer":"Vidic","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q1916","name":"Patrice Evra","answer":"Evra","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q437545","name":"Owen Hargreaves","answer":"Hargreaves","position":"RM","shirt_number":4,"slot":5},
+      {"player_id":"Q29566","name":"Michael Carrick","answer":"Carrick","position":"CM","shirt_number":16,"slot":6},
+      {"player_id":"Q45613","name":"Paul Scholes","answer":"Scholes","position":"CM","shirt_number":18,"slot":7},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"LM","shirt_number":7,"slot":8},
+      {"player_id":"Q50600","name":"Carlos Tevez","answer":"Tevez","position":"ST","shirt_number":32,"slot":9},
+      {"player_id":"Q266613","name":"Wayne Rooney","answer":"Rooney","position":"ST","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2009-manchester-united","date":"27 MAYIS 2009","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BARCELONA","away_team":"MANCHESTER UNITED","score":"2-0","target_team":"MANCHESTER UNITED","formation":"4-4-2","lineup":[
+      {"player_id":"Q482955","name":"Edwin van der Sar","answer":"Van der Sar","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q306351","name":"John O'Shea","answer":"O'Shea","position":"RB","shirt_number":22,"slot":1},
+      {"player_id":"Q483417","name":"Rio Ferdinand","answer":"Ferdinand","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q163564","name":"Nemanja Vidic","answer":"Vidic","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q1916","name":"Patrice Evra","answer":"Evra","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q50603","name":"Park Ji-Sung","answer":"Park","position":"RM","shirt_number":13,"slot":5},
+      {"player_id":"Q29566","name":"Michael Carrick","answer":"Carrick","position":"CM","shirt_number":16,"slot":6},
+      {"player_id":"Q484772","name":"Anderson","answer":"Anderson","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q10524","name":"Ryan Giggs","answer":"Giggs","position":"LM","shirt_number":11,"slot":8},
+      {"player_id":"Q266613","name":"Wayne Rooney","answer":"Rooney","position":"ST","shirt_number":10,"slot":9},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2009-barcelona","date":"6 MAYIS 2009","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"CHELSEA","away_team":"BARCELONA","score":"1-1","target_team":"BARCELONA","formation":"4-3-3","lineup":[
+      {"player_id":"Q47548","name":"Victor Valdes","answer":"Valdes","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q172720","name":"Dani Alves","answer":"Dani Alves","position":"RB","shirt_number":20,"slot":1},
+      {"player_id":"Q17507","name":"Gerard Pique","answer":"Pique","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q184277","name":"Yaya Toure","answer":"Yaya Toure","position":"CB","shirt_number":24,"slot":3},
+      {"player_id":"Q1935","name":"Eric Abidal","answer":"Abidal","position":"LB","shirt_number":22,"slot":4},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":28,"slot":5},
+      {"player_id":"Q17500","name":"Xavi","answer":"Xavi","position":"CM","shirt_number":6,"slot":6},
+      {"player_id":"Q43729","name":"Andres Iniesta","answer":"Iniesta","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"RW","shirt_number":10,"slot":8},
+      {"player_id":"Q1255625","name":"Samuel Eto'o","answer":"Eto'o","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q191080","name":"Seydou Keita","answer":"Keita","position":"LW","shirt_number":15,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2010-inter","date":"20 NISAN 2010","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"INTER","away_team":"BARCELONA","score":"3-1","target_team":"INTER","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q182459","name":"Julio Cesar","answer":"Julio Cesar","position":"GK","shirt_number":12,"slot":0},
+      {"player_id":"Q177686","name":"Maicon","answer":"Maicon","position":"RB","shirt_number":13,"slot":1},
+      {"player_id":"Q156822","name":"Lucio","answer":"Lucio","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q193702","name":"Walter Samuel","answer":"Walter Samuel","position":"CB","shirt_number":25,"slot":3},
+      {"player_id":"Q52876","name":"Javier Zanetti","answer":"Zanetti","position":"LB","shirt_number":4,"slot":4},
+      {"player_id":"Q191885","name":"Thiago Motta","answer":"Thiago Motta","position":"DM","shirt_number":8,"slot":5},
+      {"player_id":"Q192122","name":"Esteban Cambiasso","answer":"Cambiasso","position":"DM","shirt_number":19,"slot":6},
+      {"player_id":"Q238163","name":"Goran Pandev","answer":"Pandev","position":"RM","shirt_number":27,"slot":7},
+      {"player_id":"Q124086","name":"Wesley Sneijder","answer":"Sneijder","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q1255625","name":"Samuel Eto'o","answer":"Eto'o","position":"LM","shirt_number":9,"slot":9},
+      {"player_id":"Q76089","name":"Diego Milito","answer":"Milito","position":"ST","shirt_number":22,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2010-inter","date":"22 MAYIS 2010","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BAYERN MUNICH","away_team":"INTER","score":"0-2","target_team":"INTER","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q182459","name":"Julio Cesar","answer":"Julio Cesar","position":"GK","shirt_number":12,"slot":0},
+      {"player_id":"Q177686","name":"Maicon","answer":"Maicon","position":"RB","shirt_number":13,"slot":1},
+      {"player_id":"Q156822","name":"Lucio","answer":"Lucio","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q193702","name":"Walter Samuel","answer":"Walter Samuel","position":"CB","shirt_number":25,"slot":3},
+      {"player_id":"Q210491","name":"Cristian Chivu","answer":"Chivu","position":"LB","shirt_number":26,"slot":4},
+      {"player_id":"Q192122","name":"Esteban Cambiasso","answer":"Cambiasso","position":"DM","shirt_number":19,"slot":5},
+      {"player_id":"Q52876","name":"Javier Zanetti","answer":"Zanetti","position":"DM","shirt_number":4,"slot":6},
+      {"player_id":"Q238163","name":"Goran Pandev","answer":"Pandev","position":"RM","shirt_number":27,"slot":7},
+      {"player_id":"Q124086","name":"Wesley Sneijder","answer":"Sneijder","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q1255625","name":"Samuel Eto'o","answer":"Eto'o","position":"LM","shirt_number":9,"slot":9},
+      {"player_id":"Q76089","name":"Diego Milito","answer":"Milito","position":"ST","shirt_number":22,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2010-bayern","date":"22 MAYIS 2010","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BAYERN MUNICH","away_team":"INTER","score":"0-2","target_team":"BAYERN MUNICH","formation":"4-4-2","lineup":[
+      {"player_id":"Q152354","name":"Hans-Jorg Butt","answer":"Butt","position":"GK","shirt_number":22,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":21,"slot":1},
+      {"player_id":"Q44309","name":"Daniel Van Buyten","answer":"Van Buyten","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q150947","name":"Martin Demichelis","answer":"Demichelis","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"Q151278","name":"Holger Badstuber","answer":"Badstuber","position":"LB","shirt_number":28,"slot":4},
+      {"player_id":"Q44118","name":"Hamit Altintop","answer":"Hamit","position":"RM","shirt_number":8,"slot":5},
+      {"player_id":"Q151853","name":"Mark van Bommel","answer":"Van Bommel","position":"CM","shirt_number":17,"slot":6},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"CM","shirt_number":31,"slot":7},
+      {"player_id":"Q43913","name":"Arjen Robben","answer":"Robben","position":"LM","shirt_number":10,"slot":8},
+      {"player_id":"Q150484","name":"Ivica Olic","answer":"Olic","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"ST","shirt_number":25,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2012-chelsea","date":"24 NISAN 2012","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"BARCELONA","away_team":"CHELSEA","score":"2-2","target_team":"CHELSEA","formation":"4-5-1","lineup":[
+      {"player_id":"Q483137","name":"Petr Cech","answer":"Cech","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q181921","name":"Branislav Ivanovic","answer":"Ivanovic","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q223827","name":"Gary Cahill","answer":"Cahill","position":"CB","shirt_number":24,"slot":2},
+      {"player_id":"Q83456","name":"John Terry","answer":"Terry","position":"CB","shirt_number":26,"slot":3},
+      {"player_id":"Q133556","name":"Ashley Cole","answer":"Ashley Cole","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q166984","name":"John Obi Mikel","answer":"Mikel","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"Q204407","name":"Ramires","answer":"Ramires","position":"RM","shirt_number":7,"slot":6},
+      {"player_id":"Q41533","name":"Frank Lampard","answer":"Lampard","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q175296","name":"Raul Meireles","answer":"Meireles","position":"CM","shirt_number":16,"slot":8},
+      {"player_id":"Q168740","name":"Juan Mata","answer":"Mata","position":"LM","shirt_number":10,"slot":9},
+      {"player_id":"Q48892","name":"Didier Drogba","answer":"Drogba","position":"ST","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2012-chelsea","date":"19 MAYIS 2012","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BAYERN MUNICH","away_team":"CHELSEA","score":"1-1 (PEN. 3-4)","target_team":"CHELSEA","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q483137","name":"Petr Cech","answer":"Cech","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q211996","name":"Jose Bosingwa","answer":"Bosingwa","position":"RB","shirt_number":17,"slot":1},
+      {"player_id":"Q193706","name":"David Luiz","answer":"David Luiz","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q223827","name":"Gary Cahill","answer":"Cahill","position":"CB","shirt_number":24,"slot":3},
+      {"player_id":"Q133556","name":"Ashley Cole","answer":"Ashley Cole","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q166984","name":"John Obi Mikel","answer":"Mikel","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"Q41533","name":"Frank Lampard","answer":"Lampard","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q180462","name":"Salomon Kalou","answer":"Kalou","position":"RW","shirt_number":21,"slot":7},
+      {"player_id":"Q168740","name":"Juan Mata","answer":"Mata","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q296391","name":"Ryan Bertrand","answer":"Bertrand","position":"LW","shirt_number":34,"slot":9},
+      {"player_id":"Q48892","name":"Didier Drogba","answer":"Drogba","position":"ST","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2012-bayern","date":"19 MAYIS 2012","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BAYERN MUNICH","away_team":"CHELSEA","score":"1-1 (PEN. 3-4)","target_team":"BAYERN MUNICH","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":21,"slot":1},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"CB","shirt_number":17,"slot":2},
+      {"player_id":"Q44181","name":"Anatoliy Tymoshchuk","answer":"Tymoshchuk","position":"CB","shirt_number":44,"slot":3},
+      {"player_id":"Q155054","name":"Diego Contento","answer":"Contento","position":"LB","shirt_number":26,"slot":4},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"DM","shirt_number":31,"slot":5},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"DM","shirt_number":39,"slot":6},
+      {"player_id":"Q43913","name":"Arjen Robben","answer":"Robben","position":"RW","shirt_number":10,"slot":7},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"AM","shirt_number":25,"slot":8},
+      {"player_id":"Q1918","name":"Franck Ribery","answer":"Ribery","position":"LW","shirt_number":7,"slot":9},
+      {"player_id":"Q45766","name":"Mario Gomez","answer":"Gomez","position":"ST","shirt_number":33,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2013-dortmund","date":"24 NISAN 2013","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"BORUSSIA DORTMUND","away_team":"REAL MADRID","score":"4-1","target_team":"BORUSSIA DORTMUND","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q154397","name":"Roman Weidenfeller","answer":"Weidenfeller","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q153266","name":"Lukasz Piszczek","answer":"Piszczek","position":"RB","shirt_number":26,"slot":1},
+      {"player_id":"Q161038","name":"Neven Subotic","answer":"Subotic","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q110053","name":"Mats Hummels","answer":"Hummels","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q153416","name":"Marcel Schmelzer","answer":"Schmelzer","position":"LB","shirt_number":29,"slot":4},
+      {"player_id":"Q165697","name":"Sven Bender","answer":"Bender","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q161089","name":"Ilkay Gundogan","answer":"Gundogan","position":"DM","shirt_number":8,"slot":6},
+      {"player_id":"tm_missing_29835","name":"Jakub Blaszczykowski","answer":"Blaszczykowski","position":"RW","shirt_number":16,"slot":7},
+      {"player_id":"Q104454","name":"Mario Gotze","answer":"Gotze","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q152377","name":"Marco Reus","answer":"Reus","position":"LW","shirt_number":11,"slot":9},
+      {"player_id":"Q151269","name":"Robert Lewandowski","answer":"Lewandowski","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2013-dortmund","date":"25 MAYIS 2013","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BORUSSIA DORTMUND","away_team":"BAYERN MUNICH","score":"1-2","target_team":"BORUSSIA DORTMUND","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q154397","name":"Roman Weidenfeller","answer":"Weidenfeller","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q153266","name":"Lukasz Piszczek","answer":"Piszczek","position":"RB","shirt_number":26,"slot":1},
+      {"player_id":"Q161038","name":"Neven Subotic","answer":"Subotic","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q110053","name":"Mats Hummels","answer":"Hummels","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q153416","name":"Marcel Schmelzer","answer":"Schmelzer","position":"LB","shirt_number":29,"slot":4},
+      {"player_id":"Q165697","name":"Sven Bender","answer":"Bender","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q161089","name":"Ilkay Gundogan","answer":"Gundogan","position":"DM","shirt_number":8,"slot":6},
+      {"player_id":"tm_missing_29835","name":"Jakub Blaszczykowski","answer":"Blaszczykowski","position":"RW","shirt_number":16,"slot":7},
+      {"player_id":"Q152377","name":"Marco Reus","answer":"Reus","position":"AM","shirt_number":11,"slot":8},
+      {"player_id":"Q158367","name":"Kevin Grosskreutz","answer":"Grosskreutz","position":"LW","shirt_number":19,"slot":9},
+      {"player_id":"Q151269","name":"Robert Lewandowski","answer":"Lewandowski","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2013-bayern","date":"25 MAYIS 2013","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BORUSSIA DORTMUND","away_team":"BAYERN MUNICH","score":"1-2","target_team":"BAYERN MUNICH","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":21,"slot":1},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"CB","shirt_number":17,"slot":2},
+      {"player_id":"Q80761","name":"Dante","answer":"Dante","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q31981","name":"David Alaba","answer":"Alaba","position":"LB","shirt_number":27,"slot":4},
+      {"player_id":"Q201752","name":"Javi Martinez","answer":"Javi Martinez","position":"DM","shirt_number":8,"slot":5},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"DM","shirt_number":31,"slot":6},
+      {"player_id":"Q43913","name":"Arjen Robben","answer":"Robben","position":"RW","shirt_number":10,"slot":7},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"AM","shirt_number":25,"slot":8},
+      {"player_id":"Q1918","name":"Franck Ribery","answer":"Ribery","position":"LW","shirt_number":7,"slot":9},
+      {"player_id":"Q187171","name":"Mario Mandzukic","answer":"Mandzukic","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2014-real-madrid","date":"24 MAYIS 2014","competition":"CHAMPIONS LEAGUE FINAL","home_team":"REAL MADRID","away_team":"ATLETICO MADRID","score":"4-1","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q11584","name":"Iker Casillas","answer":"Casillas","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":15,"slot":1},
+      {"player_id":"Q489039","name":"Raphael Varane","answer":"Varane","position":"CB","shirt_number":2,"slot":2},
+      {"player_id":"Q483309","name":"Sergio Ramos","answer":"Ramos","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q484384","name":"Fabio Coentrao","answer":"Coentrao","position":"LB","shirt_number":5,"slot":4},
+      {"player_id":"Q54094","name":"Sami Khedira","answer":"Khedira","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":19,"slot":6},
+      {"player_id":"Q251683","name":"Angel Di Maria","answer":"Di Maria","position":"CM","shirt_number":22,"slot":7},
+      {"player_id":"Q184586","name":"Gareth Bale","answer":"Bale","position":"RW","shirt_number":11,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"LW","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2014-atletico","date":"24 MAYIS 2014","competition":"CHAMPIONS LEAGUE FINAL","home_team":"REAL MADRID","away_team":"ATLETICO MADRID","score":"4-1","target_team":"ATLETICO MADRID","formation":"4-4-2","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":13,"slot":0},
+      {"player_id":"Q210914","name":"Juanfran","answer":"Juanfran","position":"RB","shirt_number":20,"slot":1},
+      {"player_id":"Q318119","name":"Miranda","answer":"Miranda","position":"CB","shirt_number":23,"slot":2},
+      {"player_id":"Q214903","name":"Diego Godin","answer":"Godin","position":"CB","shirt_number":2,"slot":3},
+      {"player_id":"Q350547","name":"Filipe Luis","answer":"Filipe Luis","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q316772","name":"Raul Garcia","answer":"Raul Garcia","position":"RM","shirt_number":8,"slot":5},
+      {"player_id":"Q210944","name":"Tiago","answer":"Tiago","position":"CM","shirt_number":5,"slot":6},
+      {"player_id":"tm_missing_22969","name":"Gabi","answer":"Gabi","position":"CM","shirt_number":14,"slot":7},
+      {"player_id":"Q276091","name":"Koke","answer":"Koke","position":"LM","shirt_number":6,"slot":8},
+      {"player_id":"Q459707","name":"Diego Costa","answer":"Diego Costa","position":"ST","shirt_number":19,"slot":9},
+      {"player_id":"Q83006","name":"David Villa","answer":"Villa","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2015-juventus","date":"6 HAZIRAN 2015","competition":"CHAMPIONS LEAGUE FINAL","home_team":"JUVENTUS","away_team":"BARCELONA","score":"1-3","target_team":"JUVENTUS","formation":"4-3-1-2","lineup":[
+      {"player_id":"Q68060","name":"Gianluigi Buffon","answer":"Buffon","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q208586","name":"Stephan Lichtsteiner","answer":"Lichtsteiner","position":"RB","shirt_number":26,"slot":1},
+      {"player_id":"Q208050","name":"Leonardo Bonucci","answer":"Bonucci","position":"CB","shirt_number":19,"slot":2},
+      {"player_id":"Q107051","name":"Andrea Barzagli","answer":"Barzagli","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q1916","name":"Patrice Evra","answer":"Evra","position":"LB","shirt_number":33,"slot":4},
+      {"player_id":"Q43926","name":"Andrea Pirlo","answer":"Pirlo","position":"DM","shirt_number":21,"slot":5},
+      {"player_id":"Q179995","name":"Claudio Marchisio","answer":"Marchisio","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q129027","name":"Paul Pogba","answer":"Pogba","position":"CM","shirt_number":6,"slot":7},
+      {"player_id":"Q192671","name":"Arturo Vidal","answer":"Vidal","position":"AM","shirt_number":23,"slot":8},
+      {"player_id":"Q50600","name":"Carlos Tevez","answer":"Tevez","position":"ST","shirt_number":10,"slot":9},
+      {"player_id":"Q48770","name":"Alvaro Morata","answer":"Morata","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2015-barcelona","date":"6 HAZIRAN 2015","competition":"CHAMPIONS LEAGUE FINAL","home_team":"JUVENTUS","away_team":"BARCELONA","score":"1-3","target_team":"BARCELONA","formation":"4-3-3","lineup":[
+      {"player_id":"Q160472","name":"Marc-Andre ter Stegen","answer":"Ter Stegen","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q172720","name":"Dani Alves","answer":"Dani Alves","position":"RB","shirt_number":22,"slot":1},
+      {"player_id":"Q17507","name":"Gerard Pique","answer":"Pique","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q161571","name":"Javier Mascherano","answer":"Mascherano","position":"CB","shirt_number":14,"slot":3},
+      {"player_id":"Q187159","name":"Jordi Alba","answer":"Jordi Alba","position":"LB","shirt_number":18,"slot":4},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":5,"slot":5},
+      {"player_id":"Q115453","name":"Ivan Rakitic","answer":"Rakitic","position":"CM","shirt_number":4,"slot":6},
+      {"player_id":"Q43729","name":"Andres Iniesta","answer":"Iniesta","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"RW","shirt_number":10,"slot":8},
+      {"player_id":"Q26517","name":"Luis Suarez","answer":"Suarez","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q142794","name":"Neymar","answer":"Neymar","position":"LW","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2005-milan",
+    "date": "25 MAYIS 2005",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "MILAN",
+    "away_team": "LIVERPOOL",
+    "score": "3-3 (PEN. 2-3)",
+    "target_team": "MILAN",
+    "formation": "4-3-1-2",
+    "lineup": [
+      {"player_id":"Q188544","name":"Dida","answer":"Dida","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q178683","name":"Cafu","answer":"Cafu","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q227892","name":"Alessandro Nesta","answer":"Nesta","position":"CB","shirt_number":13,"slot":2},
+      {"player_id":"Q216917","name":"Jaap Stam","answer":"Stam","position":"CB","shirt_number":31,"slot":3},
+      {"player_id":"Q483027","name":"Paolo Maldini","answer":"Maldini","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q116980","name":"Gennaro Gattuso","answer":"Gattuso","position":"CM","shirt_number":8,"slot":5},
+      {"player_id":"Q43926","name":"Andrea Pirlo","answer":"Pirlo","position":"CM","shirt_number":21,"slot":6},
+      {"player_id":"Q484909","name":"Clarence Seedorf","answer":"Seedorf","position":"CM","shirt_number":20,"slot":7},
+      {"player_id":"Q531814","name":"Kaka","answer":"Kaka","position":"AM","shirt_number":22,"slot":8},
+      {"player_id":"Q160206","name":"Hernan Crespo","answer":"Crespo","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q41244","name":"Andriy Shevchenko","answer":"Shevchenko","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2005-liverpool",
+    "date": "25 MAYIS 2005",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "MILAN",
+    "away_team": "LIVERPOOL",
+    "score": "3-3 (PEN. 2-3)",
+    "target_team": "LIVERPOOL",
+    "formation": "4-4-1-1",
+    "lineup": [
+      {"player_id":"Q190651","name":"Jerzy Dudek","answer":"Dudek","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q239914","name":"Steve Finnan","answer":"Finnan","position":"RB","shirt_number":3,"slot":1},
+      {"player_id":"Q172211","name":"Jamie Carragher","answer":"Carragher","position":"CB","shirt_number":23,"slot":2},
+      {"player_id":"Q192840","name":"Sami Hyypia","answer":"Hyypia","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q250978","name":"Djimi Traore","answer":"Traore","position":"LB","shirt_number":21,"slot":4},
+      {"player_id":"Q189827","name":"John Arne Riise","answer":"Riise","position":"LM","shirt_number":6,"slot":5},
+      {"player_id":"Q208104","name":"Xabi Alonso","answer":"Xabi Alonso","position":"CM","shirt_number":14,"slot":6},
+      {"player_id":"Q459830","name":"Steven Gerrard","answer":"Gerrard","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q295416","name":"Luis Garcia","answer":"Luis Garcia","position":"RM","shirt_number":10,"slot":8},
+      {"player_id":"Q204429","name":"Harry Kewell","answer":"Kewell","position":"SS","shirt_number":7,"slot":9},
+      {"player_id":"Q180581","name":"Milan Baros","answer":"Baros","position":"ST","shirt_number":5,"slot":10}
+    ]
+  },
+  {
+    "id": "ucl-final-2007-liverpool",
+    "date": "23 MAYIS 2007",
+    "competition": "CHAMPIONS LEAGUE FINAL",
+    "home_team": "MILAN",
+    "away_team": "LIVERPOOL",
+    "score": "2-1",
+    "target_team": "LIVERPOOL",
+    "formation": "4-2-3-1",
+    "lineup": [
+      {"player_id":"Q163666","name":"Pepe Reina","answer":"Reina","position":"GK","shirt_number":25,"slot":0},
+      {"player_id":"Q239914","name":"Steve Finnan","answer":"Finnan","position":"RB","shirt_number":3,"slot":1},
+      {"player_id":"Q172211","name":"Jamie Carragher","answer":"Carragher","position":"CB","shirt_number":23,"slot":2},
+      {"player_id":"Q184205","name":"Daniel Agger","answer":"Agger","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q189827","name":"John Arne Riise","answer":"Riise","position":"LB","shirt_number":6,"slot":4},
+      {"player_id":"Q161571","name":"Javier Mascherano","answer":"Mascherano","position":"DM","shirt_number":20,"slot":5},
+      {"player_id":"Q208104","name":"Xabi Alonso","answer":"Xabi Alonso","position":"DM","shirt_number":14,"slot":6},
+      {"player_id":"Q296416","name":"Jermaine Pennant","answer":"Pennant","position":"RM","shirt_number":16,"slot":7},
+      {"player_id":"Q459830","name":"Steven Gerrard","answer":"Gerrard","position":"AM","shirt_number":8,"slot":8},
+      {"player_id":"Q271615","name":"Boudewijn Zenden","answer":"Zenden","position":"LM","shirt_number":32,"slot":9},
+      {"player_id":"Q294214","name":"Dirk Kuyt","answer":"Kuyt","position":"ST","shirt_number":18,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2016-real-madrid","date":"28 MAYIS 2016","competition":"CHAMPIONS LEAGUE FINAL","home_team":"REAL MADRID","away_team":"ATLETICO MADRID","score":"1-1 (PEN. 5-3)","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q969423","name":"Keylor Navas","answer":"Navas","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":15,"slot":1},
+      {"player_id":"Q485697","name":"Pepe","answer":"Pepe","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q483309","name":"Sergio Ramos","answer":"Ramos","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q38136","name":"Marcelo Vieira","answer":"Marcelo","position":"LB","shirt_number":12,"slot":4},
+      {"player_id":"Q616664","name":"Casemiro","answer":"Casemiro","position":"DM","shirt_number":14,"slot":5},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":19,"slot":7},
+      {"player_id":"Q184586","name":"Gareth Bale","answer":"Bale","position":"RW","shirt_number":11,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"LW","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2016-atletico","date":"28 MAYIS 2016","competition":"CHAMPIONS LEAGUE FINAL","home_team":"REAL MADRID","away_team":"ATLETICO MADRID","score":"1-1 (PEN. 5-3)","target_team":"ATLETICO MADRID","formation":"4-4-2","lineup":[
+      {"player_id":"Q2058682","name":"Jan Oblak","answer":"Oblak","position":"GK","shirt_number":13,"slot":0},
+      {"player_id":"Q210914","name":"Juanfran Torres","answer":"Juanfran","position":"RB","shirt_number":20,"slot":1},
+      {"player_id":"Q219884","name":"Stefan Savic","answer":"Savic","position":"CB","shirt_number":15,"slot":2},
+      {"player_id":"Q214903","name":"Diego Godin","answer":"Godin","position":"CB","shirt_number":2,"slot":3},
+      {"player_id":"Q350547","name":"Filipe Luis","answer":"Filipe Luis","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q276091","name":"Koke","answer":"Koke","position":"RM","shirt_number":6,"slot":5},
+      {"player_id":"Q545665","name":"Augusto Fernandez","answer":"Augusto","position":"CM","shirt_number":12,"slot":6},
+      {"player_id":"tm_missing_22969","name":"Gabi","answer":"Gabi","position":"CM","shirt_number":14,"slot":7},
+      {"player_id":"Q912172","name":"Saul Niguez","answer":"Saul","position":"LM","shirt_number":17,"slot":8},
+      {"player_id":"Q455462","name":"Antoine Griezmann","answer":"Griezmann","position":"ST","shirt_number":7,"slot":9},
+      {"player_id":"Q42731","name":"Fernando Torres","answer":"Torres","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-r16-2017-barcelona","date":"8 MART 2017","competition":"CHAMPIONS LEAGUE SON 16","home_team":"BARCELONA","away_team":"PARIS SAINT-GERMAIN","score":"6-1","target_team":"BARCELONA","formation":"3-1-4-2","lineup":[
+      {"player_id":"Q160472","name":"Marc-Andre ter Stegen","answer":"Ter Stegen","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q17507","name":"Gerard Pique","answer":"Pique","position":"CB","shirt_number":3,"slot":1},
+      {"player_id":"Q161571","name":"Javier Mascherano","answer":"Mascherano","position":"CB","shirt_number":14,"slot":2},
+      {"player_id":"Q13308","name":"Samuel Umtiti","answer":"Umtiti","position":"CB","shirt_number":23,"slot":3},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":5,"slot":4},
+      {"player_id":"Q115453","name":"Ivan Rakitic","answer":"Rakitic","position":"CM","shirt_number":4,"slot":5},
+      {"player_id":"Q43729","name":"Andres Iniesta","answer":"Iniesta","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q455611","name":"Rafinha","answer":"Rafinha","position":"RM","shirt_number":12,"slot":7},
+      {"player_id":"Q142794","name":"Neymar","answer":"Neymar","position":"LM","shirt_number":11,"slot":8},
+      {"player_id":"Q26517","name":"Luis Suarez","answer":"Suarez","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"ST","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-qf-2017-real-madrid","date":"18 NISAN 2017","competition":"CHAMPIONS LEAGUE CEYREK FINAL","home_team":"REAL MADRID","away_team":"BAYERN MUNICH","score":"4-2 (UZ.)","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q969423","name":"Keylor Navas","answer":"Navas","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q483309","name":"Sergio Ramos","answer":"Ramos","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q503137","name":"Nacho","answer":"Nacho","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"Q38136","name":"Marcelo Vieira","answer":"Marcelo","position":"LB","shirt_number":12,"slot":4},
+      {"player_id":"Q616664","name":"Casemiro","answer":"Casemiro","position":"DM","shirt_number":14,"slot":5},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":19,"slot":7},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"RW","shirt_number":7,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q80892","name":"Isco","answer":"Isco","position":"LW","shirt_number":22,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2018-liverpool","date":"26 MAYIS 2018","competition":"CHAMPIONS LEAGUE FINAL","home_team":"REAL MADRID","away_team":"LIVERPOOL","score":"3-1","target_team":"LIVERPOOL","formation":"4-3-3","lineup":[
+      {"player_id":"Q339252","name":"Loris Karius","answer":"Karius","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q27569376","name":"Trent Alexander-Arnold","answer":"Alexander-Arnold","position":"RB","shirt_number":66,"slot":1},
+      {"player_id":"Q133903","name":"Virgil van Dijk","answer":"Van Dijk","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q349125","name":"Dejan Lovren","answer":"Lovren","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"tm_missing_234803","name":"Andrew Robertson","answer":"Robertson","position":"LB","shirt_number":26,"slot":4},
+      {"player_id":"Q273715","name":"Jordan Henderson","answer":"Henderson","position":"CM","shirt_number":14,"slot":5},
+      {"player_id":"Q372379","name":"Georginio Wijnaldum","answer":"Wijnaldum","position":"CM","shirt_number":5,"slot":6},
+      {"player_id":"Q191136","name":"James Milner","answer":"Milner","position":"CM","shirt_number":7,"slot":7},
+      {"player_id":"Q1354960","name":"Mohamed Salah","answer":"Salah","position":"RW","shirt_number":11,"slot":8},
+      {"player_id":"Q602525","name":"Roberto Firmino","answer":"Firmino","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q209942","name":"Sadio Mane","answer":"Mane","position":"LW","shirt_number":19,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-qf-2019-tottenham","date":"17 NISAN 2019","competition":"CHAMPIONS LEAGUE CEYREK FINAL","home_team":"MANCHESTER CITY","away_team":"TOTTENHAM","score":"4-3","target_team":"TOTTENHAM","formation":"4-1-2-1-2","lineup":[
+      {"player_id":"Q1907","name":"Hugo Lloris","answer":"Lloris","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q1083432","name":"Kieran Trippier","answer":"Trippier","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q128840","name":"Toby Alderweireld","answer":"Alderweireld","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q313170","name":"Jan Vertonghen","answer":"Vertonghen","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q83498","name":"Danny Rose","answer":"Rose","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"tm_missing_77760","name":"Victor Wanyama","answer":"Wanyama","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"Q60545","name":"Moussa Sissoko","answer":"Sissoko","position":"CM","shirt_number":17,"slot":6},
+      {"player_id":"Q10553748","name":"Dele Alli","answer":"Alli","position":"CM","shirt_number":20,"slot":7},
+      {"player_id":"Q294951","name":"Christian Eriksen","answer":"Eriksen","position":"AM","shirt_number":23,"slot":8},
+      {"player_id":"Q439722","name":"Son Heung-min","answer":"Son","position":"ST","shirt_number":7,"slot":9},
+      {"player_id":"Q312886","name":"Lucas Moura","answer":"Lucas Moura","position":"ST","shirt_number":27,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2019-liverpool","date":"7 MAYIS 2019","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"LIVERPOOL","away_team":"BARCELONA","score":"4-0","target_team":"LIVERPOOL","formation":"4-3-3","lineup":[
+      {"player_id":"Q18237361","name":"Alisson Becker","answer":"Alisson","position":"GK","shirt_number":13,"slot":0},
+      {"player_id":"Q27569376","name":"Trent Alexander-Arnold","answer":"Alexander-Arnold","position":"RB","shirt_number":66,"slot":1},
+      {"player_id":"Q133903","name":"Virgil van Dijk","answer":"Van Dijk","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q57567","name":"Joel Matip","answer":"Matip","position":"CB","shirt_number":32,"slot":3},
+      {"player_id":"tm_missing_234803","name":"Andrew Robertson","answer":"Robertson","position":"LB","shirt_number":26,"slot":4},
+      {"player_id":"Q641425","name":"Fabinho","answer":"Fabinho","position":"DM","shirt_number":3,"slot":5},
+      {"player_id":"Q273715","name":"Jordan Henderson","answer":"Henderson","position":"CM","shirt_number":14,"slot":6},
+      {"player_id":"Q191136","name":"James Milner","answer":"Milner","position":"CM","shirt_number":7,"slot":7},
+      {"player_id":"Q252190","name":"Xherdan Shaqiri","answer":"Shaqiri","position":"RW","shirt_number":23,"slot":8},
+      {"player_id":"Q4254043","name":"Divock Origi","answer":"Origi","position":"ST","shirt_number":27,"slot":9},
+      {"player_id":"Q209942","name":"Sadio Mane","answer":"Mane","position":"LW","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2019-tottenham","date":"8 MAYIS 2019","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"AJAX","away_team":"TOTTENHAM","score":"2-3","target_team":"TOTTENHAM","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q1907","name":"Hugo Lloris","answer":"Lloris","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q1083432","name":"Kieran Trippier","answer":"Trippier","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q128840","name":"Toby Alderweireld","answer":"Alderweireld","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q313170","name":"Jan Vertonghen","answer":"Vertonghen","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q83498","name":"Danny Rose","answer":"Rose","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"tm_missing_77760","name":"Victor Wanyama","answer":"Wanyama","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"Q60545","name":"Moussa Sissoko","answer":"Sissoko","position":"CM","shirt_number":17,"slot":6},
+      {"player_id":"Q10553748","name":"Dele Alli","answer":"Alli","position":"AM","shirt_number":20,"slot":7},
+      {"player_id":"Q294951","name":"Christian Eriksen","answer":"Eriksen","position":"RW","shirt_number":23,"slot":8},
+      {"player_id":"Q439722","name":"Son Heung-min","answer":"Son","position":"LW","shirt_number":7,"slot":9},
+      {"player_id":"Q312886","name":"Lucas Moura","answer":"Lucas Moura","position":"ST","shirt_number":27,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-qf-2020-bayern","date":"14 AGUSTOS 2020","competition":"CHAMPIONS LEAGUE CEYREK FINAL","home_team":"BARCELONA","away_team":"BAYERN MUNICH","score":"2-8","target_team":"BAYERN MUNICH","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q13865408","name":"Joshua Kimmich","answer":"Kimmich","position":"RB","shirt_number":32,"slot":1},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"CB","shirt_number":17,"slot":2},
+      {"player_id":"Q31981","name":"David Alaba","answer":"Alaba","position":"CB","shirt_number":27,"slot":3},
+      {"player_id":"Q23540953","name":"Alphonso Davies","answer":"Davies","position":"LB","shirt_number":19,"slot":4},
+      {"player_id":"Q17493","name":"Thiago Alcantara","answer":"Thiago","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q520721","name":"Leon Goretzka","answer":"Goretzka","position":"CM","shirt_number":18,"slot":6},
+      {"player_id":"Q59490","name":"Serge Gnabry","answer":"Gnabry","position":"RW","shirt_number":22,"slot":7},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"AM","shirt_number":25,"slot":8},
+      {"player_id":"Q161054","name":"Ivan Perisic","answer":"Perisic","position":"LW","shirt_number":14,"slot":9},
+      {"player_id":"Q151269","name":"Robert Lewandowski","answer":"Lewandowski","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2021-man-city","date":"29 MAYIS 2021","competition":"CHAMPIONS LEAGUE FINAL","home_team":"MANCHESTER CITY","away_team":"CHELSEA","score":"0-1","target_team":"MANCHESTER CITY","formation":"4-3-3","lineup":[
+      {"player_id":"Q17074511","name":"Ederson","answer":"Ederson","position":"GK","shirt_number":31,"slot":0},
+      {"player_id":"Q59108","name":"Kyle Walker","answer":"Walker","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q21621168","name":"Ruben Dias","answer":"Dias","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q2025900","name":"John Stones","answer":"Stones","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q19636859","name":"Oleksandr Zinchenko","answer":"Zinchenko","position":"LB","shirt_number":11,"slot":4},
+      {"player_id":"Q161089","name":"Ilkay Gundogan","answer":"Gundogan","position":"CM","shirt_number":8,"slot":5},
+      {"player_id":"Q15521306","name":"Bernardo Silva","answer":"Bernardo Silva","position":"CM","shirt_number":20,"slot":6},
+      {"player_id":"Q30729096","name":"Phil Foden","answer":"Foden","position":"CM","shirt_number":47,"slot":7},
+      {"player_id":"Q312157","name":"Raheem Sterling","answer":"Sterling","position":"LW","shirt_number":7,"slot":8},
+      {"player_id":"Q357984","name":"Kevin De Bruyne","answer":"De Bruyne","position":"ST","shirt_number":17,"slot":9},
+      {"player_id":"Q8338725","name":"Riyad Mahrez","answer":"Mahrez","position":"RW","shirt_number":26,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2021-chelsea","date":"29 MAYIS 2021","competition":"CHAMPIONS LEAGUE FINAL","home_team":"MANCHESTER CITY","away_team":"CHELSEA","score":"0-1","target_team":"CHELSEA","formation":"3-4-2-1","lineup":[
+      {"player_id":"Q27736107","name":"Edouard Mendy","answer":"Mendy","position":"GK","shirt_number":16,"slot":0},
+      {"player_id":"Q294806","name":"Cesar Azpilicueta","answer":"Azpilicueta","position":"CB","shirt_number":28,"slot":1},
+      {"player_id":"Q210453","name":"Thiago Silva","answer":"Thiago Silva","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q96755","name":"Antonio Rudiger","answer":"Rudiger","position":"CB","shirt_number":2,"slot":3},
+      {"player_id":"Q39076401","name":"Reece James","answer":"Reece James","position":"RWB","shirt_number":24,"slot":4},
+      {"player_id":"Q3810078","name":"Jorginho","answer":"Jorginho","position":"CM","shirt_number":5,"slot":5},
+      {"player_id":"Q16665941","name":"N Golo Kante","answer":"Kante","position":"CM","shirt_number":7,"slot":6},
+      {"player_id":"Q21621029","name":"Ben Chilwell","answer":"Chilwell","position":"LWB","shirt_number":21,"slot":7},
+      {"player_id":"Q38000669","name":"Mason Mount","answer":"Mount","position":"AM","shirt_number":19,"slot":8},
+      {"player_id":"Q27310755","name":"Kai Havertz","answer":"Havertz","position":"AM","shirt_number":29,"slot":9},
+      {"player_id":"Q3529022","name":"Timo Werner","answer":"Werner","position":"ST","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-r16-2022-real-madrid","date":"9 MART 2022","competition":"CHAMPIONS LEAGUE SON 16","home_team":"REAL MADRID","away_team":"PARIS SAINT-GERMAIN","score":"3-1","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q29950055","name":"Eder Militao","answer":"Militao","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q31981","name":"David Alaba","answer":"Alaba","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q503137","name":"Nacho","answer":"Nacho","position":"LB","shirt_number":6,"slot":4},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":5},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":10,"slot":6},
+      {"player_id":"Q19509544","name":"Federico Valverde","answer":"Valverde","position":"CM","shirt_number":15,"slot":7},
+      {"player_id":"Q16148978","name":"Marco Asensio","answer":"Asensio","position":"RW","shirt_number":11,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q28973866","name":"Vinicius Junior","answer":"Vinicius","position":"LW","shirt_number":20,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2022-real-madrid","date":"4 MAYIS 2022","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"REAL MADRID","away_team":"MANCHESTER CITY","score":"3-1 (UZ.)","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q29950055","name":"Eder Militao","answer":"Militao","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q503137","name":"Nacho","answer":"Nacho","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"Q23884186","name":"Ferland Mendy","answer":"Mendy","position":"LB","shirt_number":23,"slot":4},
+      {"player_id":"Q616664","name":"Casemiro","answer":"Casemiro","position":"DM","shirt_number":14,"slot":5},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":10,"slot":7},
+      {"player_id":"Q19509544","name":"Federico Valverde","answer":"Valverde","position":"RW","shirt_number":15,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q28973866","name":"Vinicius Junior","answer":"Vinicius","position":"LW","shirt_number":20,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-r16-2023-real-madrid","date":"21 SUBAT 2023","competition":"CHAMPIONS LEAGUE SON 16","home_team":"LIVERPOOL","away_team":"REAL MADRID","score":"2-5","target_team":"REAL MADRID","formation":"4-3-3","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q29950055","name":"Eder Militao","answer":"Militao","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q96755","name":"Antonio Rudiger","answer":"Rudiger","position":"CB","shirt_number":22,"slot":3},
+      {"player_id":"Q31981","name":"David Alaba","answer":"Alaba","position":"LB","shirt_number":4,"slot":4},
+      {"player_id":"Q62960177","name":"Eduardo Camavinga","answer":"Camavinga","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":10,"slot":6},
+      {"player_id":"Q19509544","name":"Federico Valverde","answer":"Valverde","position":"CM","shirt_number":15,"slot":7},
+      {"player_id":"Q42728914","name":"Rodrygo","answer":"Rodrygo","position":"RW","shirt_number":21,"slot":8},
+      {"player_id":"Q1912","name":"Karim Benzema","answer":"Benzema","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q28973866","name":"Vinicius Junior","answer":"Vinicius","position":"LW","shirt_number":20,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-semi-2023-man-city","date":"17 MAYIS 2023","competition":"CHAMPIONS LEAGUE YARI FINAL","home_team":"MANCHESTER CITY","away_team":"REAL MADRID","score":"4-0","target_team":"MANCHESTER CITY","formation":"3-2-4-1","lineup":[
+      {"player_id":"Q17074511","name":"Ederson","answer":"Ederson","position":"GK","shirt_number":31,"slot":0},
+      {"player_id":"Q59108","name":"Kyle Walker","answer":"Walker","position":"CB","shirt_number":2,"slot":1},
+      {"player_id":"Q21621168","name":"Ruben Dias","answer":"Dias","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q19938984","name":"Manuel Akanji","answer":"Akanji","position":"CB","shirt_number":25,"slot":3},
+      {"player_id":"Q2025900","name":"John Stones","answer":"Stones","position":"DM","shirt_number":5,"slot":4},
+      {"player_id":"Q20994118","name":"Rodri","answer":"Rodri","position":"DM","shirt_number":16,"slot":5},
+      {"player_id":"Q161089","name":"Ilkay Gundogan","answer":"Gundogan","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q15521306","name":"Bernardo Silva","answer":"Bernardo Silva","position":"AM","shirt_number":20,"slot":7},
+      {"player_id":"Q357984","name":"Kevin De Bruyne","answer":"De Bruyne","position":"AM","shirt_number":17,"slot":8},
+      {"player_id":"Q16056053","name":"Jack Grealish","answer":"Grealish","position":"LW","shirt_number":10,"slot":9},
+      {"player_id":"Q28967995","name":"Erling Haaland","answer":"Haaland","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2024-dortmund","date":"1 HAZIRAN 2024","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BORUSSIA DORTMUND","away_team":"REAL MADRID","score":"0-2","target_team":"BORUSSIA DORTMUND","formation":"4-3-3","lineup":[
+      {"player_id":"Q36184031","name":"Gregor Kobel","answer":"Kobel","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q28717698","name":"Julian Ryerson","answer":"Ryerson","position":"RB","shirt_number":26,"slot":1},
+      {"player_id":"Q110053","name":"Mats Hummels","answer":"Hummels","position":"CB","shirt_number":15,"slot":2},
+      {"player_id":"Q62015814","name":"Nico Schlotterbeck","answer":"Schlotterbeck","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q69495231","name":"Ian Maatsen","answer":"Maatsen","position":"LB","shirt_number":22,"slot":4},
+      {"player_id":"Q27694","name":"Emre Can","answer":"Emre Can","position":"DM","shirt_number":23,"slot":5},
+      {"player_id":"Q472300","name":"Marcel Sabitzer","answer":"Sabitzer","position":"CM","shirt_number":20,"slot":6},
+      {"player_id":"Q3189078","name":"Julian Brandt","answer":"Brandt","position":"CM","shirt_number":19,"slot":7},
+      {"player_id":"Q30148558","name":"Jadon Sancho","answer":"Sancho","position":"RW","shirt_number":10,"slot":8},
+      {"player_id":"Q326159","name":"Niclas Fullkrug","answer":"Fullkrug","position":"ST","shirt_number":14,"slot":9},
+      {"player_id":"Q56424307","name":"Karim Adeyemi","answer":"Adeyemi","position":"LW","shirt_number":27,"slot":10}
+    ]
+  },
+  {
+    "id":"ucl-final-2024-real-madrid","date":"1 HAZIRAN 2024","competition":"CHAMPIONS LEAGUE FINAL","home_team":"BORUSSIA DORTMUND","away_team":"REAL MADRID","score":"0-2","target_team":"REAL MADRID","formation":"4-3-1-2","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q127452","name":"Dani Carvajal","answer":"Carvajal","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q503137","name":"Nacho","answer":"Nacho","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q96755","name":"Antonio Rudiger","answer":"Rudiger","position":"CB","shirt_number":22,"slot":3},
+      {"player_id":"Q23884186","name":"Ferland Mendy","answer":"Mendy","position":"LB","shirt_number":23,"slot":4},
+      {"player_id":"Q62960177","name":"Eduardo Camavinga","answer":"Camavinga","position":"DM","shirt_number":12,"slot":5},
+      {"player_id":"Q19509544","name":"Federico Valverde","answer":"Valverde","position":"CM","shirt_number":15,"slot":6},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":8,"slot":7},
+      {"player_id":"Q66241169","name":"Jude Bellingham","answer":"Bellingham","position":"AM","shirt_number":5,"slot":8},
+      {"player_id":"Q42728914","name":"Rodrygo","answer":"Rodrygo","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q28973866","name":"Vinicius Junior","answer":"Vinicius","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-2006-germany-costa-rica","date":"9 HAZIRAN 2006","competition":"DUNYA KUPASI GRUP","home_team":"GERMANY","away_team":"COSTA RICA","score":"4-2","target_team":"GERMANY","formation":"4-4-2","lineup":[
+      {"player_id":"Q57114","name":"Jens Lehmann","answer":"Lehmann","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q63676","name":"Arne Friedrich","answer":"Friedrich","position":"RB","shirt_number":3,"slot":1},
+      {"player_id":"Q70550","name":"Per Mertesacker","answer":"Mertesacker","position":"CB","shirt_number":17,"slot":2},
+      {"player_id":"Q152984","name":"Christoph Metzelder","answer":"Metzelder","position":"CB","shirt_number":21,"slot":3},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"LB","shirt_number":16,"slot":4},
+      {"player_id":"Q152458","name":"Bernd Schneider","answer":"Schneider","position":"RM","shirt_number":19,"slot":5},
+      {"player_id":"Q107076","name":"Torsten Frings","answer":"Frings","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q76753","name":"Tim Borowski","answer":"Borowski","position":"CM","shirt_number":18,"slot":7},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"LM","shirt_number":7,"slot":8},
+      {"player_id":"Q80471","name":"Miroslav Klose","answer":"Klose","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q134976","name":"Lukas Podolski","answer":"Podolski","position":"ST","shirt_number":20,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-r16-2006-portugal","date":"25 HAZIRAN 2006","competition":"DUNYA KUPASI SON 16","home_team":"PORTUGAL","away_team":"NETHERLANDS","score":"1-0","target_team":"PORTUGAL","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q442911","name":"Ricardo","answer":"Ricardo","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q295315","name":"Miguel Monteiro","answer":"Miguel","position":"RB","shirt_number":13,"slot":1},
+      {"player_id":"Q570811","name":"Ricardo Carvalho","answer":"Carvalho","position":"CB","shirt_number":16,"slot":2},
+      {"player_id":"Q310206","name":"Fernando Meira","answer":"Meira","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q311968","name":"Nuno Valente","answer":"Nuno Valente","position":"LB","shirt_number":14,"slot":4},
+      {"player_id":"Q311087","name":"Costinha","answer":"Costinha","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q29339","name":"Maniche","answer":"Maniche","position":"CM","shirt_number":18,"slot":6},
+      {"player_id":"Q483145","name":"Luis Figo","answer":"Figo","position":"RW","shirt_number":7,"slot":7},
+      {"player_id":"Q659634","name":"Deco","answer":"Deco","position":"AM","shirt_number":20,"slot":8},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"LW","shirt_number":17,"slot":9},
+      {"player_id":"Q218165","name":"Pauleta","answer":"Pauleta","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-semi-2006-italy","date":"4 TEMMUZ 2006","competition":"DUNYA KUPASI YARI FINAL","home_team":"GERMANY","away_team":"ITALY","score":"0-2 (UZ.)","target_team":"ITALY","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q68060","name":"Gianluigi Buffon","answer":"Buffon","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q182907","name":"Gianluca Zambrotta","answer":"Zambrotta","position":"RB","shirt_number":19,"slot":1},
+      {"player_id":"Q102027","name":"Fabio Cannavaro","answer":"Cannavaro","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q185081","name":"Marco Materazzi","answer":"Materazzi","position":"CB","shirt_number":23,"slot":3},
+      {"player_id":"Q230529","name":"Fabio Grosso","answer":"Grosso","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q116980","name":"Gennaro Gattuso","answer":"Gattuso","position":"DM","shirt_number":8,"slot":5},
+      {"player_id":"Q43926","name":"Andrea Pirlo","answer":"Pirlo","position":"DM","shirt_number":21,"slot":6},
+      {"player_id":"Q189716","name":"Mauro Camoranesi","answer":"Camoranesi","position":"RM","shirt_number":16,"slot":7},
+      {"player_id":"Q20110","name":"Francesco Totti","answer":"Totti","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q232789","name":"Simone Perrotta","answer":"Perrotta","position":"LM","shirt_number":20,"slot":9},
+      {"player_id":"Q186478","name":"Luca Toni","answer":"Toni","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2006-italy","date":"9 TEMMUZ 2006","competition":"DUNYA KUPASI FINAL","home_team":"ITALY","away_team":"FRANCE","score":"1-1 (PEN. 5-3)","target_team":"ITALY","formation":"4-4-1-1","lineup":[
+      {"player_id":"Q68060","name":"Gianluigi Buffon","answer":"Buffon","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q182907","name":"Gianluca Zambrotta","answer":"Zambrotta","position":"RB","shirt_number":19,"slot":1},
+      {"player_id":"Q102027","name":"Fabio Cannavaro","answer":"Cannavaro","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q185081","name":"Marco Materazzi","answer":"Materazzi","position":"CB","shirt_number":23,"slot":3},
+      {"player_id":"Q230529","name":"Fabio Grosso","answer":"Grosso","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q189716","name":"Mauro Camoranesi","answer":"Camoranesi","position":"RM","shirt_number":16,"slot":5},
+      {"player_id":"Q116980","name":"Gennaro Gattuso","answer":"Gattuso","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q43926","name":"Andrea Pirlo","answer":"Pirlo","position":"CM","shirt_number":21,"slot":7},
+      {"player_id":"Q232789","name":"Simone Perrotta","answer":"Perrotta","position":"LM","shirt_number":20,"slot":8},
+      {"player_id":"Q20110","name":"Francesco Totti","answer":"Totti","position":"SS","shirt_number":10,"slot":9},
+      {"player_id":"Q186478","name":"Luca Toni","answer":"Toni","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2006-france","date":"9 TEMMUZ 2006","competition":"DUNYA KUPASI FINAL","home_team":"ITALY","away_team":"FRANCE","score":"1-1 (PEN. 5-3)","target_team":"FRANCE","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q191139","name":"Fabien Barthez","answer":"Barthez","position":"GK","shirt_number":16,"slot":0},
+      {"player_id":"Q44513","name":"Willy Sagnol","answer":"Sagnol","position":"RB","shirt_number":19,"slot":1},
+      {"player_id":"Q1937","name":"William Gallas","answer":"Gallas","position":"CB","shirt_number":5,"slot":2},
+      {"player_id":"Q180326","name":"Lilian Thuram","answer":"Thuram","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q1935","name":"Eric Abidal","answer":"Abidal","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q46347","name":"Patrick Vieira","answer":"Vieira","position":"DM","shirt_number":4,"slot":5},
+      {"player_id":"Q184362","name":"Claude Makelele","answer":"Makelele","position":"DM","shirt_number":6,"slot":6},
+      {"player_id":"Q1918","name":"Franck Ribery","answer":"Ribery","position":"RW","shirt_number":22,"slot":7},
+      {"player_id":"Q1835","name":"Zinedine Zidane","answer":"Zidane","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q1913","name":"Florent Malouda","answer":"Malouda","position":"LW","shirt_number":7,"slot":9},
+      {"player_id":"Q45901","name":"Thierry Henry","answer":"Henry","position":"ST","shirt_number":12,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-qf-2010-uruguay","date":"2 TEMMUZ 2010","competition":"DUNYA KUPASI CEYREK FINAL","home_team":"URUGUAY","away_team":"GHANA","score":"1-1 (PEN. 4-2)","target_team":"URUGUAY","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q203749","name":"Fernando Muslera","answer":"Muslera","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q214886","name":"Maxi Pereira","answer":"Pereira","position":"RB","shirt_number":16,"slot":1},
+      {"player_id":"Q373547","name":"Diego Lugano","answer":"Lugano","position":"CB","shirt_number":2,"slot":2},
+      {"player_id":"Q285111","name":"Mauricio Victorino","answer":"Victorino","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"Q178599","name":"Jorge Fucile","answer":"Fucile","position":"LB","shirt_number":4,"slot":4},
+      {"player_id":"Q309662","name":"Diego Perez","answer":"Diego Perez","position":"DM","shirt_number":15,"slot":5},
+      {"player_id":"Q315674","name":"Egidio Arevalo","answer":"Arevalo","position":"DM","shirt_number":17,"slot":6},
+      {"player_id":"Q167790","name":"Edinson Cavani","answer":"Cavani","position":"RW","shirt_number":7,"slot":7},
+      {"player_id":"Q261534","name":"Diego Forlan","answer":"Forlan","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q250973","name":"Alvaro Fernandez","answer":"Fernandez","position":"LW","shirt_number":20,"slot":9},
+      {"player_id":"Q26517","name":"Luis Suarez","answer":"Suarez","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-qf-2010-germany","date":"3 TEMMUZ 2010","competition":"DUNYA KUPASI CEYREK FINAL","home_team":"ARGENTINA","away_team":"GERMANY","score":"0-4","target_team":"GERMANY","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":16,"slot":1},
+      {"player_id":"Q70550","name":"Per Mertesacker","answer":"Mertesacker","position":"CB","shirt_number":17,"slot":2},
+      {"player_id":"Q63676","name":"Arne Friedrich","answer":"Friedrich","position":"CB","shirt_number":3,"slot":3},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"LB","shirt_number":20,"slot":4},
+      {"player_id":"Q54094","name":"Sami Khedira","answer":"Khedira","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"DM","shirt_number":7,"slot":6},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"RW","shirt_number":13,"slot":7},
+      {"player_id":"Q83488","name":"Mesut Ozil","answer":"Ozil","position":"AM","shirt_number":8,"slot":8},
+      {"player_id":"Q134976","name":"Lukas Podolski","answer":"Podolski","position":"LW","shirt_number":10,"slot":9},
+      {"player_id":"Q80471","name":"Miroslav Klose","answer":"Klose","position":"ST","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2010-netherlands","date":"11 TEMMUZ 2010","competition":"DUNYA KUPASI FINAL","home_team":"NETHERLANDS","away_team":"SPAIN","score":"0-1 (UZ.)","target_team":"NETHERLANDS","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q182685","name":"Maarten Stekelenburg","answer":"Stekelenburg","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q201367","name":"Gregory van der Wiel","answer":"Van der Wiel","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q946457","name":"John Heitinga","answer":"Heitinga","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q126461","name":"Joris Mathijsen","answer":"Mathijsen","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q173360","name":"Giovanni van Bronckhorst","answer":"Van Bronckhorst","position":"LB","shirt_number":5,"slot":4},
+      {"player_id":"Q151853","name":"Mark van Bommel","answer":"Van Bommel","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q185650","name":"Nigel de Jong","answer":"De Jong","position":"DM","shirt_number":8,"slot":6},
+      {"player_id":"Q294214","name":"Dirk Kuyt","answer":"Kuyt","position":"LW","shirt_number":7,"slot":7},
+      {"player_id":"Q124086","name":"Wesley Sneijder","answer":"Sneijder","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q43913","name":"Arjen Robben","answer":"Robben","position":"RW","shirt_number":11,"slot":9},
+      {"player_id":"Q2339","name":"Robin van Persie","answer":"Van Persie","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2010-spain","date":"11 TEMMUZ 2010","competition":"DUNYA KUPASI FINAL","home_team":"NETHERLANDS","away_team":"SPAIN","score":"0-1 (UZ.)","target_team":"SPAIN","formation":"4-1-4-1","lineup":[
+      {"player_id":"Q11584","name":"Iker Casillas","answer":"Casillas","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q483309","name":"Sergio Ramos","answer":"Ramos","position":"RB","shirt_number":15,"slot":1},
+      {"player_id":"Q17507","name":"Gerard Pique","answer":"Pique","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"tm_missing_7594","name":"Carles Puyol","answer":"Puyol","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q188793","name":"Joan Capdevila","answer":"Capdevila","position":"LB","shirt_number":11,"slot":4},
+      {"player_id":"Q49704","name":"Sergio Busquets","answer":"Busquets","position":"DM","shirt_number":16,"slot":5},
+      {"player_id":"Q179773","name":"Pedro","answer":"Pedro","position":"RM","shirt_number":18,"slot":6},
+      {"player_id":"Q208104","name":"Xabi Alonso","answer":"Xabi Alonso","position":"CM","shirt_number":14,"slot":7},
+      {"player_id":"Q17500","name":"Xavi","answer":"Xavi","position":"CM","shirt_number":8,"slot":8},
+      {"player_id":"Q43729","name":"Andres Iniesta","answer":"Iniesta","position":"LM","shirt_number":6,"slot":9},
+      {"player_id":"Q83006","name":"David Villa","answer":"Villa","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-semi-2014-germany","date":"8 TEMMUZ 2014","competition":"DUNYA KUPASI YARI FINAL","home_team":"BRAZIL","away_team":"GERMANY","score":"1-7","target_team":"GERMANY","formation":"4-3-3","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":16,"slot":1},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"CB","shirt_number":20,"slot":2},
+      {"player_id":"Q110053","name":"Mats Hummels","answer":"Hummels","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q152897","name":"Benedikt Howedes","answer":"Howedes","position":"LB","shirt_number":4,"slot":4},
+      {"player_id":"Q54094","name":"Sami Khedira","answer":"Khedira","position":"CM","shirt_number":6,"slot":5},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"CM","shirt_number":7,"slot":6},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":18,"slot":7},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"RW","shirt_number":13,"slot":8},
+      {"player_id":"Q80471","name":"Miroslav Klose","answer":"Klose","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q83488","name":"Mesut Ozil","answer":"Ozil","position":"LW","shirt_number":8,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2014-germany","date":"13 TEMMUZ 2014","competition":"DUNYA KUPASI FINAL","home_team":"GERMANY","away_team":"ARGENTINA","score":"1-0 (UZ.)","target_team":"GERMANY","formation":"4-3-3","lineup":[
+      {"player_id":"Q107365","name":"Manuel Neuer","answer":"Neuer","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q43682","name":"Philipp Lahm","answer":"Lahm","position":"RB","shirt_number":16,"slot":1},
+      {"player_id":"Q151260","name":"Jerome Boateng","answer":"Boateng","position":"CB","shirt_number":20,"slot":2},
+      {"player_id":"Q110053","name":"Mats Hummels","answer":"Hummels","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q152897","name":"Benedikt Howedes","answer":"Howedes","position":"LB","shirt_number":4,"slot":4},
+      {"player_id":"Q44298","name":"Bastian Schweinsteiger","answer":"Schweinsteiger","position":"CM","shirt_number":7,"slot":5},
+      {"player_id":"Q131234","name":"Toni Kroos","answer":"Kroos","position":"CM","shirt_number":18,"slot":6},
+      {"player_id":"Q1085348","name":"Christoph Kramer","answer":"Kramer","position":"CM","shirt_number":23,"slot":7},
+      {"player_id":"Q43666","name":"Thomas Muller","answer":"Muller","position":"RW","shirt_number":13,"slot":8},
+      {"player_id":"Q80471","name":"Miroslav Klose","answer":"Klose","position":"ST","shirt_number":11,"slot":9},
+      {"player_id":"Q83488","name":"Mesut Ozil","answer":"Ozil","position":"LW","shirt_number":8,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2014-argentina","date":"13 TEMMUZ 2014","competition":"DUNYA KUPASI FINAL","home_team":"GERMANY","away_team":"ARGENTINA","score":"1-0 (UZ.)","target_team":"ARGENTINA","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q215463","name":"Sergio Romero","answer":"Romero","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q244790","name":"Pablo Zabaleta","answer":"Zabaleta","position":"RB","shirt_number":4,"slot":1},
+      {"player_id":"Q296684","name":"Ezequiel Garay","answer":"Garay","position":"CB","shirt_number":2,"slot":2},
+      {"player_id":"Q150947","name":"Martin Demichelis","answer":"Demichelis","position":"CB","shirt_number":15,"slot":3},
+      {"player_id":"Q507890","name":"Marcos Rojo","answer":"Rojo","position":"LB","shirt_number":16,"slot":4},
+      {"player_id":"Q436230","name":"Lucas Biglia","answer":"Biglia","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q161571","name":"Javier Mascherano","answer":"Mascherano","position":"DM","shirt_number":14,"slot":6},
+      {"player_id":"tm_missing_56066","name":"Enzo Perez","answer":"Enzo Perez","position":"RM","shirt_number":8,"slot":7},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q275415","name":"Ezequiel Lavezzi","answer":"Lavezzi","position":"LM","shirt_number":22,"slot":9},
+      {"player_id":"Q483846","name":"Gonzalo Higuain","answer":"Higuain","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-group-2014-netherlands","date":"13 HAZIRAN 2014","competition":"DUNYA KUPASI GRUP","home_team":"SPAIN","away_team":"NETHERLANDS","score":"1-5","target_team":"NETHERLANDS","formation":"3-4-1-2","lineup":[
+      {"player_id":"Q128719","name":"Jasper Cillessen","answer":"Cillessen","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q195953","name":"Stefan de Vrij","answer":"De Vrij","position":"CB","shirt_number":3,"slot":1},
+      {"player_id":"Q212617","name":"Ron Vlaar","answer":"Vlaar","position":"CB","shirt_number":2,"slot":2},
+      {"player_id":"Q198064","name":"Bruno Martins Indi","answer":"Martins Indi","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q196069","name":"Daryl Janmaat","answer":"Janmaat","position":"RWB","shirt_number":7,"slot":4},
+      {"player_id":"Q185650","name":"Nigel de Jong","answer":"De Jong","position":"CM","shirt_number":6,"slot":5},
+      {"player_id":"Q372470","name":"Jonathan de Guzman","answer":"De Guzman","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q128912","name":"Daley Blind","answer":"Blind","position":"LWB","shirt_number":5,"slot":7},
+      {"player_id":"Q124086","name":"Wesley Sneijder","answer":"Sneijder","position":"AM","shirt_number":10,"slot":8},
+      {"player_id":"Q2339","name":"Robin van Persie","answer":"Van Persie","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q43913","name":"Arjen Robben","answer":"Robben","position":"ST","shirt_number":11,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-r16-2014-brazil","date":"28 HAZIRAN 2014","competition":"DUNYA KUPASI SON 16","home_team":"BRAZIL","away_team":"CHILE","score":"1-1 (PEN. 3-2)","target_team":"BRAZIL","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q182459","name":"Julio Cesar","answer":"Julio Cesar","position":"GK","shirt_number":12,"slot":0},
+      {"player_id":"tm_missing_15951","name":"Dani Alves","answer":"Dani Alves","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q210453","name":"Thiago Silva","answer":"Thiago Silva","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q193706","name":"David Luiz","answer":"David Luiz","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q38136","name":"Marcelo Vieira","answer":"Marcelo","position":"LB","shirt_number":6,"slot":4},
+      {"player_id":"Q329451","name":"Luiz Gustavo","answer":"Luiz Gustavo","position":"DM","shirt_number":17,"slot":5},
+      {"player_id":"Q459356","name":"Fernandinho","answer":"Fernandinho","position":"DM","shirt_number":5,"slot":6},
+      {"player_id":"Q62786","name":"Hulk","answer":"Hulk","position":"RW","shirt_number":7,"slot":7},
+      {"player_id":"Q19497","name":"Oscar","answer":"Oscar","position":"AM","shirt_number":11,"slot":8},
+      {"player_id":"Q142794","name":"Neymar","answer":"Neymar","position":"LW","shirt_number":10,"slot":9},
+      {"player_id":"Q965448","name":"Fred","answer":"Fred","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-qf-2014-brazil","date":"4 TEMMUZ 2014","competition":"DUNYA KUPASI CEYREK FINAL","home_team":"BRAZIL","away_team":"COLOMBIA","score":"2-1","target_team":"BRAZIL","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q182459","name":"Julio Cesar","answer":"Julio Cesar","position":"GK","shirt_number":12,"slot":0},
+      {"player_id":"Q177686","name":"Maicon","answer":"Maicon","position":"RB","shirt_number":23,"slot":1},
+      {"player_id":"Q210453","name":"Thiago Silva","answer":"Thiago Silva","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q193706","name":"David Luiz","answer":"David Luiz","position":"CB","shirt_number":4,"slot":3},
+      {"player_id":"Q38136","name":"Marcelo Vieira","answer":"Marcelo","position":"LB","shirt_number":6,"slot":4},
+      {"player_id":"Q459356","name":"Fernandinho","answer":"Fernandinho","position":"DM","shirt_number":5,"slot":5},
+      {"player_id":"Q73082","name":"Paulinho","answer":"Paulinho","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q62786","name":"Hulk","answer":"Hulk","position":"RW","shirt_number":7,"slot":7},
+      {"player_id":"Q19497","name":"Oscar","answer":"Oscar","position":"AM","shirt_number":11,"slot":8},
+      {"player_id":"Q142794","name":"Neymar","answer":"Neymar","position":"LW","shirt_number":10,"slot":9},
+      {"player_id":"Q965448","name":"Fred","answer":"Fred","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-r16-2018-france","date":"30 HAZIRAN 2018","competition":"DUNYA KUPASI SON 16","home_team":"FRANCE","away_team":"ARGENTINA","score":"4-3","target_team":"FRANCE","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q1907","name":"Hugo Lloris","answer":"Lloris","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q19599124","name":"Benjamin Pavard","answer":"Pavard","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q489039","name":"Raphael Varane","answer":"Varane","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q13308","name":"Samuel Umtiti","answer":"Umtiti","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q18924954","name":"Lucas Hernandez","answer":"Hernandez","position":"LB","shirt_number":21,"slot":4},
+      {"player_id":"Q129027","name":"Paul Pogba","answer":"Pogba","position":"DM","shirt_number":6,"slot":5},
+      {"player_id":"Q16665941","name":"N Golo Kante","answer":"Kante","position":"DM","shirt_number":13,"slot":6},
+      {"player_id":"Q21621995","name":"Kylian Mbappe","answer":"Mbappe","position":"RW","shirt_number":10,"slot":7},
+      {"player_id":"Q455462","name":"Antoine Griezmann","answer":"Griezmann","position":"AM","shirt_number":7,"slot":8},
+      {"player_id":"Q1921","name":"Blaise Matuidi","answer":"Matuidi","position":"LW","shirt_number":14,"slot":9},
+      {"player_id":"Q1911","name":"Olivier Giroud","answer":"Giroud","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-semi-2018-croatia","date":"11 TEMMUZ 2018","competition":"DUNYA KUPASI YARI FINAL","home_team":"CROATIA","away_team":"ENGLAND","score":"2-1 (UZ.)","target_team":"CROATIA","formation":"4-1-4-1","lineup":[
+      {"player_id":"Q358075","name":"Danijel Subasic","answer":"Subasic","position":"GK","shirt_number":23,"slot":0},
+      {"player_id":"Q391628","name":"Sime Vrsaljko","answer":"Vrsaljko","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q349125","name":"Dejan Lovren","answer":"Lovren","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q314227","name":"Domagoj Vida","answer":"Vida","position":"CB","shirt_number":21,"slot":3},
+      {"player_id":"Q314083","name":"Ivan Strinic","answer":"Strinic","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q3845710","name":"Marcelo Brozovic","answer":"Brozovic","position":"DM","shirt_number":11,"slot":5},
+      {"player_id":"Q115453","name":"Ivan Rakitic","answer":"Rakitic","position":"CM","shirt_number":7,"slot":6},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":10,"slot":7},
+      {"player_id":"Q3209607","name":"Ante Rebic","answer":"Rebic","position":"RW","shirt_number":18,"slot":8},
+      {"player_id":"Q161054","name":"Ivan Perisic","answer":"Perisic","position":"LW","shirt_number":4,"slot":9},
+      {"player_id":"Q187171","name":"Mario Mandzukic","answer":"Mandzukic","position":"ST","shirt_number":17,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-group-2018-portugal","date":"15 HAZIRAN 2018","competition":"DUNYA KUPASI GRUP","home_team":"PORTUGAL","away_team":"SPAIN","score":"3-3","target_team":"PORTUGAL","formation":"4-4-2","lineup":[
+      {"player_id":"Q294980","name":"Rui Patricio","answer":"Rui Patricio","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q481330","name":"Cedric Soares","answer":"Cedric","position":"RB","shirt_number":21,"slot":1},
+      {"player_id":"Q485697","name":"Pepe","answer":"Pepe","position":"CB","shirt_number":3,"slot":2},
+      {"player_id":"Q2736254","name":"Jose Fonte","answer":"Fonte","position":"CB","shirt_number":6,"slot":3},
+      {"player_id":"Q4241680","name":"Raphael Guerreiro","answer":"Guerreiro","position":"LB","shirt_number":5,"slot":4},
+      {"player_id":"Q304416","name":"William Carvalho","answer":"William Carvalho","position":"CM","shirt_number":14,"slot":5},
+      {"player_id":"tm_missing_29364","name":"Joao Moutinho","answer":"Moutinho","position":"CM","shirt_number":8,"slot":6},
+      {"player_id":"Q15521306","name":"Bernardo Silva","answer":"Bernardo Silva","position":"RM","shirt_number":11,"slot":7},
+      {"player_id":"Q4979316","name":"Bruno Fernandes","answer":"Bruno Fernandes","position":"LM","shirt_number":16,"slot":8},
+      {"player_id":"Q16729477","name":"Goncalo Guedes","answer":"Guedes","position":"ST","shirt_number":17,"slot":9},
+      {"player_id":"Q11571","name":"Cristiano Ronaldo","answer":"Ronaldo","position":"ST","shirt_number":7,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-r16-2018-belgium","date":"2 TEMMUZ 2018","competition":"DUNYA KUPASI SON 16","home_team":"BELGIUM","away_team":"JAPAN","score":"3-2","target_team":"BELGIUM","formation":"3-4-2-1","lineup":[
+      {"player_id":"Q73360","name":"Thibaut Courtois","answer":"Courtois","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q128840","name":"Toby Alderweireld","answer":"Alderweireld","position":"CB","shirt_number":2,"slot":1},
+      {"player_id":"Q201381","name":"Vincent Kompany","answer":"Kompany","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q313170","name":"Jan Vertonghen","answer":"Vertonghen","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q2036160","name":"Thomas Meunier","answer":"Meunier","position":"RWB","shirt_number":15,"slot":4},
+      {"player_id":"Q151838","name":"Axel Witsel","answer":"Witsel","position":"CM","shirt_number":6,"slot":5},
+      {"player_id":"Q357984","name":"Kevin De Bruyne","answer":"De Bruyne","position":"CM","shirt_number":7,"slot":6},
+      {"player_id":"Q4284482","name":"Yannick Carrasco","answer":"Carrasco","position":"LWB","shirt_number":11,"slot":7},
+      {"player_id":"Q11954","name":"Dries Mertens","answer":"Mertens","position":"AM","shirt_number":14,"slot":8},
+      {"player_id":"Q214204","name":"Eden Hazard","answer":"Hazard","position":"AM","shirt_number":10,"slot":9},
+      {"player_id":"Q313316","name":"Romelu Lukaku","answer":"Lukaku","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2018-france","date":"15 TEMMUZ 2018","competition":"DUNYA KUPASI FINAL","home_team":"FRANCE","away_team":"CROATIA","score":"4-2","target_team":"FRANCE","formation":"4-4-2","lineup":[
+      {"player_id":"Q1907","name":"Hugo Lloris","answer":"Lloris","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q19599124","name":"Benjamin Pavard","answer":"Pavard","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q489039","name":"Raphael Varane","answer":"Varane","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q13308","name":"Samuel Umtiti","answer":"Umtiti","position":"CB","shirt_number":5,"slot":3},
+      {"player_id":"Q18924954","name":"Lucas Hernandez","answer":"Hernandez","position":"LB","shirt_number":21,"slot":4},
+      {"player_id":"Q21621995","name":"Kylian Mbappe","answer":"Mbappe","position":"RM","shirt_number":10,"slot":5},
+      {"player_id":"Q129027","name":"Paul Pogba","answer":"Pogba","position":"CM","shirt_number":6,"slot":6},
+      {"player_id":"Q16665941","name":"N Golo Kante","answer":"Kante","position":"CM","shirt_number":13,"slot":7},
+      {"player_id":"Q1921","name":"Blaise Matuidi","answer":"Matuidi","position":"LM","shirt_number":14,"slot":8},
+      {"player_id":"Q455462","name":"Antoine Griezmann","answer":"Griezmann","position":"ST","shirt_number":7,"slot":9},
+      {"player_id":"Q1911","name":"Olivier Giroud","answer":"Giroud","position":"ST","shirt_number":9,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2018-croatia","date":"15 TEMMUZ 2018","competition":"DUNYA KUPASI FINAL","home_team":"FRANCE","away_team":"CROATIA","score":"4-2","target_team":"CROATIA","formation":"4-1-4-1","lineup":[
+      {"player_id":"Q358075","name":"Danijel Subasic","answer":"Subasic","position":"GK","shirt_number":23,"slot":0},
+      {"player_id":"Q391628","name":"Sime Vrsaljko","answer":"Vrsaljko","position":"RB","shirt_number":2,"slot":1},
+      {"player_id":"Q349125","name":"Dejan Lovren","answer":"Lovren","position":"CB","shirt_number":6,"slot":2},
+      {"player_id":"Q314227","name":"Domagoj Vida","answer":"Vida","position":"CB","shirt_number":21,"slot":3},
+      {"player_id":"Q314083","name":"Ivan Strinic","answer":"Strinic","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q3845710","name":"Marcelo Brozovic","answer":"Brozovic","position":"DM","shirt_number":11,"slot":5},
+      {"player_id":"Q3209607","name":"Ante Rebic","answer":"Rebic","position":"RM","shirt_number":18,"slot":6},
+      {"player_id":"Q115453","name":"Ivan Rakitic","answer":"Rakitic","position":"CM","shirt_number":7,"slot":7},
+      {"player_id":"rm_missing_87","name":"Luka Modric","answer":"Modric","position":"CM","shirt_number":10,"slot":8},
+      {"player_id":"Q161054","name":"Ivan Perisic","answer":"Perisic","position":"LM","shirt_number":4,"slot":9},
+      {"player_id":"Q187171","name":"Mario Mandzukic","answer":"Mandzukic","position":"ST","shirt_number":17,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-qf-2022-argentina","date":"9 ARALIK 2022","competition":"DUNYA KUPASI CEYREK FINAL","home_team":"NETHERLANDS","away_team":"ARGENTINA","score":"2-2 (PEN. 3-4)","target_team":"ARGENTINA","formation":"5-3-2","lineup":[
+      {"player_id":"Q3275904","name":"Emiliano Martinez","answer":"Emiliano Martinez","position":"GK","shirt_number":23,"slot":0},
+      {"player_id":"Q22082590","name":"Nahuel Molina","answer":"Molina","position":"RWB","shirt_number":26,"slot":1},
+      {"player_id":"Q28058687","name":"Cristian Romero","answer":"Romero","position":"CB","shirt_number":13,"slot":2},
+      {"player_id":"Q182063","name":"Nicolas Otamendi","answer":"Otamendi","position":"CB","shirt_number":19,"slot":3},
+      {"player_id":"Q30881092","name":"Lisandro Martinez","answer":"Lisandro Martinez","position":"CB","shirt_number":25,"slot":4},
+      {"player_id":"Q17462635","name":"Marcos Acuna","answer":"Acuna","position":"LWB","shirt_number":8,"slot":5},
+      {"player_id":"Q6110670","name":"Rodrigo De Paul","answer":"De Paul","position":"CM","shirt_number":7,"slot":6},
+      {"player_id":"Q33297140","name":"Alexis Mac Allister","answer":"Mac Allister","position":"CM","shirt_number":20,"slot":7},
+      {"player_id":"Q96105248","name":"Enzo Fernandez","answer":"Enzo Fernandez","position":"CM","shirt_number":24,"slot":8},
+      {"player_id":"Q59381180","name":"Julian Alvarez","answer":"Julian Alvarez","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"ST","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2022-argentina","date":"18 ARALIK 2022","competition":"DUNYA KUPASI FINAL","home_team":"ARGENTINA","away_team":"FRANCE","score":"3-3 (PEN. 4-2)","target_team":"ARGENTINA","formation":"4-3-3","lineup":[
+      {"player_id":"Q3275904","name":"Emiliano Martinez","answer":"Emiliano Martinez","position":"GK","shirt_number":23,"slot":0},
+      {"player_id":"Q22082590","name":"Nahuel Molina","answer":"Molina","position":"RB","shirt_number":26,"slot":1},
+      {"player_id":"Q28058687","name":"Cristian Romero","answer":"Romero","position":"CB","shirt_number":13,"slot":2},
+      {"player_id":"Q182063","name":"Nicolas Otamendi","answer":"Otamendi","position":"CB","shirt_number":19,"slot":3},
+      {"player_id":"Q3876530","name":"Nicolas Tagliafico","answer":"Tagliafico","position":"LB","shirt_number":3,"slot":4},
+      {"player_id":"Q6110670","name":"Rodrigo De Paul","answer":"De Paul","position":"CM","shirt_number":7,"slot":5},
+      {"player_id":"Q96105248","name":"Enzo Fernandez","answer":"Enzo Fernandez","position":"CM","shirt_number":24,"slot":6},
+      {"player_id":"Q33297140","name":"Alexis Mac Allister","answer":"Mac Allister","position":"CM","shirt_number":20,"slot":7},
+      {"player_id":"Q251683","name":"Angel Di Maria","answer":"Di Maria","position":"RW","shirt_number":11,"slot":8},
+      {"player_id":"Q59381180","name":"Julian Alvarez","answer":"Julian Alvarez","position":"ST","shirt_number":9,"slot":9},
+      {"player_id":"Q615","name":"Lionel Messi","answer":"Messi","position":"LW","shirt_number":10,"slot":10}
+    ]
+  },
+  {
+    "id":"wc-final-2022-france","date":"18 ARALIK 2022","competition":"DUNYA KUPASI FINAL","home_team":"ARGENTINA","away_team":"FRANCE","score":"3-3 (PEN. 4-2)","target_team":"FRANCE","formation":"4-2-3-1","lineup":[
+      {"player_id":"Q1907","name":"Hugo Lloris","answer":"Lloris","position":"GK","shirt_number":1,"slot":0},
+      {"player_id":"Q47170176","name":"Jules Kounde","answer":"Kounde","position":"RB","shirt_number":5,"slot":1},
+      {"player_id":"Q489039","name":"Raphael Varane","answer":"Varane","position":"CB","shirt_number":4,"slot":2},
+      {"player_id":"Q20723878","name":"Dayot Upamecano","answer":"Upamecano","position":"CB","shirt_number":18,"slot":3},
+      {"player_id":"Q23703372","name":"Theo Hernandez","answer":"Theo Hernandez","position":"LB","shirt_number":22,"slot":4},
+      {"player_id":"Q46951844","name":"Aurelien Tchouameni","answer":"Tchouameni","position":"DM","shirt_number":8,"slot":5},
+      {"player_id":"Q18962","name":"Adrien Rabiot","answer":"Rabiot","position":"DM","shirt_number":14,"slot":6},
+      {"player_id":"Q20851003","name":"Ousmane Dembele","answer":"Dembele","position":"RW","shirt_number":11,"slot":7},
+      {"player_id":"Q455462","name":"Antoine Griezmann","answer":"Griezmann","position":"AM","shirt_number":7,"slot":8},
+      {"player_id":"Q21621995","name":"Kylian Mbappe","answer":"Mbappe","position":"LW","shirt_number":10,"slot":9},
+      {"player_id":"Q1911","name":"Olivier Giroud","answer":"Giroud","position":"ST","shirt_number":9,"slot":10}
+    ]
+  }
+]

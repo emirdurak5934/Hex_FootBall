@@ -1,0 +1,15 @@
+{
+  "appId": "app.edynfootball.mobile",
+  "appName": "EDYN Football",
+  "webDir": "mobile-shell",
+  "server": {
+    "allowNavigation": [
+      "*.trycloudflare.com",
+      "api.edynfootball.app"
+    ]
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "preferredContentMode": "mobile"
+  }
+}

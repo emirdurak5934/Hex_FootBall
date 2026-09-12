@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Football Match — Isı Haritası</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='heatmap.css', v='heat-help-4') }}">
+</head>
+<body>
+    <main class="heatmap-app">
+        <header class="heatmap-header">
+            <a class="home-link" href="/" aria-label="Ana menü">‹</a>
+            <div>
+                <span>TEK OYUNCULU</span>
+                <div class="heatmap-title-row">
+                    <h1>ISI HARİTASI</h1>
+                    <button id="helpButton" class="help-button" type="button" aria-label="Nasıl oynanır?">?</button>
+                </div>
+            </div>
+            <div id="moveCount" class="move-count">HAMLE 0</div>
+        </header>
+
+        <section id="heatmapBoard" class="heatmap-board" aria-label="Isı Haritası tahtası">
+            {% for row in rows %}
+                <div class="heat-row {% if loop.index0 % 2 == 1 %}heat-row-wide{% endif %}">
+                    {% for index in row %}
+                        {% set cell = cells[index] %}
+                        {% if cell.type == 'score' %}
+                            <div class="heat-hex score-cell" data-index="{{ index }}" data-cell-type="score" aria-label="Puan">
+                                <div class="heat-hex-inner"><span>PUAN</span><strong id="scoreValue">0</strong></div>
+                                <span id="scorePenaltyFeedback" class="score-penalty-feedback" aria-live="polite"></span>
+                            </div>
+                        {% else %}
+                            <button class="heat-hex criterion-cell" type="button" data-index="{{ index }}" data-cell-type="criterion" data-label="{{ cell.label }}" data-image="{{ cell.image }}">
+                                <div class="heat-hex-inner">
+                                    {% if cell.image %}<img src="{{ cell.image }}" alt="" draggable="false">{% endif %}
+                                    <span>{{ cell.label }}</span>
+                                </div>
+                            </button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
+
+        <div id="comboFeedback" class="combo-feedback hidden" aria-live="polite"></div>
+    </main>
+
+    <div id="answerModal" class="answer-modal hidden">
+        <button class="modal-backdrop" id="modalBackdrop" type="button" aria-label="Kapat"></button>
+        <div class="answer-card" role="dialog" aria-modal="true" aria-labelledby="answerModalTitle">
+            <button id="closeModal" class="modal-close" type="button">×</button>
+            <div id="answerModalTitle" class="modal-kicker">PETEK SEÇİLDİ</div>
+            <div class="selected-condition">
+                <div class="modal-main-card">
+                    <img id="selectedImage" src="" alt="" draggable="false">
+                    <strong id="selectedLabel">-</strong>
+                </div>
+            </div>
+            <div class="neighbors-section">
+                <div class="modal-section-title">KOMŞU PETEKLER</div>
+                <div id="neighborHexes" class="neighbor-hexes"></div>
+            </div>
+            <div class="answer-section">
+                <div class="modal-section-title">FUTBOLCUYU YAZ</div>
+                <div class="search-wrap player-search-wrapper">
+                    <input id="playerInput" class="player-input" type="text" placeholder="Futbolcu adı yaz..." autocomplete="off" autocorrect="off" spellcheck="false">
+                    <div id="playerSuggestions" class="suggestions hidden"></div>
+                </div>
+                <button id="submitAnswer" class="submit-answer" type="button">KONTROL ET</button>
+                <div id="answerMessage" class="answer-message" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="help-modal hidden">
+        <button id="helpModalBackdrop" class="modal-backdrop" type="button" aria-label="Kapat"></button>
+        <article class="help-card" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+            <button id="closeHelpModal" class="modal-close" type="button" aria-label="Kapat">×</button>
+            <div class="modal-kicker">ISI HARİTASI</div>
+            <h2 id="helpModalTitle">NASIL OYNANIR?</h2>
+            <ol class="help-rules">
+                <li><strong>BOŞ PETEĞİ SEÇ</strong><p>Boş bir kriter peteğine dokun. Merkezdeki PUAN peteği oynanamaz.</p></li>
+                <li><strong>FUTBOLCUYU BUL</strong><p>Seçtiğin kriteri karşılayan geçerli bir futbolcu seç.</p></li>
+                <li><strong>BAĞLANTILARI YAKALA</strong><p>Futbolcu doğrudan komşu boş peteklere de uyuyorsa bu petekler aynı hamlede ısınır. Yalnız doğrudan komşular kontrol edilir.</p></li>
+                <li>
+                    <strong>KOMBO YAP</strong>
+                    <p>Yeni petek sayısı: 1 = +1, 2 = +3, 3 = +6, 4 = +10. Büyük kombolar daha sıcak renklere ulaşır.</p>
+                    <div class="help-color-scale" aria-label="Kombo sıcaklık seviyeleri">
+                        <span><i class="combo-1"></i>1</span><span><i class="combo-2"></i>2</span>
+                        <span><i class="combo-3"></i>3</span><span><i class="combo-4"></i>4</span>
+                        <span><i class="combo-5"></i>5+</span>
+                    </div>
+                </li>
+                <li><strong>REHEAT</strong><p>Isınmış peteğe doğrudan basamazsın. Yeni cevabın uygun bir ısınmış doğrudan komşuyla eşleşirse petek Reheat olur, +1 kazandırır ve bir sıcaklık seviyesi yükselir.</p></li>
+                <li><strong>YANLIŞ CEVAP</strong><p>Petek ısınmaz, kombo ve Reheat oluşmaz; toplam skordan 1 puan düşer. Skor 0'ın altına inmez.</p></li>
+                <li><strong>AMAÇ</strong><p>30 soru peteğinin tamamını ısıt. Büyük kombolar ve Reheat ile mümkün olan en yüksek skora ulaş.</p></li>
+            </ol>
+        </article>
+    </div>
+
+    <div id="resultModal" class="result-modal hidden">
+        <div class="result-card">
+            <span>TAMAMLANDI</span><h2>ISI HARİTASI</h2>
+            <div class="result-stats"><div>PUAN<strong id="finalScore">0</strong></div><div>HAMLE<strong id="finalMoves">0</strong></div></div>
+            <button id="restartGame" type="button">TEKRAR OYNA</button>
+            <a href="/">ANA MENÜ</a>
+        </div>
+    </div>
+
+    <script>
+        window.HEATMAP_DATA = {{ {
+            'cells': cells,
+            'neighbors': neighbors,
+            'gameToken': game_token,
+            'scoreIndex': score_index
+        } | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='heatmap.js', v='heat-help-4') }}"></script>
+</body>
+</html>

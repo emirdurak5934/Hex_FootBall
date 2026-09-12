@@ -1,0 +1,71 @@
+.online-answer-toast {
+    position: fixed;
+    z-index: 20000;
+    top: max(16px, env(safe-area-inset-top));
+    left: 50%;
+    width: min(calc(100% - 28px), 420px);
+    transform: translateX(-50%);
+    padding: 13px 16px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 14px;
+    background: rgba(9, 16, 25, .96);
+    box-shadow: 0 14px 42px rgba(0, 0, 0, .42);
+    color: #f5f7fb;
+    text-align: center;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity .18s ease, transform .18s ease;
+}
+
+.online-answer-toast.hidden { display: none; }
+.online-answer-toast.hiding { opacity: 0; transform: translate(-50%, -8px); }
+.online-answer-account { display: block; color: #d4a94e; font-size: 11px; font-weight: 900; letter-spacing: .08em; }
+.online-answer-player { display: block; margin-top: 4px; font-size: 17px; font-weight: 900; }
+.online-answer-result { display: block; margin-top: 3px; font-size: 11px; font-weight: 700; }
+.online-answer-toast.correct .online-answer-result { color: #62d887; }
+.online-answer-toast.wrong .online-answer-result { color: #ff7d89; }
+
+.online-answer-toast.on-possession-hex {
+    position: fixed;
+    z-index: 20000;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 5px;
+    border: 0;
+    border-radius: 9px;
+    background: rgba(7, 17, 31, .92);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .48);
+}
+
+.online-answer-toast.on-possession-hex.hiding {
+    transform: translate(-50%, calc(-50% - 8px));
+}
+
+.online-answer-toast.on-possession-hex .online-answer-account {
+    display: none;
+}
+
+.online-answer-toast.on-possession-hex .online-answer-player {
+    display: -webkit-box;
+    max-width: 100%;
+    overflow: hidden;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(9px, 2.4vw, 14px);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    text-shadow: 0 2px 3px #000;
+}
+
+.online-answer-toast.on-possession-hex .online-answer-result {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .online-answer-toast { transition: none; }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki Taka Toe — Football Match</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tiki_taka.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tiki_taka_matchmaking.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='online_answer.css') }}">
+</head>
+<body>
+<div id="onlineAnswerToast" class="online-answer-toast hidden" role="status" aria-live="polite">
+    <strong id="onlineAnswerAccount" class="online-answer-account"></strong>
+    <span id="onlineAnswerPlayer" class="online-answer-player"></span>
+    <span id="onlineAnswerResult" class="online-answer-result"></span>
+</div>
+<main class="tiki-shell">
+    <header class="tiki-header">
+        <a href="{{ url_for('home') }}" aria-label="Ana menü">‹</a>
+        <div><small>FOOTBALL MATCH</small><h1>TIKI TAKA TOE</h1></div>
+        <span class="turn-pill" id="turnPill">P1 • X</span>
+    </header>
+
+    <section class="mode-panel" id="modePanel">
+        <h2>OYUN MODU</h2>
+        <button class="primary" id="localButton" type="button">TEK CİHAZDA 2 OYUNCU</button>
+        <p>ARKADAŞINLA OYNA</p>
+        <button class="primary random-match-button" id="randomMatchButton" type="button">RASTGELE RAKİP BUL</button>
+        <div class="room-actions">
+            <button id="createRoomButton" type="button">ODA KUR</button>
+            <input id="roomCodeInput" maxlength="6" placeholder="ODA KODU" aria-label="Oda kodu">
+            <button id="joinRoomButton" type="button">KATIL</button>
+        </div>
+        <div id="roomStatus" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="game-panel hidden" id="gamePanel">
+        <div class="online-player-names" id="onlinePlayerNames">
+            <span id="tikiPlayerOneName">OYUNCU 1</span>
+            <b>VS</b>
+            <span id="tikiPlayerTwoName">OYUNCU 2</span>
+        </div>
+        <div class="match-info"><span id="modeLabel">TEK CİHAZ</span><strong id="statusText">P1 OYNUYOR</strong></div>
+        <div class="criteria-grid" id="criteriaGrid" aria-label="Tiki Taka Toe tahtası"></div>
+    </section>
+</main>
+
+<div class="modal hidden" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+        <button class="close" id="closeModal" type="button" aria-label="Kapat">×</button>
+        <small>İKİ KRİTERİ DE KARŞILAYAN</small>
+        <h2 id="modalTitle"></h2>
+        <input id="playerSearch" autocomplete="off" placeholder="Futbolcu ara...">
+        <div id="searchResults" class="search-results"></div>
+    </div>
+</div>
+
+<div class="modal hidden" id="resultModal" role="dialog" aria-modal="true">
+    <div class="modal-card result-card">
+        <h2 id="resultTitle"></h2><p id="resultReason"></p>
+        <button class="primary" id="rematchButton" type="button">RÖVANŞ</button>
+        <a class="menu-button" href="{{ url_for('home') }}">ANA MENÜ</a>
+    </div>
+</div>
+
+<script>
+window.TIKI_CONFIG = {{ {
+    "gameToken": game_token,
+    "initialState": initial_state,
+    "searchUrl": url_for('search_players'),
+    "moveUrl": url_for('tiki_local_move'),
+    "rematchUrl": url_for('tiki_local_rematch')
+}|tojson }};
+</script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('match_ads.client_script') }}"></script>
+<script src="{{ url_for('static', filename='tiki_taka.js') }}"></script>
+</body>
+</html>
