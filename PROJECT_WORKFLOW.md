@@ -211,6 +211,7 @@ Her işlemden sonra:
 | 13 Eylül 2026 | GitHub macOS runner üzerinde Capacitor iOS projesi üretip imzasız simulator build'i doğrulayan ilk CI iş akışı eklendi; yerel kullanıcı verileri ve gereksiz veri yedekleri Git kapsamından çıkarıldı. | GitHub, iOS CI, güvenlik, depo boyutu |
 | 13 Eylül 2026 | Hedef kaynak deposu `emirdurak5934/Hex_FootBall` olarak kaydedildi; ilk commit yerelde hazırlandı, GitHub kimlik doğrulaması kullanıcı oturumunda tamamlanmayı bekliyor. | GitHub, kaynak kontrolü, iOS CI |
 | 13 Eylül 2026 | İlk GitHub push başarıyla tamamlandı; Capacitor 8'in Swift Package Manager tabanlı `App.xcodeproj` yapısına göre macOS doğrulama komutu düzeltildi. | GitHub Actions, Capacitor 8, Xcode |
+| 13 Eylül 2026 | Ücretsiz Apple hesabıyla Windows sideload testi için GitHub macOS üzerinde cihaz mimarili imzasız IPA üretip artifact olarak sunan iş akışı eklendi. | GitHub Actions, IPA, Sideloadly, iPhone 13 |
 | 13 Eylül 2026 | İlk IPA testi için değiştirilebilir mobil sunucu bağlantı ekranı ve Capacitor v8 yapılandırması eklendi; geçici Quick Tunnel varsayılan, `api.edynfootball.app` kalıcı hedef olarak izin listesine alındı. | Capacitor, iOS istemcisi, sunucu yapılandırması |
 | 13 Eylül 2026 | Kalıcı backend adresi için `edynfootball.app` alan adı ve `https://api.edynfootball.app` API/Socket.IO adresi seçildi; alan adı kaydı bekleniyor. | DNS, Cloudflare Named Tunnel, iOS yapılandırması |
 

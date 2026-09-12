@@ -120,6 +120,12 @@ sürdürülebilir Windows akışı için ücretli üyelik + bulut macOS + TestFl
    Socket.IO yeniden bağlanma ve iki telefonlu maçları test et.
 4. Her yeni build aynı CI hattından üretilir; Windows'a Xcode kurulmaz.
 
+Ücretsiz sideload testinde `.github/workflows/ios-unsigned-ipa.yml`, cihaz
+mimarisi için imzasız `EDYN-Football-unsigned.ipa` artifact'i üretir. Windows'ta
+Sideloadly bu IPA'yı ücretsiz Apple hesabıyla imzalayıp USB üzerinden telefona
+kurar. Ücretsiz provisioning profile yedi gün sonra sona erdiğinden aynı Apple
+hesabıyla yeniden sideload gerekir.
+
 ### 6. App Store hazırlığı
 
 1. Uygulama simgesi, ekran görüntüleri, açıklama, destek ve gizlilik adreslerini
