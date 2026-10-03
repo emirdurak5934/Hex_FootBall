@@ -18,23 +18,37 @@
     window.setTimeout(() => splash.remove(), 450);
   };
 
-  // MP4 henüz eklenmediyse veya oynatılamazsa açılış ekranında takılma.
-  const fallbackTimer = window.setTimeout(finish, 3000);
+  let fallbackFinishTimer;
+  const showFallback = () => {
+    if (finished || splash.classList.contains("has-video")) return;
+    splash.classList.add("use-fallback");
+    window.clearTimeout(fallbackFinishTimer);
+    fallbackFinishTimer = window.setTimeout(finish, 3000);
+  };
+
+  // Video çok geç yüklenirse veya oynatılamazsa açılış ekranında takılma.
+  const loadTimer = window.setTimeout(showFallback, 5000);
   if (!video) return;
 
   const showVideo = () => {
+    window.clearTimeout(loadTimer);
+    window.clearTimeout(fallbackFinishTimer);
+    splash.classList.remove("use-fallback");
     splash.classList.add("has-video");
-    window.clearTimeout(fallbackTimer);
     const playAttempt = video.play();
     if (playAttempt) playAttempt.catch(() => {
       splash.classList.remove("has-video");
-      window.setTimeout(finish, 3000);
+      showFallback();
     });
   };
   if (video.readyState >= 2) showVideo();
   else video.addEventListener("loadeddata", showVideo, { once: true });
   video.addEventListener("ended", finish, { once: true });
-  video.addEventListener("error", () => splash.classList.remove("has-video"), { once: true });
+  video.addEventListener("error", () => {
+    window.clearTimeout(loadTimer);
+    splash.classList.remove("has-video");
+    showFallback();
+  }, { once: true });
 
   // Hatalı veya aşırı uzun bir dosya uygulamanın açılmasını engellemesin.
   window.setTimeout(finish, 15000);

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Football Match — Oyunlar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='launch_splash.css', v='2') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='launch_splash.css', v='3') }}">
 </head>
 <body>
     {% include '_launch_splash.html' %}
@@ -65,6 +65,6 @@
             <a class="nav-item" href="{{ url_for('profile') if user else url_for('login') }}"><span class="nav-icon profile-icon" aria-hidden="true"></span><span>{{ user.username if user else 'GİRİŞ YAP' }}</span></a>
         </nav>
     </div>
-    <script src="{{ url_for('static', filename='launch_splash.js', v='2') }}"></script>
+    <script src="{{ url_for('static', filename='launch_splash.js', v='3') }}"></script>
 </body>
 </html>
