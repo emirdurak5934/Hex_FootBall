@@ -28,21 +28,13 @@ body {
 
 .eyebrow { color: #55e6a5; font-weight: 800; letter-spacing: .12em; }
 h1 { margin: 8px 0 12px; font-size: 30px; }
-.description, .hint { color: #b8cad8; line-height: 1.5; }
-label { display: block; margin: 24px 0 8px; font-weight: 700; }
+.description { color: #b8cad8; line-height: 1.5; }
 
-input, button {
+button {
   width: 100%;
   min-height: 52px;
   border-radius: 12px;
   font: inherit;
-}
-
-input {
-  border: 1px solid #42627a;
-  padding: 0 13px;
-  background: #071522;
-  color: #fff;
 }
 
 button {
@@ -53,5 +45,7 @@ button {
   font-weight: 900;
 }
 
-.message { min-height: 20px; margin: 8px 0 0; color: #ff9e9e; }
-.hint { margin: 18px 0 0; font-size: 13px; }
+.spinner{width:42px;height:42px;margin:24px auto 14px;border:4px solid rgba(255,255,255,.15);border-top-color:#55e6a5;border-radius:50%;animation:spin .8s linear infinite}
+.message { min-height: 20px; margin: 8px 0 0; color: #b8cad8; text-align:center; }
+.hidden{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}

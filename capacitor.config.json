@@ -3,9 +3,10 @@
   "appName": "EDYN Football",
   "webDir": "mobile-shell",
   "server": {
+    "url": "https://edyn-football.onrender.com",
+    "cleartext": false,
     "allowNavigation": [
-      "*.trycloudflare.com",
-      "api.edynfootball.app"
+      "edyn-football.onrender.com"
     ]
   },
   "ios": {

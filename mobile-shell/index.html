@@ -10,28 +10,13 @@
 <body>
   <main class="launcher">
     <p class="eyebrow">EDYN FOOTBALL</p>
-    <h1>Sunucu bağlantısı</h1>
+    <h1>Oyun açılıyor</h1>
     <p class="description">
-      İlk test sunucusu hazır. Kalıcı alan adı alındığında bu adresi yeniden IPA
-      oluşturmadan buradan değiştirebilirsin.
+      Kalıcı EDYN Football sunucusuna bağlanılıyor.
     </p>
-
-    <label for="serverUrl">Sunucu adresi</label>
-    <input
-      id="serverUrl"
-      type="url"
-      inputmode="url"
-      autocomplete="url"
-      spellcheck="false"
-      value="https://diving-responsibility-annex-look.trycloudflare.com"
-    >
-    <p id="message" class="message" role="status"></p>
-    <button id="connectButton" type="button">Oyunu aç</button>
-
-    <p class="hint">
-      Quick Tunnel kapanırsa yeni adresi buraya yaz. Kalıcı hedef:
-      <strong>https://api.edynfootball.app</strong>
-    </p>
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="message" class="message" role="status">Lütfen bekle…</p>
+    <button id="retryButton" class="hidden" type="button">Tekrar dene</button>
   </main>
   <script src="launcher.js"></script>
 </body>
