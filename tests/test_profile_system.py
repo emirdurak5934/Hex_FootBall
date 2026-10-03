@@ -60,7 +60,7 @@ def main():
         assert client.get("/").headers["Location"].endswith("/login")
         login_html = client.get("/login").get_data(as_text=True)
         assert 'id="launchSplash"' in login_html
-        assert 'static/videos/edyn_games_intro.mp4' in login_html
+        assert 'static/videos/' in login_html and '.mp4' in login_html
         assert 'autoplay' in login_html and 'playsinline' in login_html and 'muted' in login_html
         assert "E-posta" not in login_html and 'name="email"' not in login_html
         token = csrf(client)

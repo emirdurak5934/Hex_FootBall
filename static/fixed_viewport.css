@@ -1,0 +1,224 @@
+/* Native-app viewport shell: the document never pans or rubber-bands. */
+html,
+body {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    margin: 0;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+}
+
+body {
+    position: fixed;
+    inset: 0;
+}
+
+/* Main menu */
+.app-frame {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    overflow: hidden;
+}
+
+.app-frame .games {
+    height: calc(100dvh - 202px);
+    min-height: 0;
+    grid-template-rows: minmax(0, 1.55fr) minmax(0, 1.1fr) minmax(0, .9fr);
+}
+
+.app-frame .feature-card,
+.app-frame .mode-card,
+.app-frame .tiki-card,
+.app-frame .compact-grid {
+    min-height: 0;
+}
+
+.app-frame .compact-grid > .mode-card {
+    height: 100%;
+}
+
+/* Altın Petek */
+.app {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.app.hidden {
+    display: none !important;
+}
+
+.app > .game-header {
+    flex: 0 0 auto;
+}
+
+.app > .game-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: center;
+    overflow: hidden;
+}
+
+.multiplayer-menu,
+.room-waiting-screen {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    margin: 0;
+    overflow: hidden !important;
+}
+
+/* Isı Haritası */
+.heatmap-app {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.heatmap-header {
+    flex: 0 0 auto;
+}
+
+.heatmap-board {
+    flex: 0 0 auto;
+}
+
+/* Kayıp 11 */
+.missing-app {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+.missing-app > .game-header {
+    flex: 0 0 auto;
+}
+
+.missing-app .field-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.missing-app .match-card {
+    flex: 0 0 auto;
+}
+
+.missing-app .pitch {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+}
+
+.missing-app .wordle-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+}
+
+/* Tiki Taka Toe */
+.tiki-shell {
+    height: 100dvh;
+    min-height: 0 !important;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.tiki-header {
+    flex: 0 0 auto;
+}
+
+.tiki-shell .mode-panel,
+.tiki-shell .game-panel {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.tiki-shell .game-panel:not(.hidden) {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tiki-shell .criteria-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: minmax(54px, .8fr) repeat(3, minmax(0, 1fr));
+}
+
+/* Login is fixed. Long data screens use one deliberate inner scroller. */
+.auth-shell {
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
+    overflow: hidden;
+}
+
+.account-shell:not(.auth-shell),
+.leader-shell {
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-height: 700px) {
+    .app-frame {
+        padding-top: 10px;
+    }
+
+    .app-frame .topbar {
+        min-height: 62px;
+    }
+
+    .app-frame .games {
+        height: calc(100dvh - 176px);
+        gap: 8px;
+    }
+
+    .app-frame .feature-card {
+        padding: 15px 17px;
+    }
+
+    .app-frame .mode-card {
+        padding: 11px;
+    }
+
+    .missing-app {
+        padding-top: 9px;
+    }
+
+    .missing-app .match-card {
+        margin: 7px 0;
+        padding: 8px;
+    }
+
+    .tiki-shell {
+        padding-top: 9px;
+    }
+
+    .tiki-header {
+        margin-bottom: 9px;
+    }
+}
