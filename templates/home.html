@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Match — Oyunlar</title>
+    <title>Football Match: HEX — Oyunlar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='launch_splash.css', v='3') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='fixed_viewport.css', v='1') }}">
@@ -13,8 +13,8 @@
     <div class="app-frame">
         <header class="topbar">
             <span class="topbar-spacer" aria-hidden="true"></span>
-            <div class="wordmark" aria-label="Football Match">
-                <strong>FOOTBALL</strong><strong>MATCH</strong><small>Futbol bilginle kazan.</small>
+            <div class="wordmark" aria-label="Football Match: HEX">
+                <strong>FOOTBALL</strong><strong>MATCH: HEX</strong><small>Futbol bilginle kazan.</small>
             </div>
             {% set user = current_user() %}
             <a class="points-placeholder account-link" href="{{ url_for('profile') if user else url_for('login') }}" aria-label="{{ user.username if user else 'Giriş Yap' }}"><span aria-hidden="true">{{ user.username[0]|upper if user else '●' }}</span><span>{{ user.level if user else 'GİR' }}</span></a>

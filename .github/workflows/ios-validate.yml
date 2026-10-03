@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "mobile-shell/**"
+      - "mobile-assets/**"
       - "capacitor.config.json"
       - "package.json"
       - "pnpm-lock.yaml"
@@ -51,6 +52,16 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0 dict" "$PLIST" || true
           /usr/libexec/PlistBuddy -c "Set :SKAdNetworkItems:0:SKAdNetworkIdentifier cstr6suwn9.skadnetwork" "$PLIST" || \
             /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0:SKAdNetworkIdentifier string cstr6suwn9.skadnetwork" "$PLIST"
+
+      - name: Apply Football Match HEX branding
+        run: |
+          ICON_SOURCE="mobile-assets/AppIcon-512@2x.png"
+          ICON_TARGET="ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+          PLIST="ios/App/App/Info.plist"
+          test -f "$ICON_SOURCE"
+          cp "$ICON_SOURCE" "$ICON_TARGET"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName 'Football Match: HEX'" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 'Football Match: HEX'" "$PLIST"
 
       - name: Validate Xcode simulator build
         run: >-

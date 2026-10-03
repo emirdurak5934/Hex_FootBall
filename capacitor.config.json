@@ -1,6 +1,6 @@
 {
   "appId": "app.edynfootball.mobile",
-  "appName": "EDYN Football",
+  "appName": "Football Match: HEX",
   "webDir": "mobile-shell",
   "server": {
     "url": "https://edyn-football.onrender.com",

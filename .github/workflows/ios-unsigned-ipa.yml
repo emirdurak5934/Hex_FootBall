@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "mobile-shell/**"
+      - "mobile-assets/**"
       - "capacitor.config.json"
       - "package.json"
       - "pnpm-lock.yaml"
@@ -52,6 +53,16 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :SKAdNetworkItems:0:SKAdNetworkIdentifier cstr6suwn9.skadnetwork" "$PLIST" || \
             /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0:SKAdNetworkIdentifier string cstr6suwn9.skadnetwork" "$PLIST"
 
+      - name: Apply Football Match HEX branding
+        run: |
+          ICON_SOURCE="mobile-assets/AppIcon-512@2x.png"
+          ICON_TARGET="ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+          PLIST="ios/App/App/Info.plist"
+          test -f "$ICON_SOURCE"
+          cp "$ICON_SOURCE" "$ICON_TARGET"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName 'Football Match: HEX'" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 'Football Match: HEX'" "$PLIST"
+
       - name: Build unsigned iPhone app
         run: >-
           xcodebuild
@@ -71,14 +82,14 @@ jobs:
           APP_PATH="build/DerivedData/Build/Products/Release-iphoneos/App.app"
           test -d "$APP_PATH"
           mkdir -p build/Payload
-          cp -R "$APP_PATH" build/Payload/EDYNFootball.app
+          cp -R "$APP_PATH" build/Payload/FootballMatchHEX.app
           cd build
-          ditto -c -k --sequesterRsrc --keepParent Payload EDYN-Football-unsigned.ipa
+          ditto -c -k --sequesterRsrc --keepParent Payload Football-Match-HEX-unsigned.ipa
 
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: EDYN-Football-unsigned-IPA
-          path: build/EDYN-Football-unsigned.ipa
+          name: Football-Match-HEX-unsigned-IPA
+          path: build/Football-Match-HEX-unsigned.ipa
           if-no-files-found: error
           retention-days: 14
