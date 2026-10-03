@@ -1,5 +1,16 @@
 <div id="launchSplash" class="launch-splash" role="status" aria-label="EDYN Games açılıyor">
-  <div class="launch-brand" aria-hidden="true">
+  <video
+    id="launchVideo"
+    class="launch-video"
+    src="{{ url_for('static', filename='videos/edyn_games_intro.mp4') }}"
+    autoplay
+    muted
+    playsinline
+    preload="auto"
+    disablepictureinpicture
+    aria-hidden="true"
+  ></video>
+  <div class="launch-brand launch-fallback" aria-hidden="true">
     <strong>EDYN</strong>
     <span>GAMES</span>
   </div>
