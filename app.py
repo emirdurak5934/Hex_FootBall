@@ -35,7 +35,7 @@ from friend_store import FriendStore
 from ads import mark_match_outcome, public_ad_break, register_ads
 from league_clubs import LEAGUE_CLUB_ALIASES as HISTORICAL_LEAGUE_CLUB_ALIASES
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 
 # ==================================================
@@ -52,6 +52,9 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
     SESSION_COOKIE_SECURE=os.environ.get("FLASK_ENV") == "production",
+    PERMANENT_SESSION_LIFETIME=timedelta(
+        days=int(os.environ.get("FOOTBALL_SESSION_DAYS", "30"))
+    ),
 )
 
 PROFILE_DB = os.environ.get(
@@ -2819,7 +2822,8 @@ def notify_remaining_player(
 
 @app.route("/")
 def home():
-
+    if not current_user():
+        return redirect(url_for("login"))
     return render_template(
         "home.html"
     )
@@ -2834,18 +2838,19 @@ def healthz():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user():
-        return redirect(url_for("profile"))
+        return redirect(url_for("home"))
     error = ""
     if request.method == "POST":
         if not valid_csrf():
             abort(400, "Geçersiz güvenlik anahtarı.")
         try:
             user = profile_store.create_user(
-                request.form.get("username", ""), request.form.get("email", ""),
-                request.form.get("password", ""), request.form.get("avatar", "captain"),
+                request.form.get("username", ""), request.form.get("password", ""),
+                request.form.get("avatar", "captain"),
             )
-            session.clear(); session["user_id"] = user["id"]; csrf_token()
-            return redirect(url_for("profile"))
+            session.clear(); session.permanent = True
+            session["user_id"] = user["id"]; csrf_token()
+            return redirect(url_for("home"))
         except ValueError as exc:
             error = str(exc)
     return render_template("auth.html", mode="register", error=error, avatars=AVATARS)
@@ -2854,7 +2859,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user():
-        return redirect(url_for("profile"))
+        return redirect(url_for("home"))
     error = ""
     if request.method == "POST":
         if not valid_csrf():
@@ -2863,8 +2868,9 @@ def login():
             request.form.get("identity", ""), request.form.get("password", "")
         )
         if user:
-            session.clear(); session["user_id"] = user["id"]; csrf_token()
-            return redirect(url_for("profile"))
+            session.clear(); session.permanent = True
+            session["user_id"] = user["id"]; csrf_token()
+            return redirect(url_for("home"))
         error = "Kullanıcı bilgileri hatalı."
     return render_template("auth.html", mode="login", error=error, avatars=AVATARS)
 
@@ -2874,7 +2880,7 @@ def logout():
     if not valid_csrf():
         abort(400, "Geçersiz güvenlik anahtarı.")
     session.clear()
-    return redirect(url_for("home"))
+    return redirect(url_for("login"))
 
 
 @app.route("/profile")
@@ -2921,7 +2927,7 @@ def leaderboard_api():
         return jsonify({"error": str(exc)}), 400
     board["entries"] = [
         {key: value for key, value in entry.items()
-         if key not in {"email", "password_hash", "last_login_at"}}
+         if key not in {"password_hash", "last_login_at"}}
         for entry in board["entries"]
     ]
     return jsonify(board)
@@ -2945,8 +2951,7 @@ def update_profile_api():
     data = request.get_json(silent=True) or request.form
     try:
         updated = profile_store.update_profile(
-            user["id"], data.get("username", ""), data.get("email", ""),
-            data.get("avatar", user["avatar"]),
+            user["id"], data.get("username", ""), data.get("avatar", user["avatar"]),
         )
         return jsonify({"success": True, "user": updated})
     except ValueError as exc:

@@ -9,7 +9,9 @@ _path_os.chdir(PROJECT_ROOT)
 """Account, security, statistics and idempotency tests."""
 
 import os
+import sqlite3
 import tempfile
+from contextlib import closing
 
 import app
 from profile_store import GAME_MODES, ProfileStore, level_for_xp
@@ -23,31 +25,64 @@ def csrf(client):
 
 def main():
     with tempfile.TemporaryDirectory() as directory:
+        legacy_path = os.path.join(directory, "legacy.sqlite3")
+        with closing(sqlite3.connect(legacy_path)) as legacy:
+            legacy.executescript("""
+                CREATE TABLE users (
+                    id TEXT PRIMARY KEY,
+                    username TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                    email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                    password_hash TEXT NOT NULL,
+                    avatar TEXT NOT NULL DEFAULT 'captain',
+                    created_at TEXT NOT NULL,
+                    last_login_at TEXT,
+                    total_xp INTEGER NOT NULL DEFAULT 0 CHECK(total_xp >= 0)
+                );
+                INSERT INTO users VALUES(
+                    'legacy-user','EskiKaptan','eski@example.com','legacy-hash',
+                    'captain','2025-01-01T00:00:00+00:00',NULL,725
+                );
+            """)
+            legacy.commit()
+        legacy_store = ProfileStore(legacy_path)
+        with legacy_store.connection() as migrated:
+            columns = {row["name"] for row in migrated.execute("PRAGMA table_info(users)")}
+            legacy_user = migrated.execute(
+                "SELECT id,username,password_hash,total_xp FROM users WHERE id='legacy-user'"
+            ).fetchone()
+        assert "email" not in columns
+        assert tuple(legacy_user) == ("legacy-user", "EskiKaptan", "legacy-hash", 725)
+
         store = ProfileStore(os.path.join(directory, "profiles.sqlite3"))
         app.profile_store = store
         client = app.app.test_client()
+        assert client.get("/").status_code == 302
+        assert client.get("/").headers["Location"].endswith("/login")
+        login_html = client.get("/login").get_data(as_text=True)
+        assert 'id="launchSplash"' in login_html
+        assert "E-posta" not in login_html and 'name="email"' not in login_html
         token = csrf(client)
 
         response = client.post("/register", data={
             "csrf_token": token, "username": "TestKaptan",
-            "email": "kaptan@example.com", "password": "safe-pass-123",
-            "avatar": "captain",
+            "password": "safe-pass-123", "avatar": "captain",
         })
         assert response.status_code == 302
+        assert response.headers["Location"].endswith("/")
         with client.session_transaction() as session:
             user_id = session["user_id"]
+            assert session.permanent
+
+        home_html = client.get("/").get_data(as_text=True)
+        assert 'id="launchSplash"' in home_html
+        assert "icon-button" not in home_html
 
         client.post("/logout", data={"csrf_token": csrf(client)})
         duplicate_name = client.post("/register", data={
             "csrf_token": csrf(client), "username": "TestKaptan",
-            "email": "other@example.com", "password": "safe-pass-123",
+            "password": "safe-pass-123",
         })
         assert "zaten" in duplicate_name.get_data(as_text=True)
-        duplicate_email = client.post("/register", data={
-            "csrf_token": csrf(client), "username": "OtherUser",
-            "email": "kaptan@example.com", "password": "safe-pass-123",
-        })
-        assert "zaten" in duplicate_email.get_data(as_text=True)
         assert client.post("/login", data={
             "csrf_token": csrf(client), "identity": "TestKaptan", "password": "wrong-pass",
         }).status_code == 200
@@ -58,7 +93,7 @@ def main():
 
         token = csrf(client)
         updated = client.post("/api/profile", json={
-            "username": "YeniKaptan", "email": "new@example.com", "avatar": "legend",
+            "username": "YeniKaptan", "avatar": "legend",
         }, headers={"X-CSRF-Token": token})
         assert updated.status_code == 200 and updated.json["user"]["avatar"] == "legend"
         changed = client.post("/api/profile/password", json={
@@ -83,7 +118,7 @@ def main():
         assert set(profile["games"]) == set(GAME_MODES)
         assert all(profile["games"][mode]["played"] == 0 for mode in ("missing_xi", "tiki_taka_toe"))
 
-        opponent = store.create_user("Opponent", "opponent@example.com", "safe-pass-789")
+        opponent = store.create_user("Opponent", "safe-pass-789")
         room = {
             "state": app.create_match_state(),
             "user_ids": {1: user_id, 2: opponent["id"]},
@@ -107,7 +142,8 @@ def main():
         assert anonymous.get("/api/profile").status_code == 401
         assert anonymous.get("/profile").status_code == 302
         print({
-            "register_login_logout": True, "duplicates_rejected": True,
+            "legacy_email_migration": True, "register_login_logout": True,
+            "username_duplicate_rejected": True, "launch_splash_and_menu": True,
             "profile_and_password_update": True, "unauthorized_blocked": True,
             "idempotent_results": True, "win_loss_draw_streak_rate": True,
             "xp_level": True, "four_empty_game_stats": True,

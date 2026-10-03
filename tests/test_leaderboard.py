@@ -19,8 +19,8 @@ def seed_user(store, index, xp=0, created=None):
     user_id = f"user-{index:03d}"
     with store.connection() as db:
         db.execute(
-            "INSERT INTO users(id,username,email,password_hash,avatar,created_at,total_xp) VALUES(?,?,?,?,?,?,?)",
-            (user_id, f"Player{index:03d}", f"p{index}@example.com", "SECRET_HASH", "captain",
+            "INSERT INTO users(id,username,password_hash,avatar,created_at,total_xp) VALUES(?,?,?,?,?,?)",
+            (user_id, f"Player{index:03d}", "SECRET_HASH", "captain",
              created or f"2025-01-{(index % 28) + 1:02d}T00:00:00+00:00", xp),
         )
         db.executemany("INSERT INTO game_stats(user_id,game_mode) VALUES(?,?)",
@@ -89,7 +89,7 @@ def main():
         anonymous = app.app.test_client()
         assert anonymous.get(f"/player/{first}").status_code == 200
         public_html = anonymous.get(f"/player/{first}").get_data(as_text=True)
-        assert "p1@example.com" not in public_html and "SECRET_HASH" not in public_html
+        assert "SECRET_HASH" not in public_html
         assert "PROFİLİMİ DÜZENLE" not in public_html
         assert anonymous.get("/player/does-not-exist").status_code == 404
         assert anonymous.get("/api/leaderboard?mode=invalid").status_code == 400

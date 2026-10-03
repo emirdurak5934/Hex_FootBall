@@ -48,11 +48,36 @@ class ProfileStore:
 
     def init_schema(self):
         with self.connection() as db:
+            existing_columns = {
+                row["name"] for row in db.execute("PRAGMA table_info(users)")
+            }
+            if "email" in existing_columns:
+                db.execute("PRAGMA foreign_keys = OFF")
+                db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE users_without_email (
+                        id TEXT PRIMARY KEY,
+                        username TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                        password_hash TEXT NOT NULL,
+                        avatar TEXT NOT NULL DEFAULT 'captain',
+                        created_at TEXT NOT NULL,
+                        last_login_at TEXT,
+                        total_xp INTEGER NOT NULL DEFAULT 0 CHECK(total_xp >= 0)
+                    );
+                    INSERT INTO users_without_email(
+                        id,username,password_hash,avatar,created_at,last_login_at,total_xp
+                    )
+                    SELECT id,username,password_hash,avatar,created_at,last_login_at,total_xp
+                    FROM users;
+                    DROP TABLE users;
+                    ALTER TABLE users_without_email RENAME TO users;
+                    COMMIT;
+                """)
+                db.execute("PRAGMA foreign_keys = ON")
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS users (
                     id TEXT PRIMARY KEY,
                     username TEXT NOT NULL COLLATE NOCASE UNIQUE,
-                    email TEXT NOT NULL COLLATE NOCASE UNIQUE,
                     password_hash TEXT NOT NULL,
                     avatar TEXT NOT NULL DEFAULT 'captain',
                     created_at TEXT NOT NULL,
@@ -102,12 +127,10 @@ class ProfileStore:
             """)
             db.commit()
 
-    def create_user(self, username, email, password, avatar="captain"):
-        username, email = username.strip(), email.strip().lower()
+    def create_user(self, username, password, avatar="captain"):
+        username = username.strip()
         if len(username) < 3 or len(username) > 24:
             raise ValueError("Kullanıcı adı 3-24 karakter olmalı.")
-        if "@" not in email or len(email) > 254:
-            raise ValueError("Geçerli bir e-posta gir.")
         if len(password) < 8:
             raise ValueError("Parola en az 8 karakter olmalı.")
         if avatar not in AVATARS:
@@ -117,8 +140,8 @@ class ProfileStore:
             with self.connection() as db:
                 db.execute("BEGIN IMMEDIATE")
                 db.execute(
-                    "INSERT INTO users(id,username,email,password_hash,avatar,created_at) VALUES(?,?,?,?,?,?)",
-                    (user_id, username, email, generate_password_hash(password), avatar, now),
+                    "INSERT INTO users(id,username,password_hash,avatar,created_at) VALUES(?,?,?,?,?)",
+                    (user_id, username, generate_password_hash(password), avatar, now),
                 )
                 db.executemany(
                     "INSERT INTO game_stats(user_id,game_mode) VALUES(?,?)",
@@ -129,16 +152,14 @@ class ProfileStore:
             message = str(error).lower()
             if "username" in message:
                 raise ValueError("Bu kullanıcı adı zaten kullanılıyor.") from error
-            if "email" in message:
-                raise ValueError("Bu e-posta zaten kullanılıyor.") from error
             raise
         return self.get_user(user_id)
 
     def authenticate(self, identity, password):
         with self.connection() as db:
             row = db.execute(
-                "SELECT * FROM users WHERE username = ? COLLATE NOCASE OR email = ? COLLATE NOCASE",
-                (identity.strip(), identity.strip()),
+                "SELECT * FROM users WHERE username = ? COLLATE NOCASE",
+                (identity.strip(),),
             ).fetchone()
             if not row or not check_password_hash(row["password_hash"], password):
                 return None
@@ -152,7 +173,7 @@ class ProfileStore:
             return None
         with self.connection() as db:
             row = db.execute(
-                "SELECT id,username,email,avatar,created_at,last_login_at,total_xp FROM users WHERE id=?",
+                "SELECT id,username,avatar,created_at,last_login_at,total_xp FROM users WHERE id=?",
                 (user_id,),
             ).fetchone()
         if not row:
@@ -162,21 +183,19 @@ class ProfileStore:
         user["level_progress"] = user["total_xp"] % 500
         return user
 
-    def update_profile(self, user_id, username, email, avatar):
-        username, email = username.strip(), email.strip().lower()
+    def update_profile(self, user_id, username, avatar):
+        username = username.strip()
         if len(username) < 3 or len(username) > 24:
             raise ValueError("Kullanıcı adı 3-24 karakter olmalı.")
-        if "@" not in email or len(email) > 254:
-            raise ValueError("Geçerli bir e-posta gir.")
         if avatar not in AVATARS:
             raise ValueError("Geçersiz avatar.")
         try:
             with self.connection() as db:
-                db.execute("UPDATE users SET username=?,email=?,avatar=? WHERE id=?",
-                           (username, email, avatar, user_id))
+                db.execute("UPDATE users SET username=?,avatar=? WHERE id=?",
+                           (username, avatar, user_id))
                 db.commit()
         except sqlite3.IntegrityError as error:
-            raise ValueError("Kullanıcı adı veya e-posta zaten kullanılıyor.") from error
+            raise ValueError("Bu kullanıcı adı zaten kullanılıyor.") from error
         return self.get_user(user_id)
 
     def change_password(self, user_id, current_password, new_password):

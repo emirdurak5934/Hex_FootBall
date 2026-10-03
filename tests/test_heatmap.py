@@ -9,6 +9,7 @@ _path_os.chdir(PROJECT_ROOT)
 """Heatmap V1 route, validation, capture, scoring, and completion tests."""
 
 import re
+import uuid
 
 import app
 
@@ -121,6 +122,9 @@ def make_reheat_game(new_capture_count=1, reheat_count=1, heat_level=1):
 
 def main():
     client = app.app.test_client()
+    home_user = app.profile_store.create_user(f"Heatmap{uuid.uuid4().hex[:8]}", "safe-pass-123")
+    with client.session_transaction() as session:
+        session["user_id"] = home_user["id"]
     home = client.get("/")
     page = client.get("/heatmap")
     html = page.data.decode("utf-8")

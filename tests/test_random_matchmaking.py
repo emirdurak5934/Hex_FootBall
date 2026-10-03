@@ -13,8 +13,8 @@ import app
 
 
 USERS = {
-    "match-user-one": {"id": "match-user-one", "username": "Emir", "email": "emir@test.local"},
-    "match-user-two": {"id": "match-user-two", "username": "Rakip", "email": "rakip@test.local"},
+    "match-user-one": {"id": "match-user-one", "username": "Emir"},
+    "match-user-two": {"id": "match-user-two", "username": "Rakip"},
 }
 
 
