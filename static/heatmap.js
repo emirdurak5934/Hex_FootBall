@@ -225,7 +225,7 @@ async function submitAnswer() {
             reheated: data.reheated || [],
             heatLevels,
         });
-        if (data.finished) showResult(data.score, data.moves);
+        if (data.finished) showResult(data.score, data.moves, data.ad_break);
     } catch (error) {
         message.textContent = "Bağlantı hatası. Tekrar dene.";
         message.className = "answer-message error";
@@ -345,10 +345,14 @@ function showWrongFeedback(penalty) {
     }, {once: true});
 }
 
-function showResult(score, moves) {
+function showResult(score, moves, adBreak) {
     document.getElementById("finalScore").textContent = score;
     document.getElementById("finalMoves").textContent = moves;
-    setTimeout(() => document.getElementById("resultModal").classList.remove("hidden"), 500);
+    const reveal = () => document.getElementById("resultModal").classList.remove("hidden");
+    setTimeout(() => {
+        if (window.MatchAds) window.MatchAds.present(adBreak, reveal);
+        else reveal();
+    }, 500);
 }
 
 document.getElementById("restartGame").addEventListener("click", () => window.location.reload());

@@ -9,18 +9,54 @@ Possession ve Tiki Taka Toe çevrimiçi modlarında oda koduna ek olarak giriş 
 Çevrimiçi maç sırasında verilen futbolcu cevabı iki oyuncunun ekranında 2 saniye gösterilir. Possession oyununda yalnızca futbolcunun adı, cevap verilen peteğin sınırlarından taşmayacak şekilde görünür.
 Possession cevap bilgisi hem anlık Socket.IO olayıyla hem de paylaşılan oyun durumuyla iletilir; böylece iki oyuncu da bildirimi alır.
 
+Tiki Taka Toe'da üç satır kulübü yalnızca A sınıfı havuzdan seçilir:
+Arsenal, Liverpool, Manchester United, Manchester City, Chelsea, Barcelona,
+Real Madrid, Juventus, Paris Saint-Germain ve Bayern Munich. Sütunlar soldan
+sağa daima bir kulüp, bir ülke/milliyet ve bir kupa kriteridir. Sütundaki kulüp
+25 takımlık havuzdan seçilir; Newcastle United ve AS Monaco bu oyunun kulüp
+kriteri havuzuna dahil değildir.
+Tahtanın satır ve sütun kriter kutularında isim/tür yazısı yerine mevcut kulüp
+armaları, ülke bayrakları ve kupa simgeleri gösterilir. Kriter adı erişilebilirlik
+etiketinde ve futbolcu arama penceresinde korunur.
+
+## 21 Eylül 2026 çalışma günlüğü
+
+- Tiki Taka Toe'nun üç satır kulübü 10 A sınıfı takımla sınırlandı; sütun
+  kriterleri değiştirilmedi.
+- 100 rastgele tahta testinde yeni satır kuralı, tahta üretimi ve cevapsız
+  hücre kontrolleri başarıyla doğrulandı.
+- Sütun düzeni sabitlendi: solda bir kulüp, ortada bir milliyet/ülke, sağda
+  bir kupa. İki kulüplü sütun düzenleri kaldırıldı.
+- Tiki Taka Toe kriter kutularındaki kulüp, ülke ve kupa yazıları mevcut logo,
+  bayrak ve kupa görselleriyle değiştirildi; 52 görsel eşleşmesi doğrulandı.
+- Tiki Taka Toe kulüp havuzundan Newcastle United ve AS Monaco çıkarıldı;
+  sütun kulübü için 25 takım kaldı. Satırdaki 10 A sınıfı takım değişmedi.
+
 ## Maç sonu reklam modülü
 
-Maç sonu reklam politikası ve tarayıcı denetleyicisi `ads.py` içinde tutulur. Tamamlanan maçlar reklam için uygun, pes etme ve bağlantı kopmasıyla biten maçlar uygun değildir. Reklam sağlayıcısı en fazla 5 saniye içinde yanıt vermezse sonuç ekranı reklamsız açılır.
+Maç sonu reklam politikası, Capacitor/AdMob köprüsü ve tarayıcı denetleyicisi
+`ads.py` içinde tutulur. Tamamlanan Possession, Tiki Taka Toe, Isı Haritası ve
+Missing 11 maçları reklam için uygun; pes etme ve bağlantı kopmasıyla biten
+maçlar uygun değildir. Reklam sağlayıcısı en fazla 5 saniye içinde yanıt
+vermezse sonuç ekranı reklamsız açılır.
+
+iOS kabuğu `@capacitor-community/admob` kullanır. Varsayılan `test` modu
+Google'ın iOS demo interstitial kimliğini kullanır; geliştirme sırasında canlı
+reklama istek atılmaz. GitHub Actions, `ADMOB_IOS_APP_ID` repository secret'ı
+yoksa Google'ın demo App ID'siyle test IPA'sı üretir.
 
 Yapılandırma ortam değişkenleri:
 
 - `FOOTBALL_ADS_ENABLED=1`
-- `FOOTBALL_AD_PROVIDER`
-- `FOOTBALL_AD_UNIT_PATH`
+- `FOOTBALL_AD_MODE=test` (varsayılan) veya `live`
+- `FOOTBALL_AD_UNIT_PATH` (live sunucuda interstitial kimliği)
 - `FOOTBALL_AD_TIMEOUT_MS` (varsayılan ve üst sınır: `5000`)
 
-Canlı sağlayıcı adaptörü eklenene ve Google reklam birimi tanımlanana kadar reklam sistemi kapalı/fail-open çalışır.
+Canlı modda `FOOTBALL_AD_UNIT_PATH` verilmezse yerel ve Git tarafından yok
+sayılan `reklam_kimligi.txt` içindeki geçiş reklamı kimliği okunur. App Store
+paketi için GitHub deposunda `ADMOB_IOS_APP_ID` secret'ı tanımlanmalı ve
+sunucu `FOOTBALL_ADS_ENABLED=1`, `FOOTBALL_AD_MODE=live` ile başlatılmalıdır. UMP gizlilik mesajı AdMob
+panelinden yayımlanmadan canlı moda geçilmemelidir.
 
 ## Klasör yapısı
 
@@ -108,6 +144,30 @@ python C:\Users\Emir\Desktop\FootballDatabase_v2\tools\maintenance\root_scripts\
 - Üretimde `FOOTBALL_MATCH_SECRET_KEY` ortam değişkeni tanımlanmalıdır.
 - `server` modülü bu değişken verilmediğinde geliştirme için kalıcı bir anahtar üretip `instance/server_secret.txt` içinde saklar.
 
+## iPhone 13 üzerinde ilk uygulama testi
+
+13 Eylül 2026 tarihinde Windows ve ücretsiz Apple hesabı kullanılarak ilk gerçek
+cihaz kurulumu başarıyla tamamlandı:
+
+1. Capacitor tabanlı iOS kabuğu GitHub'a gönderildi.
+2. GitHub Actions macOS/Xcode runner'ı cihaz için ARM64, imzasız
+   `EDYN-Football-unsigned.ipa` paketini üretti.
+3. IPA'nın `app.edynfootball.mobile` Bundle ID'si, iPhoneOS hedefi, iOS 15 alt
+   sınırı ve ARM64 mimarisi doğrulandı.
+4. Windows'a web sürümü iTunes, iCloud, Bonjour ve Apple Mobile Device Support
+   ile Sideloadly kuruldu.
+5. IPA, Sideloadly üzerinden ücretsiz Apple hesabıyla imzalanıp USB bağlantısı
+   üzerinden iPhone 13'e yüklendi.
+6. EDYN Football telefonda bağımsız uygulama olarak açıldı ve geçici Cloudflare
+   sunucusuna bağlandı.
+
+İlk test sunucusu
+`https://diving-responsibility-annex-look.trycloudflare.com` adresidir. Bu bir
+Quick Tunnel adresidir; üretim ve App Store sürümünde kalıcı
+`https://api.edynfootball.app` hedefi kullanılacaktır. Ücretsiz Apple hesabıyla
+oluşturulan cihaz imzası yaklaşık yedi gün geçerlidir; süresi dolunca aynı IPA
+Sideloadly ile yeniden imzalanıp kurulmalıdır.
+
 ## 12 Eylül 2026 çalışma günlüğü
 
 - Possession ve Tiki Taka Toe için oda kodunun yanında hesap tabanlı rastgele rakip eşleştirme eklendi.
@@ -122,3 +182,34 @@ python C:\Users\Emir\Desktop\FootballDatabase_v2\tools\maintenance\root_scripts\
 - Uygulamanın App Store’da yayınlanacak bir iOS uygulamasına dönüştürülmesi hedeflendi.
 - iOS reklam hedefi; `ads.py` sunucu politikası, WebView/native köprü, native `AdService.swift`, Google Mobile Ads SDK, UMP izin yönetimi ve AdMob interstitial akışı olarak planlandı.
 - iOS sürümünde reklamın maç sırasında önceden yüklenmesi, tamamlanan maç sonunda gösterilmesi ve 5 saniye içinde hazır değilse sonuç ekranına geçilmesi kararlaştırıldı.
+
+## 13 Eylül 2026 çalışma günlüğü
+
+- Proje `emirdurak5934/Hex_FootBall` GitHub deposuna başarıyla yüklendi.
+- GitHub Actions üzerinde Capacitor/Xcode doğrulama build'i ve cihaz ARM64
+  imzasız IPA üretimi başarıyla tamamlandı.
+- `EDYN-Football-unsigned.ipa` indirildi; paket yapısı, Bundle ID, iOS hedefi ve
+  ARM64 mimarisi doğrulandı.
+- Windows'a Apple cihaz sürücüleri, iTunes, iCloud, Bonjour ve Sideloadly
+  kuruldu; Apple iPhone USB bağlantısı doğrulandı.
+- IPA ücretsiz Apple hesabıyla Sideloadly üzerinden imzalanarak iPhone 13'e
+  yüklendi ve EDYN Football telefonda uygulama olarak başarıyla açıldı.
+
+## 22 Eylül 2026 çalışma günlüğü
+
+- Missing 11 formaları için yalnız sunum katmanında takım renk/desen eşlemesi
+  eklendi (`static/missing_xi_kits.js`). Aynı yeniden kullanılabilir forma öğesi
+  `solid`, `stripes`, `half`, `sleeves` ve `centerStripe` desenleriyle 11 slota
+  uygulanıyor; eşleşmeyen takımlar varsayılan düz formayı kullanıyor.
+- Maç/oyuncu verisi, soru üretimi, tahmin doğrulama ve oyun sonucu mantığı
+  değiştirilmedi. Takım temaları ve mevcut Missing 11 oynanışı test edildi;
+  mobil, tablet ve masaüstü görünümleri kontrol edildi.
+- Missing 11 tahmin ekranında ana menüye döndüren üst ok gizlendi. Tahmin
+  ekranındaki kendi `GERİ` düğmesi korunuyor; sahaya dönünce ana menü oku
+  yeniden görünüyor.
+- Sonraki hedef: telefon uygulamasında oyun ekranlarının sayfa gibi kaymaması.
+  Bu henüz uygulanmadı. Ekranlar cihaz başına ayrı ayarlarla değil, kullanılabilir
+  yükseklik ve güvenli alanlara uyarlanan ortak responsive kurallarla ele alınacak;
+  uzun listeler gerektiğinde yalnız kendi alanlarında kayabilecek.
+- İş akış şeması, her küçük değişiklikte güncellenmemesi isteği nedeniyle bu
+  çalışmada değiştirilmedi.

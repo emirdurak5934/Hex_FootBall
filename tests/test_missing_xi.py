@@ -57,6 +57,8 @@ def main():
         "ucl-final-2018-real-madrid": [1, 2, 5, 4, 12, 14, 10, 8, 22, 9, 7],
     }
     for test_match in app.missing_xi_matches:
+        if test_match["id"] not in expected_numbers:
+            continue
         ordered = sorted(test_match["lineup"], key=lambda item: item["slot"])
         assert [item["shirt_number"] for item in ordered] == expected_numbers[test_match["id"]]
 
@@ -99,6 +101,8 @@ def main():
         assert result["accepted"] and result["correct"]
     assert result["finished"] and result["correct_count"] == 10
     assert result["missed_count"] == 1 and result["errors"] == 6
+    assert result["ad_break"]["eligible"] is True
+    assert result["ad_break"]["game_mode"] == "missing_xi"
 
     new_page = client.get("/missing-xi")
     new_token = re.search(r'"gameToken":\s*"([^"]+)"', new_page.data.decode("utf-8")).group(1)

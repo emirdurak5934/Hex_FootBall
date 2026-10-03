@@ -12,9 +12,30 @@ from flask import Blueprint, Response
 
 
 ADS_TIMEOUT_MS = int(os.environ.get("FOOTBALL_AD_TIMEOUT_MS", "5000"))
-ADS_ENABLED = os.environ.get("FOOTBALL_ADS_ENABLED", "0") == "1"
-ADS_PROVIDER = os.environ.get("FOOTBALL_AD_PROVIDER", "disabled")
-ADS_UNIT_PATH = os.environ.get("FOOTBALL_AD_UNIT_PATH", "")
+ADS_MODE = os.environ.get("FOOTBALL_AD_MODE", "test").strip().lower()
+ADS_ENABLED = os.environ.get("FOOTBALL_ADS_ENABLED", "1" if ADS_MODE == "test" else "0") == "1"
+ADS_PROVIDER = "admob" if ADS_ENABLED else "disabled"
+IOS_TEST_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910"
+
+
+def _local_interstitial_id():
+    """Read the developer's local ID file without making it source-controlled config."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reklam_kimligi.txt")
+    try:
+        with open(path, "r", encoding="utf-8") as source:
+            for line in source:
+                if "/" in line and "ca-app-pub-" in line:
+                    return line.split(":", 1)[-1].strip()
+    except OSError:
+        pass
+    return ""
+
+
+ADS_UNIT_PATH = (
+    IOS_TEST_INTERSTITIAL_ID
+    if ADS_MODE == "test"
+    else os.environ.get("FOOTBALL_AD_UNIT_PATH", "").strip() or _local_interstitial_id()
+)
 
 COMPLETED_OUTCOMES = {"completed_board", "completed_timeout", "completed_win", "completed_draw"}
 
@@ -100,6 +121,102 @@ def _client_source():
 """
 
 
+def _native_provider_source():
+    config = json.dumps({
+        "enabled": ADS_ENABLED,
+        "provider": ADS_PROVIDER,
+        "adId": ADS_UNIT_PATH,
+        "testing": ADS_MODE == "test",
+        "loadTimeoutMs": min(4500, ADS_TIMEOUT_MS),
+    })
+    return f"""
+(() => {{
+  'use strict';
+  const config = Object.freeze({config});
+  const capacitor = window.Capacitor;
+  const admob = capacitor?.Plugins?.AdMob || capacitor?.registerPlugin?.('AdMob');
+  let initialization = null;
+  let preparation = null;
+  let preparedAdId = null;
+
+  function nativeAvailable() {{
+    return Boolean(
+      config.enabled && config.provider === 'admob' && config.adId && admob &&
+      (typeof capacitor.isNativePlatform !== 'function' || capacitor.isNativePlatform())
+    );
+  }}
+
+  async function initialize() {{
+    if (!nativeAvailable()) return false;
+    if (initialization) return initialization;
+    initialization = (async () => {{
+      await admob.initialize({{
+        initializeForTesting: config.testing,
+        testingDevices: [],
+      }});
+      let consent = await admob.requestConsentInfo();
+      if (!consent.canRequestAds && consent.isConsentFormAvailable) {{
+        consent = await admob.showConsentForm();
+      }}
+      return Boolean(consent.canRequestAds);
+    }})().catch(() => false);
+    return initialization;
+  }}
+
+  async function prepare() {{
+    if (preparedAdId) return true;
+    if (preparation) return preparation;
+    preparation = (async () => {{
+      if (!(await initialize())) return false;
+      const loaded = await admob.prepareInterstitial({{
+        adId: config.adId,
+        isTesting: config.testing,
+      }});
+      preparedAdId = loaded?.adUnitId || config.adId;
+      return true;
+    }})().catch(() => false).finally(() => {{ preparation = null; }});
+    return preparation;
+  }}
+
+  async function show() {{
+    if (!nativeAvailable()) return false;
+    const loaded = await Promise.race([
+      prepare(),
+      new Promise(resolve => setTimeout(() => resolve(false), config.loadTimeoutMs)),
+    ]);
+    if (!loaded || !preparedAdId) return false;
+    const adId = preparedAdId;
+    preparedAdId = null;
+    try {{
+      await admob.showInterstitial({{adId}});
+      return true;
+    }} catch (error) {{
+      return false;
+    }} finally {{
+      setTimeout(() => {{ prepare(); }}, 250);
+    }}
+  }}
+
+  async function privacyOptions() {{
+    if (!(await initialize())) return false;
+    try {{
+      await admob.showPrivacyOptionsForm();
+      return true;
+    }} catch (error) {{
+      return false;
+    }}
+  }}
+
+  window.FootballAdProvider = Object.freeze({{show, prepare, privacyOptions, config}});
+  if (document.readyState === 'loading') {{
+    document.addEventListener('DOMContentLoaded', () => {{ prepare(); }}, {{once: true}});
+  }} else {{
+    prepare();
+  }}
+}})();
+"""
+
+
 def register_ads(app):
     blueprint = Blueprint("match_ads", __name__)
 
@@ -107,5 +224,12 @@ def register_ads(app):
     def client_script():
         return Response(_client_source(), mimetype="application/javascript", headers={"Cache-Control": "no-store"})
 
-    app.register_blueprint(blueprint)
+    @blueprint.get("/ads/native-provider.js")
+    def native_provider_script():
+        return Response(
+            _native_provider_source(),
+            mimetype="application/javascript",
+            headers={"Cache-Control": "no-store"},
+        )
 
+    app.register_blueprint(blueprint)

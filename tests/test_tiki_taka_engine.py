@@ -12,13 +12,16 @@ import json
 from statistics import mean
 
 from app import COUNTRY_ALIASES, CLUB_ALIASES, TROPHY_ALIASES
-from tiki_taka_engine import TikiTakaEngine
+from tiki_taka_engine import DEFAULT_CLUBS, ROW_CLUBS, TikiTakaEngine
 
 
 def main():
     with open("data/players.json", encoding="utf-8") as source:
         players = json.load(source)
     engine = TikiTakaEngine(players, CLUB_ALIASES, COUNTRY_ALIASES, TROPHY_ALIASES)
+    assert {item["label"] for item in engine.row_clubs} == set(ROW_CLUBS)
+    assert len(DEFAULT_CLUBS) == len(engine.pools["club"]) == 25
+    assert {"Newcastle United", "AS Monaco"}.isdisjoint(DEFAULT_CLUBS)
     counts = []
     failed = dead = duplicate = 0
     for _ in range(100):
@@ -28,6 +31,11 @@ def main():
             failed += 1
             continue
         valid, board_counts = engine.validate_board(board["rows"], board["columns"])
+        assert {item["label"] for item in board["rows"]} <= set(ROW_CLUBS)
+        assert [item["type"] for item in board["columns"]] == [
+            "club", "nationality", "trophy"
+        ]
+        assert board["columns"][0]["label"] in DEFAULT_CLUBS
         counts.extend(board_counts)
         dead += sum(value == 0 for value in board_counts)
         duplicate += not valid and len(set(

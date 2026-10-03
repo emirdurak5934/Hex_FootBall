@@ -9,6 +9,7 @@ _path_os.chdir(PROJECT_ROOT)
 """Regression coverage for local rules and the isolated online room flow."""
 
 import app
+import time
 
 
 def events(client, name):
@@ -29,6 +30,10 @@ def valid_id(state, index, excluded=()):
 
 def test_rules():
     state = app.create_tiki_state(app.tiki_engine.generate_board())
+    public = app.serialize_tiki_state(state)
+    for item in public["rows"] + public["columns"]:
+        assert item["image"].startswith("/static/")
+        assert _path_os.path.isfile(_path_os.path.join(app.app.root_path, item["image"].lstrip("/")))
     correct_id = valid_id(state, 0)
     wrong_id = next(player_id for player_id in app.tiki_engine.players_by_id
                     if not app.tiki_engine.player_matches(player_id, state["rows"][0], state["columns"][0]))
@@ -46,6 +51,34 @@ def test_rules():
         None, None, None, None,
     ]
     assert app.tiki_winner(state["board"]) == 1
+
+
+def test_turn_timeout():
+    board = app.tiki_engine.generate_board()
+    state = app.create_tiki_state(board, started=False)
+    assert state["turn_deadline"] is None
+    token = "test-tiki-turn-timeout"
+    with app.tiki_local_games_lock:
+        app.tiki_local_games[token] = state
+    try:
+        client = app.app.test_client()
+        started = client.post("/tiki-taka-toe/start", json={"game_token": token}).json
+        assert started["accepted"] and started["state"]["turn_remaining_ms"] <= 30000
+        assert started["state"]["active_player"] == 1
+
+        state["turn_deadline"] = time.time() - 0.1
+        timed_out = client.get(f"/tiki-taka-toe/state/{token}").json
+        assert timed_out["state"]["active_player"] == 2
+        assert timed_out["state"]["turn_remaining_ms"] > 0
+
+        player_id = valid_id(state, 0)
+        state["turn_deadline"] = time.time() - 0.1
+        late = app.apply_tiki_move(state, 0, player_id, 2)
+        assert not late["accepted"] and state["board"][0] is None
+        assert state["active_player"] == 1
+    finally:
+        with app.tiki_local_games_lock:
+            app.tiki_local_games.pop(token, None)
 
 
 def test_online():
@@ -73,6 +106,11 @@ def test_online():
         assert first_notice == second_notice and first_notice["duration_ms"] == 2000
         assert first_notice["player_name"]
         assert first_state == second_state and first_state["active_player"] == 2
+        room["state"]["turn_deadline"] = time.time() - 0.1
+        app.socketio.sleep(0.7)
+        first_timeout = payload(first, "tiki_game_state")
+        second_timeout = payload(second, "tiki_game_state")
+        assert first_timeout == second_timeout and first_timeout["active_player"] == 1
         room["state"].update(finished=True, winner=1, end_reason="test")
         first.emit("tiki_rematch_request")
         first.get_received(); second.get_received()
@@ -93,6 +131,7 @@ def test_online():
 
 if __name__ == "__main__":
     test_rules()
+    test_turn_timeout()
     test_online()
     print({
         "wrong_answer_passes_turn": True,
@@ -102,4 +141,5 @@ if __name__ == "__main__":
         "two_party_rematch": True,
         "disconnect_forfeit": True,
         "two_second_answer_notice": True,
+        "thirty_second_turn_timeout": True,
     })

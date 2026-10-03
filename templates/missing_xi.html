@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>Football Match — Kayıp 11</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='missing_xi.css', v='2') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='missing_xi_wordle.css', v='2') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='missing_xi_wordle.css', v='4') }}">
 </head>
 <body>
   <main class="missing-app">
@@ -48,6 +48,9 @@
   <div id="helpModal" class="modal hidden"><button class="backdrop" data-close="help" aria-label="Kapat"></button><section class="modal-card help-card" role="dialog" aria-modal="true"><button class="close" data-close="help">×</button><small>KAYIP 11</small><h2>NASIL OYNANIR?</h2><ol><li>Boş pozisyonu seç.</li><li>O pozisyonda oynayan futbolcuyu tahmin et.</li><li><b class="green-text">Yeşil</b> = doğru harf, doğru yer.</li><li><b class="yellow-text">Sarı</b> = doğru harf, yanlış yer.</li><li><b class="gray-text">Gri</b> = harf isimde yok.</li><li>Her slot için 6 tahmin hakkın var.</li><li>İlk 11'i mümkün olduğunca az hatayla tamamla.</li></ol></section></div>
   <div id="resultModal" class="modal hidden"><section class="modal-card result-card" role="dialog" aria-modal="true"><small>TAMAMLANDI</small><h2>KAYIP 11 TAMAMLANDI</h2><strong id="finalCorrect">0/11</strong><p>Kaçırılan: <b id="finalMissed">0</b></p><p>Toplam hata: <b id="finalErrors">0</b></p><button id="newMatch" class="primary">YENİ MAÇ</button><a href="/">ANA MENÜ</a></section></div>
   <script>window.MISSING_XI_DATA={{ {'match': match, 'gameToken': game_token}|tojson }};</script>
-  <script src="{{ url_for('static', filename='missing_xi.js', v='2') }}"></script>
+  <script src="{{ url_for('static', filename='missing_xi_kits.js', v='1') }}"></script>
+  <script src="{{ url_for('match_ads.native_provider_script') }}"></script>
+  <script src="{{ url_for('match_ads.client_script') }}"></script>
+  <script src="{{ url_for('static', filename='missing_xi.js', v='ads-1') }}"></script>
 </body>
 </html>

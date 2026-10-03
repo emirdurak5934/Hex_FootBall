@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -33,11 +34,29 @@ def main():
         assert "Math.min(5000" in source
         assert response.headers["Cache-Control"] == "no-store"
 
+        provider_response = client.get("/ads/native-provider.js")
+        provider_source = provider_response.get_data(as_text=True)
+        assert provider_response.status_code == 200
+        assert "window.FootballAdProvider" in provider_source
+        assert "registerPlugin?.('AdMob')" in provider_source
+        assert "prepareInterstitial" in provider_source
+        assert "showInterstitial" in provider_source
+        assert "requestConsentInfo" in provider_source
+        assert "showPrivacyOptionsForm" in provider_source
+        assert "ca-app-pub-3940256099942544/4411468910" in provider_source
+        assert provider_response.headers["Cache-Control"] == "no-store"
+        syntax = subprocess.run(
+            ["node", "--check", "-"], input=provider_source,
+            text=True, capture_output=True, check=False,
+        )
+        assert syntax.returncode == 0, syntax.stderr
+
     print({
         "completed_match_has_ad": True,
         "abandoned_match_skips_ad": True,
         "five_second_ceiling": True,
         "isolated_ads_module": True,
+        "native_admob_provider": True,
     })
 
 

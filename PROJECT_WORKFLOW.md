@@ -2,7 +2,7 @@
 
 Bu belge projenin ortak çalışma haritasıdır. Yeni modül, özellik, hata düzeltmesi veya mimari değişiklik tamamlandığında ilgili düğümler, bağlantılar ve değişiklik günlüğü güncellenmelidir.
 
-Son güncelleme: 12 Eylül 2026
+Son güncelleme: 21 Eylül 2026
 
 ## Görsel ana şema
 
@@ -14,7 +14,7 @@ Görsel dosya `PROJECT_WORKFLOW.png` olarak doğrudan açılabilir. Düzenlenebi
 
 ```mermaid
 flowchart TD
-    USER["Kullanıcı / Tarayıcı"]
+    USER["Kullanıcı / Tarayıcı / iOS Uygulaması"]
     PUBLIC["Değiştirilebilir Yayın Sağlayıcısı<br/>Cloudflare Quick Tunnel / gelecek adaptörler"]
     SERVER["Sunucu Yönetim Modülü<br/>server/"]
     HTTP["Flask HTTP Katmanı<br/>app.py"]
@@ -68,7 +68,7 @@ flowchart LR
 
     MISS --> WORDLE["11 pozisyon ve<br/>Wordle harf geri bildirimi"]
 
-    TTT --> GRID["3 × 3 kriter kesişimi"]
+    TTT --> GRID["3 × 3 kriter kesişimi<br/>satırlar: 10 A sınıfı kulüp<br/>sütunlar: 25 kulüpten 1'i + 1 ülke + 1 kupa<br/>kriter kutuları: arma/bayrak/kupa görseli"]
     TTT --> LOCAL["Yerel oyun"]
     TTT --> ONLINE
 
@@ -161,12 +161,12 @@ flowchart TD
 | HTTP ve sayfa yönlendirme | `app.py`, `templates/` | Oturum ve oyun verileri | Aktif |
 | Sunucu ve yayın yönetimi | `server/`, `run.py`, `server_olusturucu.py` | Ortam değişkenleri, sağlayıcı adaptörleri ve menülü başlatıcı | Aktif |
 | Maç sonu reklam politikası | `ads.py` | Maç bitiş türü, reklam yapılandırması ve 5 saniyelik üst sınır | Altyapı aktif, canlı AdMob bekleniyor |
-| iOS App Store uygulaması | `IOS_WINDOWS_IPA_PLANI.md`, `capacitor.config.json`, `mobile-shell/`, planlanan `AdService.swift` | Windows geliştirme, değiştirilebilir test sunucusu, bulut macOS/Xcode CI, kalıcı Flask backend | Geliştiriliyor |
+| iOS App Store uygulaması | `IOS_WINDOWS_IPA_PLANI.md`, `capacitor.config.json`, `mobile-shell/`, planlanan `AdService.swift` | Windows geliştirme, değiştirilebilir test sunucusu, bulut macOS/Xcode CI, kalıcı Flask backend | İlk iPhone sideload testi başarılı; App Store hazırlığı sürüyor |
 | Gerçek zamanlı oyun | `app.py`, `static/game.js`, `static/tiki_taka.js` | Oyun bazlı eşleştirme kuyrukları ve bellek içi oda durumu | Aktif |
 | Possession | `app.py`, `templates/index.html`, `static/game.js` | `players.json` | Aktif |
 | Heatmap | `app.py`, `templates/heatmap.html`, `static/heatmap.js` | `players.json` | Aktif |
 | Missing XI | `app.py`, `templates/missing_xi.html`, `static/missing_xi.js` | `players.json`, `missing_xi_matches.json` | Aktif |
-| Tiki Taka Toe | `app.py`, `tiki_taka_engine.py`, `templates/tiki_taka.html`, `static/tiki_taka.js` | `players.json` | Aktif |
+| Tiki Taka Toe | `app.py`, `tiki_taka_engine.py`, `templates/tiki_taka.html`, `static/tiki_taka.js` | `players.json`; 10 A sınıfı satır kulübü; sütunda 25 kulüpten biri, ülke, kupa | Aktif |
 | Kriter doğrulama | `criterion_engine.py`, `league_clubs.py` | `players.json` | Aktif |
 | Hesap ve profil | `profile_store.py`, `templates/profile.html` | SQLite | Aktif |
 | Arkadaşlık ve davet | `friend_store.py`, `templates/friends.html`, `static/friends.js` | SQLite ve Socket.IO | Aktif |
@@ -214,6 +214,12 @@ Her işlemden sonra:
 | 13 Eylül 2026 | Ücretsiz Apple hesabıyla Windows sideload testi için GitHub macOS üzerinde cihaz mimarili imzasız IPA üretip artifact olarak sunan iş akışı eklendi. | GitHub Actions, IPA, Sideloadly, iPhone 13 |
 | 13 Eylül 2026 | İlk IPA testi için değiştirilebilir mobil sunucu bağlantı ekranı ve Capacitor v8 yapılandırması eklendi; geçici Quick Tunnel varsayılan, `api.edynfootball.app` kalıcı hedef olarak izin listesine alındı. | Capacitor, iOS istemcisi, sunucu yapılandırması |
 | 13 Eylül 2026 | Kalıcı backend adresi için `edynfootball.app` alan adı ve `https://api.edynfootball.app` API/Socket.IO adresi seçildi; alan adı kaydı bekleniyor. | DNS, Cloudflare Named Tunnel, iOS yapılandırması |
+| 13 Eylül 2026 | GitHub Actions cihaz ARM64 imzasız IPA üretimi tamamlandı; paket Windows'ta doğrulandı, Sideloadly ile ücretsiz Apple hesabı kullanılarak iPhone 13'e yüklendi ve uygulama gerçek cihazda başarıyla açıldı. | GitHub Actions, Xcode, IPA, Windows, Sideloadly, iPhone 13 |
+| 13 Eylül 2026 | Windows'a web iTunes/iCloud, Apple Mobile Device Support ve Bonjour kuruldu; iPhone USB sürücüsü ile geçici Quick Tunnel bağlantısı doğrulandı. | Windows araç zinciri, Apple sürücüleri, Cloudflare, gerçek cihaz testi |
+| 21 Eylül 2026 | Tiki Taka Toe'nun üç satır kulübü 10 A sınıfı takımdan seçilecek şekilde sınırlandı; sütun üretim kalıpları ve havuzları korundu. 100 rastgele tahta testi geçti. | Tiki Taka Toe, tahta üretimi, testler |
+| 21 Eylül 2026 | Sütunlar soldan sağa bir kulüp, bir ülke/milliyet ve bir kupa olacak şekilde sabitlendi; iki kulüplü sütun kalıpları kaldırıldı. | Tiki Taka Toe, tahta üretimi, testler |
+| 21 Eylül 2026 | Tiki Taka Toe kriter kutularındaki yazıların yerine mevcut arma, bayrak ve kupa görselleri bağlandı; 52 kriterin görseli ve yerel/çevrimiçi oyun akışları doğrulandı. | Tiki Taka Toe arayüzü, durum serileştirme, görsel varlıklar |
+| 21 Eylül 2026 | Newcastle United ve AS Monaco Tiki Taka Toe kulüp kriteri havuzundan çıkarıldı; sütun kulübü için 25 takım bırakıldı. | Tiki Taka Toe kulüp havuzu, tahta üretimi |
 
 ## 9. iOS App Store ve reklam hedefi
 
@@ -245,7 +251,11 @@ flowchart LR
     CONNECT --> TESTFLIGHT["TestFlight"]
     TESTFLIGHT --> IPHONE["iPhone 13 testi"]
     IPHONE --> APPSTORE["App Store"]
+    REPO --> UNSIGNED["GitHub Actions<br/>ARM64 imzasız IPA"]
+    UNSIGNED --> SIDELOAD["Windows<br/>iTunes + iCloud + Sideloadly"]
+    SIDELOAD --> DEVICE["iPhone 13<br/>ücretsiz imza ile kuruldu — BAŞARILI"]
     CAPACITOR -->|"HTTPS / WSS"| BACKEND["Kalıcı Flask + Socket.IO backend"]
+    DEVICE -->|"İlk test: Quick Tunnel"| BACKEND
 ```
 
-Ayrıntılı kararlar, fazlar ve kabul ölçütleri `IOS_WINDOWS_IPA_PLANI.md` dosyasındadır.
+Ayrıntılı kararlar, fazlar ve kabul ölçütleri `IOS_WINDOWS_IPA_PLANI.md` dosyasındadır. İlk ücretsiz cihaz testi 13 Eylül 2026'da başarıyla tamamlanmıştır; App Store hattı için kalıcı backend ve ücretli Apple dağıtım imzası beklenmektedir.

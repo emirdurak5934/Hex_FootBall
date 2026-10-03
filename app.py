@@ -2062,6 +2062,12 @@ tiki_engine = TikiTakaEngine(
     COUNTRY_ALIASES,
     TROPHY_ALIASES,
 )
+TIKI_CRITERION_IMAGES = {
+    (condition["type"], tiki_engine._canonical(condition["type"], condition["value"])):
+        condition["image"]
+    for condition in ALL_CONDITIONS
+    if condition["type"] in {"club", "nationality", "trophy"} and condition["image"]
+}
 tiki_local_games = {}
 tiki_local_games_lock = threading.Lock()
 tiki_rooms = {}
@@ -2074,25 +2080,52 @@ TIKI_WIN_LINES = (
     (0, 3, 6), (1, 4, 7), (2, 5, 8),
     (0, 4, 8), (2, 4, 6),
 )
+TIKI_TURN_SECONDS = 30
 
 
 def create_tiki_state(board, starting_player=1, started=True, player_names=None):
+    now = time.time()
     return {
         "rows": board["rows"], "columns": board["columns"],
         "board": [None] * 9, "used_players": set(),
         "active_player": starting_player, "started": started,
+        "turn_deadline": now + TIKI_TURN_SECONDS if started else None,
         "finished": False, "winner": None, "end_reason": "",
-        "created_at": time.time(), "stats_recorded": False,
+        "created_at": now, "stats_recorded": False,
         "player_names": dict(player_names or {"1": "Oyuncu 1", "2": "Oyuncu 2"}),
     }
 
 
+def expire_tiki_turn(state, now=None):
+    """Advance elapsed turns without allowing a late answer to claim a cell."""
+    if not state["started"] or state["finished"] or state.get("turn_deadline") is None:
+        return False
+    now = time.time() if now is None else now
+    deadline = state["turn_deadline"]
+    if now < deadline:
+        return False
+    elapsed_turns = int((now - deadline) // TIKI_TURN_SECONDS) + 1
+    if elapsed_turns % 2:
+        state["active_player"] = 2 if state["active_player"] == 1 else 1
+    state["turn_deadline"] = deadline + elapsed_turns * TIKI_TURN_SECONDS
+    return True
+
+
 def serialize_tiki_state(state):
+    def public_criterion(item):
+        result = tiki_engine.public_criterion(item)
+        result["image"] = TIKI_CRITERION_IMAGES.get((item["type"], item["key"]), "")
+        return result
+
     public_state = {
-        "rows": [tiki_engine.public_criterion(item) for item in state["rows"]],
-        "columns": [tiki_engine.public_criterion(item) for item in state["columns"]],
+        "rows": [public_criterion(item) for item in state["rows"]],
+        "columns": [public_criterion(item) for item in state["columns"]],
         "board": list(state["board"]),
         "active_player": state["active_player"], "started": state["started"],
+        "turn_deadline": state.get("turn_deadline"),
+        "turn_remaining_ms": max(0, int((state["turn_deadline"] - time.time()) * 1000))
+        if state.get("turn_deadline") is not None and state["started"] and not state["finished"]
+        else 0,
         "finished": state["finished"], "winner": state["winner"],
         "end_reason": state["end_reason"],
         "player_names": dict(state.get("player_names", {"1": "Oyuncu 1", "2": "Oyuncu 2"})),
@@ -2117,6 +2150,8 @@ def apply_tiki_move(state, cell_index, player_id, player_number):
         return {"accepted": False, "message": "Maç henüz başlamadı."}
     if state["finished"]:
         return {"accepted": False, "message": "Maç sona erdi."}
+    if expire_tiki_turn(state):
+        return {"accepted": False, "message": "Süre doldu. Sıra diğer oyuncuya geçti."}
     if state["active_player"] != player_number:
         return {"accepted": False, "message": "Sıra sende değil."}
     if not 0 <= cell_index < 9:
@@ -2150,6 +2185,7 @@ def apply_tiki_move(state, cell_index, player_id, player_number):
             mark_match_outcome(state, "tiki_taka_toe", "completed_draw")
     if not state["finished"]:
         state["active_player"] = 2 if player_number == 1 else 1
+        state["turn_deadline"] = time.time() + TIKI_TURN_SECONDS
     return {
         "accepted": True, "correct": correct,
         "message": "Doğru cevap!" if correct else "Bu futbolcu iki kriteri birlikte karşılamıyor.",
@@ -3032,12 +3068,35 @@ def tiki_taka_toe():
     board = tiki_engine.generate_board()
     game_token = uuid.uuid4().hex
     with tiki_local_games_lock:
-        tiki_local_games[game_token] = create_tiki_state(board)
+        tiki_local_games[game_token] = create_tiki_state(board, started=False)
         tiki_local_games[game_token]["user_id"] = session.get("user_id")
     return render_template(
         "tiki_taka.html", game_token=game_token,
         initial_state=serialize_tiki_state(tiki_local_games[game_token]),
     )
+
+
+@app.post("/tiki-taka-toe/start")
+def tiki_local_start():
+    token = str((request.get_json(silent=True) or {}).get("game_token", "")).strip()
+    with tiki_local_games_lock:
+        state = tiki_local_games.get(token)
+        if not state:
+            return jsonify({"accepted": False, "message": "Oyun bulunamadı."}), 404
+        if not state["started"]:
+            state["started"] = True
+            state["turn_deadline"] = time.time() + TIKI_TURN_SECONDS
+        return jsonify({"accepted": True, "state": serialize_tiki_state(state)})
+
+
+@app.get("/tiki-taka-toe/state/<token>")
+def tiki_local_state(token):
+    with tiki_local_games_lock:
+        state = tiki_local_games.get(token)
+        if not state:
+            return jsonify({"accepted": False, "message": "Oyun bulunamadı."}), 404
+        expire_tiki_turn(state)
+        return jsonify({"accepted": True, "state": serialize_tiki_state(state)})
 
 
 @app.route("/tiki-taka-toe/move", methods=["POST"])
@@ -3164,6 +3223,8 @@ def missing_xi_check():
         found_count = sum(state == "found" for state in game["slot_states"].values())
         missed_count = sum(state == "missed" for state in game["slot_states"].values())
         game["finished"] = len(game["slot_states"]) == 11
+        if game["finished"] and not game.get("ad_break"):
+            mark_match_outcome(game, "missing_xi", "completed_board", game_token)
         if game["finished"] and not game.get("stats_recorded", False):
             found_count = sum(state == "found" for state in game["slot_states"].values())
             profile_store.record_result(
@@ -3182,6 +3243,7 @@ def missing_xi_check():
             "answer": answer["answer"] if exhausted else None,
             "correct_count": found_count, "missed_count": missed_count,
             "errors": game["errors"], "finished": game["finished"],
+            "ad_break": public_ad_break(game),
             "message": message,
         })
 
@@ -3260,6 +3322,8 @@ def heatmap_check():
             game["heated"][index] = min(int(previous_level) + 1, 5)
         game["score"] += move_score
         game["finished"] = len(game["heated"]) == 30
+        if game["finished"] and not game.get("ad_break"):
+            mark_match_outcome(game, "heatmap", "completed_board", game_token)
         if game["finished"] and not game.get("stats_recorded", False):
             profile_store.record_result(
                 game_token, game.get("user_id"), "heatmap", "complete",
@@ -3291,6 +3355,7 @@ def heatmap_check():
             "totalScore": game["score"],
             "heated_count": len(game["heated"]),
             "finished": game["finished"],
+            "ad_break": public_ad_break(game),
         })
 
 
@@ -4510,6 +4575,22 @@ def socket_leave_game_room():
 # TIKI TAKA TOE SOCKET.IO (isolated room namespace)
 # ==================================================
 
+def run_tiki_turn_timer(room_code, match_id):
+    while True:
+        socketio.sleep(0.5)
+        with tiki_rooms_lock:
+            room = tiki_rooms.get(room_code)
+            if not room or room["match_id"] != match_id:
+                return
+            state = room["state"]
+            if state["finished"]:
+                return
+            changed = expire_tiki_turn(state)
+            public_state = serialize_tiki_state(state) if changed else None
+        if public_state:
+            socketio.emit("tiki_game_state", public_state, to=room_code)
+
+
 def find_tiki_socket_room(socket_id):
     for room_code, room in tiki_rooms.items():
         if socket_id in room["players"]:
@@ -4588,6 +4669,7 @@ def tiki_find_random_match():
             "player_names": names, "match_id": uuid.uuid4().hex, "matchmaking": True,
         }
         public_state = serialize_tiki_state(state)
+        match_id = tiki_rooms[room_code]["match_id"]
 
     socketio.server.enter_room(opponent["sid"], room_code, namespace="/")
     join_room(room_code)
@@ -4596,6 +4678,7 @@ def tiki_find_random_match():
     }, to=opponent["sid"])
     emit("tiki_matchmaking_found", {"room_code": room_code, "player_number": 2})
     socketio.emit("tiki_game_ready", {"room_code": room_code, "state": public_state}, to=room_code)
+    socketio.start_background_task(run_tiki_turn_timer, room_code, match_id)
 
 
 @socketio.on("tiki_cancel_random_match")
@@ -4657,9 +4740,11 @@ def tiki_join_room(data):
         )
         room["state"]["starting_player"] = 1
         public_state = serialize_tiki_state(room["state"])
+        match_id = room["match_id"]
     join_room(room_code)
     emit("tiki_room_joined", {"room_code": room_code, "player_number": 2})
     socketio.emit("tiki_game_ready", {"room_code": room_code, "state": public_state}, to=room_code)
+    socketio.start_background_task(run_tiki_turn_timer, room_code, match_id)
 
 
 @socketio.on("tiki_submit_answer")
@@ -4727,12 +4812,14 @@ def tiki_rematch_request():
             room["match_id"] = uuid.uuid4().hex
             room["rematch_ready"] = {1: False, 2: False}
             public_state = serialize_tiki_state(room["state"])
+            match_id = room["match_id"]
         else:
             public_state = None
         ready = dict(room["rematch_ready"])
     socketio.emit("tiki_rematch_status", {"accepted": True, "started": started, "ready": ready}, to=room_code)
     if started:
         socketio.emit("tiki_rematch_started", {"state": public_state}, to=room_code)
+        socketio.start_background_task(run_tiki_turn_timer, room_code, match_id)
 
 
 @socketio.on("tiki_leave_room")

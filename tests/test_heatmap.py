@@ -272,6 +272,8 @@ def main():
     }).get_json()
     assert completion["finished"]
     assert completion["heated_count"] == 30
+    assert completion["ad_break"]["eligible"] is True
+    assert completion["ad_break"]["game_mode"] == "heatmap"
 
     css = client.get("/static/heatmap.css").data.decode("utf-8")
     js = client.get("/static/heatmap.js").data.decode("utf-8")
@@ -280,7 +282,7 @@ def main():
     assert "reheat-pulse" in css and "data.reheated" in js
     assert "showWrongFeedback" in js and "score-penalty-feedback" in css
     assert "data.totalScore ?? data.score" in js
-    assert "heat-help-4" in html
+    assert "heat-ads-1" in html
     assert "scorePenaltyFeedback" in html
     assert "modal.getAnimations({subtree: true})" in js
     assert "afterClose" in js and "showWrongFeedback(penalty)" in js

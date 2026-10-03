@@ -174,7 +174,11 @@
       document.getElementById("finalCorrect").textContent = `${result.correct_count}/11`;
       document.getElementById("finalMissed").textContent = result.missed_count;
       document.getElementById("finalErrors").textContent = result.errors;
-      setTimeout(() => resultModal.classList.remove("hidden"), 1100);
+      const reveal = () => resultModal.classList.remove("hidden");
+      setTimeout(() => {
+        if (window.MatchAds) window.MatchAds.present(result.ad_break, reveal);
+        else reveal();
+      }, 1100);
     }
   }
 

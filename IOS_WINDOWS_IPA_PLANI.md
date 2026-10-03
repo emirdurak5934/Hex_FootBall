@@ -61,8 +61,8 @@ flowchart LR
 
 1. Apple Account'ta iki aşamalı doğrulamayı aç.
 2. Kalıcı TestFlight ve App Store dağıtımı için Apple Developer Program'a katıl.
-3. Uygulama adı ve benzersiz Bundle ID belirle; planlanan değer:
-   `app.edynfootball.ios`.
+3. Uygulama adı ve benzersiz Bundle ID belirle; kullanılan değer:
+   `app.edynfootball.mobile`.
 4. Kaynak kod için özel bir Git deposu hazırla.
 
 Seçilen depo: `https://github.com/emirdurak5934/Hex_FootBall`
@@ -126,6 +126,24 @@ Sideloadly bu IPA'yı ücretsiz Apple hesabıyla imzalayıp USB üzerinden telef
 kurar. Ücretsiz provisioning profile yedi gün sonra sona erdiğinden aynı Apple
 hesabıyla yeniden sideload gerekir.
 
+### İlk ücretsiz cihaz testinin sonucu — 13 Eylül 2026
+
+- GitHub Actions simulator doğrulaması başarıyla tamamlandı.
+- GitHub Actions cihaz hedefli ARM64 imzasız IPA'yı başarıyla üretti.
+- IPA Windows'a indirildi ve teknik paket kontrollerinden geçti.
+- Web sürümü iTunes ve iCloud, Apple Mobile Device Support, Bonjour ve
+  Sideloadly kuruldu.
+- iPhone 13 USB üzerinden Apple sürücüleriyle algılandı.
+- IPA ücretsiz Apple hesabıyla Sideloadly üzerinden imzalandı ve telefona
+  kuruldu.
+- EDYN Football iPhone'da bağımsız uygulama olarak başarıyla açıldı.
+- Geçici Quick Tunnel sunucusuna uygulama içinden bağlantı sağlandı.
+
+Bu sonuç, Windows → GitHub → bulut macOS/Xcode → imzasız IPA → Windows
+Sideloadly → iPhone zincirinin çalıştığını doğrular. App Store dağıtımı için
+kalıcı alan adı/backend, ücretli Apple Developer üyeliği, App Store Connect
+imzalama ve TestFlight aşamaları hâlâ beklemektedir.
+
 ### 6. App Store hazırlığı
 
 1. Uygulama simgesi, ekran görüntüleri, açıklama, destek ve gizlilik adreslerini
@@ -145,7 +163,8 @@ hesabıyla yeniden sideload gerekir.
 | 2 | Kalıcı backend | Sabit HTTPS/WSS adresi ve sağlık kontrolü var |
 | 3 | Capacitor iOS projesi | Mobil başlatıcı hazır; Xcode workspace bulut macOS CI'da üretilebiliyor |
 | 4 | İmzalı build | App Store Connect build'i kabul ediyor |
-| 5 | TestFlight kurulumu | iPhone 13'te tam maç tamamlanıyor |
+| 5A | Ücretsiz sideload cihaz testi | Tamamlandı: EDYN Football iPhone 13'te uygulama olarak açıldı |
+| 5B | TestFlight kurulumu | Ücretli geliştirici hesabıyla iPhone 13'te tam maç tamamlanıyor |
 | 6 | App Store sürümü | İnceleme gereksinimleri tamamlanıyor |
 
 ## Şimdilik yapılmayacaklar

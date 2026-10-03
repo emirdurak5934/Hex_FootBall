@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1480" viewBox="0 0 1600 1480" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1640" viewBox="0 0 1600 1640" role="img" aria-labelledby="title desc">
   <title id="title">FootballDatabase V2 iş akışı ve mimari şeması</title>
-  <desc id="desc">Kullanıcıdan Flask ve Socket.IO katmanlarına, oyun modlarına, veri kaynaklarına, hesap sistemine ve geliştirme sürecine uzanan proje akışı.</desc>
+  <desc id="desc">Kullanıcıdan Flask ve Socket.IO katmanlarına, oyun modlarına, veri kaynaklarına, hesap sistemine ve Windows üzerinden iPhone cihaz testine uzanan proje akışı.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L0,6 L9,3 z" fill="#667085"/>
@@ -34,7 +34,7 @@
   <rect class="group" x="40" y="140" width="1520" height="630"/>
 
   <rect class="node-start" x="650" y="165" width="300" height="68" rx="34"/>
-  <text class="label" x="800" y="194">Kullanıcı / Tarayıcı</text>
+  <text class="label" x="800" y="194">Kullanıcı / Tarayıcı / iOS Uygulaması</text>
   <text class="small" x="800" y="208">Başlatıcı: server_olusturucu.py</text>
   <text class="small" x="800" y="223">Cloudflare HTTPS tüneli veya yerel ağ</text>
 
@@ -91,7 +91,7 @@
 
   <rect class="node" x="945" y="560" width="230" height="78" rx="12"/>
   <text class="label" x="1060" y="591">Tiki Taka Toe</text>
-  <text class="small" x="1060" y="613">3 × 3 kriter gridi</text>
+  <text class="small" x="1060" y="613">25 kulüp · ülke · kupa</text>
 
   <path class="edge" d="M555 508 L220 560"/>
   <path class="edge" d="M555 508 L500 560"/>
@@ -175,8 +175,8 @@
   <path class="edge-dash" d="M720 1168 L720 1185 L465 1185 L465 1148"/>
   <text class="edge-label" x="610" y="1178">Hayır — düzelt</text>
 
-  <text class="section" x="55" y="1260">WINDOWS → BULUT macOS → TESTFLIGHT → APP STORE HEDEFİ</text>
-  <rect class="group" x="40" y="1275" width="1520" height="155"/>
+  <text class="section" x="55" y="1260">WINDOWS → BULUT macOS → IPA / TESTFLIGHT → iPHONE → APP STORE</text>
+  <rect class="group" x="40" y="1275" width="1520" height="315"/>
 
   <rect class="node" x="75" y="1320" width="245" height="70" rx="12"/>
   <text class="label" x="197" y="1348">Windows Geliştirme</text>
@@ -202,4 +202,23 @@
   <path class="edge" d="M620 1355 L675 1355"/>
   <path class="edge" d="M920 1355 L975 1355"/>
   <path class="edge" d="M1220 1355 L1275 1355"/>
+
+  <path class="edge" d="M797 1390 L797 1450"/>
+
+  <rect class="node-tool" x="675" y="1450" width="245" height="78" rx="12"/>
+  <text class="label" x="797" y="1478">GitHub Actions</text>
+  <text class="small" x="797" y="1500">ARM64 imzasız IPA</text>
+
+  <rect class="node-alt" x="975" y="1450" width="245" height="78" rx="12"/>
+  <text class="label" x="1097" y="1478">Windows / Sideloadly</text>
+  <text class="small" x="1097" y="1500">Ücretsiz Apple ID ile imza</text>
+
+  <rect class="node-end" x="1275" y="1450" width="245" height="78" rx="34"/>
+  <text class="label" x="1397" y="1478">iPhone 13</text>
+  <text class="small" x="1397" y="1500">Uygulama açıldı — BAŞARILI</text>
+
+  <path class="edge" d="M920 1489 L975 1489"/>
+  <path class="edge" d="M1220 1489 L1275 1489"/>
+
+  <text class="edge-label" x="470" y="1548">İlk cihaz testi: 13 Eylül 2026 — geçici Quick Tunnel</text>
 </svg>

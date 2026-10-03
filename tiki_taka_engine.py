@@ -10,12 +10,18 @@ from collections import defaultdict
 
 DEFAULT_CLUBS = [
     "Arsenal", "Liverpool", "Manchester United", "Manchester City",
-    "Tottenham Hotspur", "Newcastle United", "Chelsea", "Sevilla",
+    "Tottenham Hotspur", "Chelsea", "Sevilla",
     "Atletico Madrid", "Barcelona", "Real Madrid", "AC Milan",
     "Inter Milan", "AS Roma", "Napoli", "Juventus",
-    "Paris Saint-Germain", "AS Monaco", "Bayern Munich",
+    "Paris Saint-Germain", "Bayern Munich",
     "Borussia Dortmund", "Benfica", "Sporting CP", "Ajax",
     "Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor",
+]
+
+ROW_CLUBS = [
+    "Arsenal", "Liverpool", "Manchester United", "Manchester City",
+    "Chelsea", "Barcelona", "Real Madrid", "Juventus",
+    "Paris Saint-Germain", "Bayern Munich",
 ]
 
 DEFAULT_NATIONALITIES = [
@@ -62,6 +68,9 @@ class TikiTakaEngine:
             "nationality": self._available("nationality", DEFAULT_NATIONALITIES),
             "trophy": self._available("trophy", DEFAULT_TROPHIES),
         }
+        row_keys = {self._canonical("club", label) for label in ROW_CLUBS}
+        self.row_clubs = [item for item in self.pools["club"]
+                          if item["key"] in row_keys]
 
     @staticmethod
     def _alias_map(groups):
@@ -132,17 +141,12 @@ class TikiTakaEngine:
                 (item["type"], item.get("key") or self._canonical(item["type"], item["label"]))
                 for item in previous["rows"] + previous["columns"]
             )
-        column_patterns = [
-            ("club", "nationality", "trophy"),
-            ("club", "club", "nationality"),
-            ("club", "club", "trophy"),
-        ]
+        column_types = ("club", "nationality", "trophy")
         for required in (minimum_answers, 1):
             for _ in range(max_attempts):
-                rows = self.rng.sample(self.pools["club"], 3)
-                pattern = self.rng.choice(column_patterns)
+                rows = self.rng.sample(self.row_clubs, 3)
                 columns = []
-                for kind in pattern:
+                for kind in column_types:
                     choices = [item for item in self.pools[kind] if item not in columns]
                     columns.append(self.rng.choice(choices))
                 valid, counts = self.validate_board(rows, columns, required)
@@ -153,4 +157,3 @@ class TikiTakaEngine:
                         "answer_counts": counts,
                     }
         raise RuntimeError("Oynanabilir Tiki Taka Toe tahtasi uretilemedi.")
-

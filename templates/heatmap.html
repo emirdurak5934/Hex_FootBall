@@ -116,6 +116,8 @@
             'scoreIndex': score_index
         } | tojson }};
     </script>
-    <script src="{{ url_for('static', filename='heatmap.js', v='heat-help-4') }}"></script>
+    <script src="{{ url_for('match_ads.native_provider_script') }}"></script>
+    <script src="{{ url_for('match_ads.client_script') }}"></script>
+    <script src="{{ url_for('static', filename='heatmap.js', v='heat-ads-1') }}"></script>
 </body>
 </html>

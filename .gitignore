@@ -9,6 +9,7 @@ node_modules/
 .idea/
 server.stdout.log
 server.stderr.log
+reklam_kimligi.txt
 
 # Uygulamanın çalışması için yalnız bu iki veri dosyası gereklidir.
 data/*

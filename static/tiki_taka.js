@@ -2,7 +2,7 @@
     const config = window.TIKI_CONFIG;
     const $ = id => document.getElementById(id);
     const ids = [
-        "modePanel", "gamePanel", "criteriaGrid", "turnPill", "statusText",
+        "modePanel", "gamePanel", "criteriaGrid", "turnPill", "statusText", "turnClock",
         "modeLabel", "localButton", "randomMatchButton", "createRoomButton",
         "joinRoomButton", "roomCodeInput", "roomStatus", "playerModal",
         "closeModal", "modalTitle", "playerSearch", "searchResults",
@@ -19,8 +19,9 @@
     let matchmaking = false;
     let playerNames = {"1": "OYUNCU 1", "2": "OYUNCU 2"};
     let onlineAnswerTimer = null;
+    let turnEndsAt = null;
+    let localStatePolling = false;
     const socket = typeof io === "function" ? io() : null;
-    const typeName = type => ({club: "KULÜP", nationality: "MİLLİYET", trophy: "KUPA"}[type] || type);
 
     function displayName(number) {
         return playerNames[String(number)] || `OYUNCU ${number}`;
@@ -55,16 +56,36 @@
     function criterion(item) {
         const node = document.createElement("div");
         node.className = "criterion";
-        const small = document.createElement("small");
-        small.textContent = typeName(item.type);
-        const label = document.createElement("span");
-        label.textContent = item.label;
-        node.append(small, label);
+        node.setAttribute("aria-label", item.label);
+        node.title = item.label;
+        const logo = document.createElement("img");
+        logo.src = item.image;
+        logo.alt = item.label;
+        logo.loading = "eager";
+        node.appendChild(logo);
         return node;
     }
 
+    function updateTurnClock() {
+        if (!state.started || state.finished || turnEndsAt === null) {
+            el.turnClock.textContent = "00:00";
+            el.turnClock.classList.remove("urgent");
+            return;
+        }
+        const seconds = Math.max(0, Math.ceil((turnEndsAt - Date.now()) / 1000));
+        el.turnClock.textContent = `00:${String(seconds).padStart(2, "0")}`;
+        el.turnClock.classList.toggle("urgent", seconds <= 10);
+    }
+
     function render(next) {
+        if (state.started && next.started && state.turn_deadline && next.turn_deadline &&
+                next.turn_deadline < state.turn_deadline) return;
+        if (state.turn_deadline !== next.turn_deadline &&
+                !el.playerModal.classList.contains("hidden")) closeModal();
         state = next;
+        turnEndsAt = state.started && !state.finished
+            ? Date.now() + Number(state.turn_remaining_ms || 0) : null;
+        updateTurnClock();
         applyPlayerNames(state);
         el.criteriaGrid.innerHTML = "";
         const corner = document.createElement("div");
@@ -175,7 +196,22 @@
         el.resultModal.classList.remove("hidden");
     }
 
-    el.localButton.addEventListener("click", () => start("local"));
+    el.localButton.addEventListener("click", async () => {
+        el.localButton.disabled = true;
+        try {
+            const response = await fetch(config.startUrl, {
+                method: "POST", headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({game_token: config.gameToken})
+            });
+            const payload = await response.json();
+            if (!payload.accepted) throw new Error(payload.message || "Oyun başlatılamadı.");
+            state = payload.state;
+            start("local");
+        } catch (error) {
+            el.roomStatus.textContent = error.message;
+            el.localButton.disabled = false;
+        }
+    });
     el.closeModal.addEventListener("click", closeModal);
     el.playerModal.addEventListener("click", event => { if (event.target === el.playerModal) closeModal(); });
     el.createRoomButton.addEventListener("click", () => {
@@ -243,4 +279,22 @@
             render(payload.state);
         });
     }
+
+    setInterval(updateTurnClock, 250);
+    setInterval(async () => {
+        if (mode !== "local" || !state.started || state.finished || localStatePolling) return;
+        localStatePolling = true;
+        try {
+            const response = await fetch(config.stateUrl);
+            if (!response.ok) return;
+            const payload = await response.json();
+            if (payload.accepted && payload.state.turn_deadline !== state.turn_deadline) {
+                render(payload.state);
+            }
+        } catch (error) {
+            // Geçici bağlantı hatasında mevcut ekranı koru; sonraki aralıkta yeniden dene.
+        } finally {
+            localStatePolling = false;
+        }
+    }, 1000);
 })();

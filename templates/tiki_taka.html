@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiki Taka Toe — Football Match</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='tiki_taka.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tiki_taka.css', v='20260921-turntimer') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='tiki_taka_matchmaking.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='online_answer.css') }}">
 </head>
@@ -41,6 +41,7 @@
             <span id="tikiPlayerTwoName">OYUNCU 2</span>
         </div>
         <div class="match-info"><span id="modeLabel">TEK CİHAZ</span><strong id="statusText">P1 OYNUYOR</strong></div>
+        <div class="turn-timer" aria-label="Sıra süresi"><span>SIRA SÜRESİ</span><strong id="turnClock">00:30</strong></div>
         <div class="criteria-grid" id="criteriaGrid" aria-label="Tiki Taka Toe tahtası"></div>
     </section>
 </main>
@@ -68,12 +69,15 @@ window.TIKI_CONFIG = {{ {
     "gameToken": game_token,
     "initialState": initial_state,
     "searchUrl": url_for('search_players'),
+    "startUrl": url_for('tiki_local_start'),
+    "stateUrl": url_for('tiki_local_state', token=game_token),
     "moveUrl": url_for('tiki_local_move'),
     "rematchUrl": url_for('tiki_local_rematch')
 }|tojson }};
 </script>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('match_ads.native_provider_script') }}"></script>
 <script src="{{ url_for('match_ads.client_script') }}"></script>
-<script src="{{ url_for('static', filename='tiki_taka.js') }}"></script>
+<script src="{{ url_for('static', filename='tiki_taka.js', v='20260921-turntimer') }}"></script>
 </body>
 </html>
