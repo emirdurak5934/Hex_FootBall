@@ -34,6 +34,9 @@ def main():
     assert 'id="answerModal"' not in html and "wordle-grid" in html
     assert len(re.findall(r'class="keyboard-row"', html)) == 3
     assert "BACKSPACE" in script and "ENTER" in script and "keydown" in script
+    assert 'id="rewardHintButton"' in html
+    assert 'id="rewardHintLetters"' in html
+    assert "MatchAds.reward" in script and "/missing-xi/reward-hint" in script
     assert "/search_players" not in script and "player_id" not in script
     assert "for (let rowIndex = 0; rowIndex < 6" in script
     assert "overflow:hidden" in css and "sideRank" in script
@@ -72,6 +75,27 @@ def main():
 
     first = match["lineup"][0]
     target = app.missing_xi_wordle_name(first["answer"])
+    rejected_hint = client.post("/missing-xi/reward-hint", json={
+        "game_token": token, "match_id": match["id"], "slot": 0,
+        "reward_completed": False,
+    })
+    assert rejected_hint.status_code == 400
+    hint_response = client.post("/missing-xi/reward-hint", json={
+        "game_token": token, "match_id": match["id"], "slot": 0,
+        "reward_completed": True,
+    })
+    hint_result = hint_response.get_json()
+    assert hint_response.status_code == 200 and hint_result["accepted"]
+    assert len(hint_result["hint"]) == 2
+    assert len({item["index"] for item in hint_result["hint"]}) == 2
+    assert all(target[item["index"]] == item["letter"] for item in hint_result["hint"])
+    repeated_hint = client.post("/missing-xi/reward-hint", json={
+        "game_token": token, "match_id": match["id"], "slot": 0,
+        "reward_completed": True,
+    }).get_json()
+    assert len(repeated_hint["hint"]) == min(4, len(target))
+    assert len({item["index"] for item in repeated_hint["hint"]}) == len(repeated_hint["hint"])
+    assert all(target[item["index"]] == item["letter"] for item in repeated_hint["hint"])
     incomplete = post_guess(client, token, match["id"], 0, target[:-1])
     assert incomplete.status_code == 400
     assert incomplete.get_json()["attempt"] == 0 and game["attempts"] == {}
@@ -86,6 +110,11 @@ def main():
         assert result["attempt"] == attempt and result["errors"] == attempt
         assert result["guess"] == wrong
     assert result["exhausted"] and game["slot_states"][0] == "missed"
+    completed_hint = client.post("/missing-xi/reward-hint", json={
+        "game_token": token, "match_id": match["id"], "slot": 0,
+        "reward_completed": True,
+    })
+    assert completed_hint.status_code == 409
     assert post_guess(client, token, match["id"], 0, target).status_code == 409
 
     second = match["lineup"][1]
@@ -107,6 +136,45 @@ def main():
     new_page = client.get("/missing-xi")
     new_token = re.search(r'"gameToken":\s*"([^"]+)"', new_page.data.decode("utf-8")).group(1)
     assert new_token != token and app.missing_xi_games[new_token]["attempts"] == {}
+
+    odd_match = None
+    odd_player = None
+    for candidate_match in app.missing_xi_matches:
+        odd_player = next((
+            item for item in candidate_match["lineup"]
+            if len(app.missing_xi_wordle_name(item["answer"])) % 2 == 1
+        ), None)
+        if odd_player:
+            odd_match = candidate_match
+            break
+    assert odd_match is not None and odd_player is not None
+    odd_token = "odd-reward-hint-test"
+    app.missing_xi_games[odd_token] = {
+        "match_id": odd_match["id"], "slot_states": {}, "attempts": {},
+        "errors": 0, "finished": False, "reward_hints": {},
+        "user_id": None, "created_at": 0, "stats_recorded": False,
+    }
+    odd_target = app.missing_xi_wordle_name(odd_player["answer"])
+    previous_count = 0
+    last_increment = None
+    while previous_count < len(odd_target):
+        response = client.post("/missing-xi/reward-hint", json={
+            "game_token": odd_token, "match_id": odd_match["id"],
+            "slot": odd_player["slot"], "reward_completed": True,
+        })
+        result = response.get_json()
+        assert response.status_code == 200 and result["accepted"]
+        next_count = len(result["hint"])
+        last_increment = next_count - previous_count
+        assert last_increment in (1, 2)
+        previous_count = next_count
+    assert last_increment == 1
+    assert result["complete"] is True and result["remaining_letters"] == 0
+    extra_reward = client.post("/missing-xi/reward-hint", json={
+        "game_token": odd_token, "match_id": odd_match["id"],
+        "slot": odd_player["slot"], "reward_completed": True,
+    })
+    assert extra_reward.status_code == 409
     print("Kayip 11 full-screen Wordle tests passed")
 
 

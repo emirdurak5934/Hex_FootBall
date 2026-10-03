@@ -6,6 +6,7 @@ application only marks a match outcome and loads the client served here.
 
 import json
 import os
+import unicodedata
 import uuid
 
 from flask import Blueprint, Response
@@ -16,25 +17,51 @@ ADS_MODE = os.environ.get("FOOTBALL_AD_MODE", "test").strip().lower()
 ADS_ENABLED = os.environ.get("FOOTBALL_ADS_ENABLED", "1" if ADS_MODE == "test" else "0") == "1"
 ADS_PROVIDER = "admob" if ADS_ENABLED else "disabled"
 IOS_TEST_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910"
+IOS_TEST_REWARDED_ID = "ca-app-pub-3940256099942544/1712485313"
 
 
-def _local_interstitial_id():
-    """Read the developer's local ID file without making it source-controlled config."""
+def _normalized_label(value):
+    decomposed = unicodedata.normalize("NFKD", str(value or ""))
+    return "".join(
+        char.lower() for char in decomposed
+        if not unicodedata.combining(char) and char.isalnum()
+    )
+
+
+def _local_ad_ids():
+    """Read labeled ad unit IDs without exposing the ignored local config file."""
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reklam_kimligi.txt")
+    values = {"interstitial": "", "rewarded": ""}
     try:
         with open(path, "r", encoding="utf-8") as source:
             for line in source:
-                if "/" in line and "ca-app-pub-" in line:
-                    return line.split(":", 1)[-1].strip()
+                if "/" not in line or "ca-app-pub-" not in line:
+                    continue
+                separator = ":" if ":" in line else "="
+                label, value = line.split(separator, 1)
+                label = _normalized_label(label)
+                value = value.strip()
+                if "reward" in label or "odul" in label:
+                    values["rewarded"] = value
+                elif "gecis" in label or "interstitial" in label:
+                    values["interstitial"] = value
     except OSError:
         pass
-    return ""
+    return values
+
+
+LOCAL_AD_IDS = _local_ad_ids()
 
 
 ADS_UNIT_PATH = (
     IOS_TEST_INTERSTITIAL_ID
     if ADS_MODE == "test"
-    else os.environ.get("FOOTBALL_AD_UNIT_PATH", "").strip() or _local_interstitial_id()
+    else os.environ.get("FOOTBALL_AD_UNIT_PATH", "").strip() or LOCAL_AD_IDS["interstitial"]
+)
+REWARDED_AD_UNIT_PATH = (
+    IOS_TEST_REWARDED_ID
+    if ADS_MODE == "test"
+    else os.environ.get("FOOTBALL_REWARDED_AD_UNIT_PATH", "").strip() or LOCAL_AD_IDS["rewarded"]
 )
 
 COMPLETED_OUTCOMES = {"completed_board", "completed_timeout", "completed_win", "completed_draw"}
@@ -92,6 +119,17 @@ def _client_source():
     return Boolean(await provider.show({{...context, config}}));
   }}
 
+  async function reward(context = {{}}) {{
+    if (!config.enabled) return false;
+    const provider = window.FootballAdProvider;
+    if (!provider || typeof provider.showRewarded !== 'function') return false;
+    try {{
+      return Boolean(await provider.showRewarded({{...context, config}}));
+    }} catch (error) {{
+      return false;
+    }}
+  }}
+
   function present(adBreak, reveal) {{
     const decision = adBreak || {{eligible: true, match_id: `local-${{Date.now()}}`, timeout_ms: config.timeoutMs}};
     if (!decision.eligible) {{ reveal(); return; }}
@@ -116,7 +154,7 @@ def _client_source():
     requestProviderAd(decision).catch(() => false).finally(() => {{ clearTimeout(timer); finish(); }});
   }}
 
-  window.MatchAds = Object.freeze({{present, config: Object.freeze(config)}});
+  window.MatchAds = Object.freeze({{present, reward, config: Object.freeze(config)}});
 }})();
 """
 
@@ -126,6 +164,7 @@ def _native_provider_source():
         "enabled": ADS_ENABLED,
         "provider": ADS_PROVIDER,
         "adId": ADS_UNIT_PATH,
+        "rewardedAdId": REWARDED_AD_UNIT_PATH,
         "testing": ADS_MODE == "test",
         "loadTimeoutMs": min(4500, ADS_TIMEOUT_MS),
     })
@@ -138,6 +177,8 @@ def _native_provider_source():
   let initialization = null;
   let preparation = null;
   let preparedAdId = null;
+  let rewardPreparation = null;
+  let preparedRewardedAdId = null;
 
   function nativeAvailable() {{
     return Boolean(
@@ -197,6 +238,40 @@ def _native_provider_source():
     }}
   }}
 
+  async function prepareRewarded() {{
+    if (preparedRewardedAdId) return true;
+    if (rewardPreparation) return rewardPreparation;
+    rewardPreparation = (async () => {{
+      if (!(await initialize()) || !config.rewardedAdId) return false;
+      const loaded = await admob.prepareRewardVideoAd({{
+        adId: config.rewardedAdId,
+        isTesting: config.testing,
+      }});
+      preparedRewardedAdId = loaded?.adUnitId || config.rewardedAdId;
+      return true;
+    }})().catch(() => false).finally(() => {{ rewardPreparation = null; }});
+    return rewardPreparation;
+  }}
+
+  async function showRewarded() {{
+    if (!nativeAvailable() || !config.rewardedAdId) return false;
+    const loaded = await Promise.race([
+      prepareRewarded(),
+      new Promise(resolve => setTimeout(() => resolve(false), config.loadTimeoutMs)),
+    ]);
+    if (!loaded || !preparedRewardedAdId) return false;
+    const adId = preparedRewardedAdId;
+    preparedRewardedAdId = null;
+    try {{
+      const reward = await admob.showRewardVideoAd({{adId}});
+      return Boolean(reward);
+    }} catch (error) {{
+      return false;
+    }} finally {{
+      setTimeout(() => {{ prepareRewarded(); }}, 250);
+    }}
+  }}
+
   async function privacyOptions() {{
     if (!(await initialize())) return false;
     try {{
@@ -207,11 +282,17 @@ def _native_provider_source():
     }}
   }}
 
-  window.FootballAdProvider = Object.freeze({{show, prepare, privacyOptions, config}});
+  window.FootballAdProvider = Object.freeze({{
+    show, prepare, showRewarded, prepareRewarded, privacyOptions, config
+  }});
   if (document.readyState === 'loading') {{
-    document.addEventListener('DOMContentLoaded', () => {{ prepare(); }}, {{once: true}});
+    document.addEventListener('DOMContentLoaded', () => {{
+      prepare();
+      prepareRewarded();
+    }}, {{once: true}});
   }} else {{
     prepare();
+    prepareRewarded();
   }}
 }})();
 """

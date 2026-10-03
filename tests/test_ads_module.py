@@ -41,9 +41,12 @@ def main():
         assert "registerPlugin?.('AdMob')" in provider_source
         assert "prepareInterstitial" in provider_source
         assert "showInterstitial" in provider_source
+        assert "prepareRewardVideoAd" in provider_source
+        assert "showRewardVideoAd" in provider_source
         assert "requestConsentInfo" in provider_source
         assert "showPrivacyOptionsForm" in provider_source
         assert "ca-app-pub-3940256099942544/4411468910" in provider_source
+        assert "ca-app-pub-3940256099942544/1712485313" in provider_source
         assert provider_response.headers["Cache-Control"] == "no-store"
         syntax = subprocess.run(
             ["node", "--check", "-"], input=provider_source,

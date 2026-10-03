@@ -2825,6 +2825,12 @@ def home():
     )
 
 
+@app.get("/healthz")
+def healthz():
+    """Lightweight health check used by the production host."""
+    return jsonify({"status": "ok"})
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user():
@@ -3150,6 +3156,7 @@ def missing_xi():
         missing_xi_games[game_token] = {
             "match_id": match["id"], "slot_states": {},
             "attempts": {}, "errors": 0, "finished": False,
+            "reward_hints": {},
             "user_id": session.get("user_id"), "created_at": time.time(),
             "stats_recorded": False,
         }
@@ -3168,6 +3175,65 @@ def missing_xi():
     return render_template(
         "missing_xi.html", match=public_match, game_token=game_token
     )
+
+
+@app.route("/missing-xi/reward-hint", methods=["POST"])
+def missing_xi_reward_hint():
+    data = request.get_json(silent=True) or {}
+    game_token = str(data.get("game_token", "")).strip()
+    match_id = str(data.get("match_id", "")).strip()
+    if data.get("reward_completed") is not True:
+        return jsonify({"accepted": False, "message": "Reklam ödülü doğrulanamadı."}), 400
+    try:
+        slot = int(data.get("slot"))
+    except (TypeError, ValueError):
+        return jsonify({"accepted": False, "message": "Geçersiz oyuncu slotu."}), 400
+    with missing_xi_games_lock:
+        game = missing_xi_games.get(game_token)
+        if not game:
+            return jsonify({"accepted": False, "message": "Oyun bulunamadı."}), 404
+        if game["finished"]:
+            return jsonify({"accepted": False, "message": "Oyun tamamlandı."}), 409
+        if match_id and match_id != game["match_id"]:
+            return jsonify({"accepted": False, "message": "Maç bilgisi geçersiz."}), 400
+        if not 0 <= slot < 11:
+            return jsonify({"accepted": False, "message": "Geçersiz oyuncu slotu."}), 400
+        if slot in game["slot_states"]:
+            return jsonify({"accepted": False, "message": "Bu slot tamamlandı."}), 409
+        match = next(item for item in missing_xi_matches if item["id"] == game["match_id"])
+        answer = next(item for item in match["lineup"] if item["slot"] == slot)
+        target_name = missing_xi_wordle_name(answer["answer"])
+        hints = game.setdefault("reward_hints", {})
+        slot_hints = hints.setdefault(slot, [])
+        revealed_positions = {item["index"] for item in slot_hints}
+        available_positions = [
+            index for index in range(len(target_name))
+            if index not in revealed_positions
+        ]
+        if not available_positions:
+            return jsonify({
+                "accepted": False,
+                "message": "Oyuncu adındaki tüm harfler zaten açıldı.",
+            }), 409
+        positions = sorted(random.sample(
+            available_positions, min(2, len(available_positions))
+        ))
+        slot_hints.extend(
+            {"index": index, "letter": target_name[index]}
+            for index in positions
+        )
+        slot_hints.sort(key=lambda item: item["index"])
+        return jsonify({
+            "accepted": True,
+            "hint": slot_hints,
+            "letter_count": len(target_name),
+            "remaining_letters": len(target_name) - len(slot_hints),
+            "complete": len(slot_hints) == len(target_name),
+            "message": (
+                "Kalan harfler açıldı."
+                if len(positions) < 2 else "İki yeni harf açıldı."
+            ),
+        })
 
 
 @app.route("/missing-xi/check", methods=["POST"])

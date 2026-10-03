@@ -1,5 +1,7 @@
 Flask
 Flask-SocketIO
+gunicorn
+simple-websocket
 requests
 beautifulsoup4
 Pillow

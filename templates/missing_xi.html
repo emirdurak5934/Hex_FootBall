@@ -35,6 +35,10 @@
     <section id="wordleView" class="game-view wordle-view hidden" aria-label="Wordle tahmin ekranı">
       <button id="wordleBack" class="wordle-back" type="button">← GERİ</button>
       <div class="wordle-heading"><small>POZİSYON</small><h2 id="slotTitle">LB</h2><span id="attemptLabel">TAHMİN 1/6</span></div>
+      <div class="reward-hint-tools">
+        <button id="rewardHintButton" class="reward-hint-button" type="button">▶ REKLAM İZLE · 2 HARF AÇ</button>
+        <div id="rewardHintLetters" class="reward-hint-letters hidden" aria-label="Ödüllü reklam harf ipucu" aria-live="polite"></div>
+      </div>
       <div id="wordleGrid" class="wordle-grid" aria-label="6 tahmin satırı"></div>
       <p id="answerMessage" class="wordle-message" aria-live="polite"></p>
       <div id="screenKeyboard" class="screen-keyboard" aria-label="Ekran klavyesi">
@@ -51,6 +55,6 @@
   <script src="{{ url_for('static', filename='missing_xi_kits.js', v='1') }}"></script>
   <script src="{{ url_for('match_ads.native_provider_script') }}"></script>
   <script src="{{ url_for('match_ads.client_script') }}"></script>
-  <script src="{{ url_for('static', filename='missing_xi.js', v='ads-1') }}"></script>
+  <script src="{{ url_for('static', filename='missing_xi.js', v='reward-1') }}"></script>
 </body>
 </html>

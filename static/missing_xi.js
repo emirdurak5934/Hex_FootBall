@@ -6,13 +6,19 @@
   const grid = document.getElementById("wordleGrid");
   const message = document.getElementById("answerMessage");
   const resultModal = document.getElementById("resultModal");
+  const rewardHintButton = document.getElementById("rewardHintButton");
+  const rewardHintLetters = document.getElementById("rewardHintLetters");
   const slotStates = new Map();
   let activeSlot = null;
   let submitting = false;
+  let rewardPending = false;
 
   function stateFor(slot) {
     if (!slotStates.has(slot)) {
-      slotStates.set(slot, {attempts: 0, history: [], current: "", keyboard: {}});
+      slotStates.set(slot, {
+        attempts: 0, history: [], current: "", keyboard: {},
+        hint: null, rewardEarned: false,
+      });
     }
     return slotStates.get(slot);
   }
@@ -99,7 +105,31 @@
     });
   }
 
+  function renderRewardHint() {
+    const state = stateFor(activeSlot);
+    const length = Number(pitch.querySelector(`[data-slot="${activeSlot}"]`).dataset.letterCount);
+    const revealed = new Map((state.hint || []).map(item => [Number(item.index), item.letter]));
+    rewardHintLetters.replaceChildren();
+    for (let index = 0; index < length; index += 1) {
+      const cell = document.createElement("span");
+      cell.textContent = revealed.get(index) || "·";
+      if (revealed.has(index)) cell.classList.add("revealed");
+      rewardHintLetters.appendChild(cell);
+    }
+    rewardHintLetters.classList.toggle("hidden", !state.hint);
+    const allRevealed = revealed.size >= length;
+    rewardHintButton.disabled = allRevealed || rewardPending;
+    rewardHintButton.textContent = allRevealed
+      ? "✓ TÜM HARFLER AÇILDI"
+      : rewardPending
+        ? "REKLAM HAZIRLANIYOR…"
+        : state.hint
+          ? "▶ REKLAM İZLE · 2 HARF DAHA AÇ"
+          : "▶ REKLAM İZLE · 2 HARF AÇ";
+  }
+
   function showFieldView() {
+    if (rewardPending) return;
     wordleView.classList.add("leaving");
     setTimeout(() => {
       wordleView.classList.add("hidden"); wordleView.classList.remove("leaving");
@@ -112,7 +142,7 @@
     activeSlot = Number(slot.dataset.slot);
     message.textContent = "";
     document.getElementById("slotTitle").textContent = slot.dataset.position;
-    renderGrid(); renderKeyboard();
+    renderGrid(); renderKeyboard(); renderRewardHint();
     fieldView.classList.add("hidden");
     wordleView.classList.remove("hidden"); wordleView.classList.add("entering");
     setTimeout(() => wordleView.classList.remove("entering"), 220);
@@ -144,7 +174,7 @@
   }
 
   async function submitGuess() {
-    if (submitting || activeSlot === null) return;
+    if (submitting || rewardPending || activeSlot === null) return;
     const state = stateFor(activeSlot);
     const length = Number(pitch.querySelector(`[data-slot="${activeSlot}"]`).dataset.letterCount);
     if (state.current.length !== length) { message.textContent = "Tüm harfleri doldur."; return; }
@@ -182,6 +212,50 @@
     }
   }
 
+  async function requestRewardHint(slot, state) {
+    const response = await fetch("/missing-xi/reward-hint", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        game_token: data.gameToken,
+        match_id: data.match.id,
+        slot,
+        reward_completed: true,
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.accepted) throw new Error(result.message || "İpucu alınamadı.");
+    state.hint = result.hint;
+    state.rewardEarned = false;
+    message.textContent = result.message || "İki yeni harf açıldı.";
+  }
+
+  async function showRewardHint() {
+    if (rewardPending || submitting || activeSlot === null) return;
+    const slot = activeSlot;
+    const state = stateFor(slot);
+    const length = Number(pitch.querySelector(`[data-slot="${slot}"]`).dataset.letterCount);
+    if ((state.hint || []).length >= length) return;
+    rewardPending = true;
+    message.textContent = "";
+    renderRewardHint();
+    try {
+      if (!state.rewardEarned) {
+        if (!window.MatchAds || typeof window.MatchAds.reward !== "function") {
+          throw new Error("Ödüllü reklam yalnızca iPhone uygulamasında kullanılabilir.");
+        }
+        const earned = await window.MatchAds.reward({game_mode: "missing_xi", slot});
+        if (!earned) throw new Error("Reklam tamamlanmadı; ipucu verilmedi.");
+        state.rewardEarned = true;
+      }
+      await requestRewardHint(slot, state);
+    } catch (error) {
+      message.textContent = error.message || "İpucu şu anda kullanılamıyor.";
+    } finally {
+      rewardPending = false;
+      if (activeSlot === slot) renderRewardHint();
+    }
+  }
+
   pitch.addEventListener("click", event => {
     const slot = event.target.closest(".player-slot");
     if (!slot || slot.classList.contains("found") || slot.classList.contains("missed")) return;
@@ -194,6 +268,7 @@
     else if (key.dataset.key === "ENTER") submitGuess();
     else typeLetter(key.dataset.key);
   });
+  rewardHintButton.addEventListener("click", showRewardHint);
   document.addEventListener("keydown", event => {
     if (wordleView.classList.contains("hidden")) return;
     if (/^[a-zA-Z]$/.test(event.key)) typeLetter(event.key.toUpperCase());
