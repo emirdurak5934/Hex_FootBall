@@ -63,6 +63,8 @@ def main() -> None:
     assert "navigate," in bridge and "reload," in bridge and "remoteUrl," in bridge
     assert "saveTransitionSnapshot" not in bridge
     assert "window.parent.MobileShell" in bridge
+    assert "shell?.request" in bridge
+    assert "return shell.request(target, requestOptions)" in bridge
     assert "shell?.navigate" in bridge
     assert "shell?.render" in bridge
     assert "document.documentElement.dataset.remotePath" in bridge
@@ -96,6 +98,7 @@ def main() -> None:
     assert 'sessionStorage.getItem(INITIALIZED_KEY) === "1"' in mobile_ads
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
     assert "setStableViewportHeight()" in launcher
+    assert "request: (input, options) => window.fetch(input, options)" in launcher
     assert 'style.setProperty("--app-viewport-height"' in launcher
     assert "window.requestAnimationFrame(() => window.requestAnimationFrame(() =>" in launcher
     assert "Bulunduğun ekran korunuyor." in launcher

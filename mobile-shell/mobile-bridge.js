@@ -30,11 +30,17 @@
     return input;
   }
 
-  window.fetch = (input, options = {}) => nativeFetch(remoteUrl(input), {
-    credentials: "include",
-    ...options,
-    headers: {"X-Football-Mobile-Shell": "1", ...(options.headers || {})},
-  });
+  window.fetch = (input, options = {}) => {
+    const requestOptions = {
+      credentials: "include",
+      ...options,
+      headers: {"X-Football-Mobile-Shell": "1", ...(options.headers || {})},
+    };
+    const target = remoteUrl(input);
+    const shell = hostShell();
+    if (shell?.request) return shell.request(target, requestOptions);
+    return nativeFetch(target, requestOptions);
+  };
 
   document.querySelectorAll('script[type="application/json"][data-mobile-config]').forEach(node => {
     try {

@@ -237,6 +237,7 @@
   }
 
   window.MobileShell = Object.freeze({
+    request: (input, options) => window.fetch(input, options),
     navigate: target => loadRoute(target),
     render: (html, responseUrl) => loadRoute(responseUrl || requestedPath(), html, responseUrl),
     reload: target => loadRoute(target || requestedPath()),
