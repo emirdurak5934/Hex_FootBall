@@ -273,8 +273,9 @@ def _native_provider_source():
   }}
 
   async function privacyOptions() {{
-    if (!(await initialize())) return false;
+    if (!nativeAvailable()) return false;
     try {{
+      await initialize();
       await admob.showPrivacyOptionsForm();
       return true;
     }} catch (error) {{

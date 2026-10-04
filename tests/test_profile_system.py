@@ -15,6 +15,7 @@ from contextlib import closing
 
 import app
 from profile_store import GAME_MODES, ProfileStore, level_for_xp
+from friend_store import FriendStore
 
 
 def csrf(client):
@@ -63,6 +64,10 @@ def main():
         assert 'static/videos/' in login_html and '.mp4' in login_html
         assert 'autoplay' in login_html and 'playsinline' in login_html and 'muted' in login_html
         assert "E-posta" not in login_html and 'name="email"' not in login_html
+        assert 'href="/privacy"' in login_html and 'href="/support"' in login_html
+        assert client.get("/privacy").status_code == 200
+        assert client.get("/terms").status_code == 200
+        assert client.get("/support").status_code == 200
         token = csrf(client)
 
         response = client.post("/register", data={
@@ -91,7 +96,9 @@ def main():
         assert client.post("/login", data={
             "csrf_token": csrf(client), "identity": "TestKaptan", "password": "safe-pass-123",
         }).status_code == 302
-        assert client.get("/profile").status_code == 200
+        profile_html = client.get("/profile").get_data(as_text=True)
+        assert 'id="privacyOptionsButton"' in profile_html
+        assert "/ads/native-provider.js" in profile_html
 
         token = csrf(client)
         updated = client.post("/api/profile", json={
@@ -121,6 +128,10 @@ def main():
         assert all(profile["games"][mode]["played"] == 0 for mode in ("missing_xi", "tiki_taka_toe"))
 
         opponent = store.create_user("Opponent", "safe-pass-789")
+        social_store = FriendStore(store)
+        social_store.send_friend_request(user_id, opponent["id"])
+        social_store.accept_friend_request(opponent["id"], user_id)
+        assert social_store.are_friends(user_id, opponent["id"])
         room = {
             "state": app.create_match_state(),
             "user_ids": {1: user_id, 2: opponent["id"]},
@@ -140,6 +151,30 @@ def main():
         app.record_possession_results("ROOM01", rematch)
         assert store.profile(user_id)["games"]["possession"]["played"] == 6
 
+        delete_token = csrf(client)
+        wrong_delete = client.post("/api/profile/delete", json={
+            "current_password": "wrong-pass",
+        }, headers={"X-CSRF-Token": delete_token})
+        assert wrong_delete.status_code == 400
+        assert store.get_user(user_id) is not None
+        deleted = client.post("/api/profile/delete", json={
+            "current_password": "new-safe-pass-456",
+        }, headers={"X-CSRF-Token": delete_token})
+        assert deleted.status_code == 200 and deleted.json["success"] is True
+        assert store.get_user(user_id) is None
+        with store.connection() as database:
+            assert database.execute(
+                "SELECT COUNT(*) FROM game_stats WHERE user_id=?", (user_id,)
+            ).fetchone()[0] == 0
+            assert database.execute(
+                "SELECT COUNT(*) FROM match_results WHERE user_id=?", (user_id,)
+            ).fetchone()[0] == 0
+            assert database.execute(
+                "SELECT COUNT(*) FROM friendships WHERE requester_id=? OR addressee_id=?",
+                (user_id, user_id),
+            ).fetchone()[0] == 0
+        assert client.get("/profile").status_code == 302
+
         anonymous = app.app.test_client()
         assert anonymous.get("/api/profile").status_code == 401
         assert anonymous.get("/profile").status_code == 302
@@ -150,6 +185,7 @@ def main():
             "idempotent_results": True, "win_loss_draw_streak_rate": True,
             "xp_level": True, "four_empty_game_stats": True,
             "forfeit_and_rematch_results": True,
+            "account_deletion_and_cascade": True,
         })
 
 

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>{% if page == 'privacy' %}Gizlilik Politikası{% elif page == 'terms' %}Kullanım Koşulları{% else %}Destek{% endif %} — Football Match: HEX</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='legal.css', v='1') }}">
+</head>
+<body>
+  <main class="legal-shell">
+    <a class="back" href="{{ url_for('home') if current_user() else url_for('login') }}">‹ GERİ</a>
+    <p class="eyebrow">FOOTBALL MATCH: HEX</p>
+
+    {% if page == 'privacy' %}
+    <h1>Gizlilik Politikası</h1>
+    <p class="updated">Son güncelleme: 4 Ekim 2026</p>
+    <section><h2>Toplanan bilgiler</h2><p>Hesap oluşturduğunda kullanıcı adını, tek yönlü olarak özetlenen parolanı ve seçtiğin avatarı işleriz. Oyun sonuçları, puanlar, istatistikler, arkadaşlıklar ve çevrimiçi oyun hareketleri hizmetin çalışması için saklanabilir.</p></section>
+    <section><h2>Teknik bilgiler ve reklamlar</h2><p>Güvenlik, hata giderme ve hizmetin işletilmesi amacıyla IP adresi, istek zamanı ve temel teknik günlükler barındırma sağlayıcımız tarafından işlenebilir. Google AdMob; yalnızca izin durumuna ve geçerli gizlilik tercihlerine uygun şekilde cihaz, reklam etkileşimi ve tanılama bilgileri işleyebilir.</p></section>
+    <section><h2>Kullanım amaçları</h2><p>Bilgiler; hesabını işletmek, oyunları ve çevrimiçi eşleşmeleri çalıştırmak, istatistikleri göstermek, hile ve kötüye kullanımı önlemek, hataları gidermek ve izin verilen reklamları sunmak için kullanılır.</p></section>
+    <section><h2>Hizmet sağlayıcılar</h2><p>Sunucu ve veritabanı barındırması için Render, reklam hizmetleri için Google AdMob kullanılmaktadır. Bu sağlayıcılar bilgileri kendi koşulları ve geçerli hukuk çerçevesinde işleyebilir.</p></section>
+    <section><h2>Saklama ve silme</h2><p>Hesap bilgileri hesabın açık olduğu süre boyunca saklanır. Profil ekranındaki “Hesabımı Sil” seçeneğiyle hesabını ve hesabına bağlı oyun verilerini kalıcı olarak silebilirsin. Güvenlik veya hukuki yükümlülükler nedeniyle tutulması zorunlu sınırlı kayıtlar geçerli süre boyunca saklanabilir.</p></section>
+    <section><h2>Tercihler ve iletişim</h2><p>Reklam gizlilik tercihlerini uygulamadaki ilgili seçenekten değiştirebilirsin. Soruların veya veri taleplerin için <a href="{{ url_for('support_page') }}">Destek</a> sayfasını kullan.</p></section>
+
+    {% elif page == 'terms' %}
+    <h1>Kullanım Koşulları</h1>
+    <p class="updated">Son güncelleme: 4 Ekim 2026</p>
+    <section><h2>Hizmet</h2><p>Football Match: HEX futbol bilgisine dayalı eğlence oyunları sunar. Futbolcu, takım ve müsabaka bilgileri yalnızca oyun amacıyla sunulur; resmî istatistik veya profesyonel tavsiye niteliğinde değildir.</p></section>
+    <section><h2>Hesap güvenliği</h2><p>Hesap bilgilerini doğru tutmak ve parolanı korumak senin sorumluluğundadır. Başkasının hesabına erişmeye, oyunu manipüle etmeye veya hizmetin çalışmasını engellemeye yönelik davranışlar hesabın sınırlandırılmasına neden olabilir.</p></section>
+    <section><h2>Uygun davranış</h2><p>Kullanıcı adlarında ve oyuncular arası etkileşimlerde hakaret, tehdit, ayrımcılık, yanıltma veya başkasının haklarını ihlal eden içerik kullanılamaz.</p></section>
+    <section><h2>Reklamlar</h2><p>Uygulama geçiş ve ödüllü reklamlar gösterebilir. Ödüllü reklamı izlemek isteğe bağlıdır. Bir reklamın kullanılamaması, tamamlanmış bir maçtan sonra uygulamada ilerlemeyi kalıcı olarak engellemez.</p></section>
+    <section><h2>Değişiklikler ve erişilebilirlik</h2><p>Hizmeti güvenli ve çalışır tutmak için oyun içeriği, sunucu özellikleri ve bu koşullar güncellenebilir. Planlı bakım veya kontrolümüz dışındaki nedenlerle hizmet zaman zaman kesintiye uğrayabilir.</p></section>
+    <section><h2>İletişim</h2><p>Bu koşullarla ilgili sorular için <a href="{{ url_for('support_page') }}">Destek</a> sayfasını kullan.</p></section>
+
+    {% else %}
+    <h1>Destek</h1>
+    <p>Hesap, çevrimiçi oyun, reklam veya teknik sorunlar için aşağıdaki iletişim kanalını kullanabilirsin.</p>
+    {% if support_email %}
+    <a class="contact" href="mailto:{{ support_email }}?subject=Football%20Match%3A%20HEX%20Destek">{{ support_email }}</a>
+    {% else %}
+    <div class="setup-warning"><strong>Yayın öncesi yapılandırma gerekli</strong><p>Destek e-posta adresi henüz sunucu ortamına eklenmedi. Render üzerinde <code>FOOTBALL_SUPPORT_EMAIL</code> değişkeni tanımlanmalıdır.</p></div>
+    {% endif %}
+    <section><h2>Talebine ekle</h2><ul><li>Kullanıcı adın (parolanı gönderme)</li><li>Oyun modu ve sorunun gerçekleştiği adım</li><li>Mümkünse ekran görüntüsü</li><li>Cihaz ve iOS sürümü</li></ul></section>
+    <section><h2>Hesap silme</h2><p>Profil → Düzenle → Hesabımı Sil yolunu kullan. Parolanı doğruladıktan sonra hesap ve ilişkili oyun verileri kalıcı olarak silinir.</p></section>
+    {% endif %}
+
+    <nav class="legal-nav" aria-label="Yasal bağlantılar">
+      <a href="{{ url_for('privacy_policy') }}">Gizlilik</a>
+      <a href="{{ url_for('terms_of_use') }}">Koşullar</a>
+      <a href="{{ url_for('support_page') }}">Destek</a>
+    </nav>
+  </main>
+</body>
+</html>

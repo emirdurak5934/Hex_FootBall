@@ -209,6 +209,23 @@ class ProfileStore:
                        (generate_password_hash(new_password), user_id))
             db.commit()
 
+    def delete_account(self, user_id, current_password):
+        """Permanently delete an account and all rows linked by foreign keys."""
+        if not user_id or not current_password:
+            raise ValueError("Hesabı silmek için mevcut parolanı girmelisin.")
+        with self.connection() as db:
+            row = db.execute(
+                "SELECT password_hash FROM users WHERE id=?", (user_id,)
+            ).fetchone()
+            if not row or not check_password_hash(row["password_hash"], current_password):
+                raise ValueError("Mevcut parola yanlış.")
+            db.execute("BEGIN IMMEDIATE")
+            deleted = db.execute("DELETE FROM users WHERE id=?", (user_id,))
+            db.commit()
+        if not deleted.rowcount:
+            raise ValueError("Hesap bulunamadı.")
+        return True
+
     def record_result(self, match_id, user_id, game_mode, result, **metrics):
         if not user_id or game_mode not in GAME_MODES or result not in XP_REWARDS:
             return False

@@ -57,6 +57,8 @@ app.config.update(
     ),
 )
 
+SUPPORT_EMAIL = os.environ.get("FOOTBALL_SUPPORT_EMAIL", "").strip()
+
 PROFILE_DB = os.environ.get(
     "FOOTBALL_MATCH_PROFILE_DB",
     os.path.join(app.instance_path, "football_match.sqlite3"),
@@ -2835,6 +2837,27 @@ def healthz():
     return jsonify({"status": "ok"})
 
 
+@app.get("/privacy")
+def privacy_policy():
+    return render_template(
+        "legal.html", page="privacy", support_email=SUPPORT_EMAIL,
+    )
+
+
+@app.get("/terms")
+def terms_of_use():
+    return render_template(
+        "legal.html", page="terms", support_email=SUPPORT_EMAIL,
+    )
+
+
+@app.get("/support")
+def support_page():
+    return render_template(
+        "legal.html", page="support", support_email=SUPPORT_EMAIL,
+    )
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user():
@@ -2973,6 +2996,22 @@ def change_password_api():
         return jsonify({"success": True})
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
+
+
+@app.post("/api/profile/delete")
+def delete_profile_api():
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Giriş gerekli."}), 401
+    if not valid_csrf():
+        return jsonify({"error": "Geçersiz güvenlik anahtarı."}), 400
+    data = request.get_json(silent=True) or request.form
+    try:
+        profile_store.delete_account(user["id"], data.get("current_password", ""))
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    session.clear()
+    return jsonify({"success": True, "redirect": url_for("login")})
 
 
 def social_user_or_401():
