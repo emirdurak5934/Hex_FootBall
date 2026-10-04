@@ -35,7 +35,35 @@ def first_empty_move(state):
     }
 
 
+def assert_completed_match_exit_is_not_forfeit():
+    first = app.socketio.test_client(app.app)
+    second = app.socketio.test_client(app.app)
+    try:
+        first.emit("create_room")
+        room_code = last_payload(events_by_name(first, "room_created"))["room_code"]
+        second.emit("join_game_room", {"room_code": room_code})
+        first.get_received()
+        second.get_received()
+        room = app.online_rooms[room_code]
+        room["state"].update(finished=True, winner=1, end_reason="completed_board")
+        second.disconnect()
+        received = first.get_received()
+        notice = last_payload([
+            event for event in received if event["name"] == "opponent_left"
+        ])
+        assert not notice["match_finished"]
+        assert notice["match_was_already_finished"]
+        assert "hükmen" not in notice["message"].lower()
+        assert room["state"]["end_reason"] == "completed_board"
+    finally:
+        if first.is_connected():
+            first.disconnect()
+        if second.is_connected():
+            second.disconnect()
+
+
 def main():
+    assert_completed_match_exit_is_not_forfeit()
     first = app.socketio.test_client(app.app)
     second = app.socketio.test_client(app.app)
     try:

@@ -182,6 +182,8 @@ Sideloadly ile yeniden imzalanıp kurulmalıdır.
 - Uygulamanın App Store’da yayınlanacak bir iOS uygulamasına dönüştürülmesi hedeflendi.
 - iOS reklam hedefi; `ads.py` sunucu politikası, WebView/native köprü, native `AdService.swift`, Google Mobile Ads SDK, UMP izin yönetimi ve AdMob interstitial akışı olarak planlandı.
 - iOS sürümünde reklamın maç sırasında önceden yüklenmesi, tamamlanan maç sonunda gösterilmesi ve 5 saniye içinde hazır değilse sonuç ekranına geçilmesi kararlaştırıldı.
+- Mobil uygulamada reklam yüklenmeden önce kişiselleştirilmiş veya kişiselleştirmesiz reklam tercihi alınır; tercih cihazda saklanır ve Profil ekranından değiştirilebilir. Kişiselleştirilmiş reklam seçildiğinde iOS izleme izni ayrıca istenir.
+- Tamamlanmış çevrimiçi maçtan ayrılma, aktif maç bağlantı kopmasından ayrı değerlendirilir; bitmiş maç için rakibe hükmen galibiyet bildirimi gönderilmez.
 
 ## 13 Eylül 2026 çalışma günlüğü
 

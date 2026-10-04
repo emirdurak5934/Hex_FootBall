@@ -28,6 +28,7 @@ def main():
     required = (
         DESTINATION / "index.html",
         DESTINATION / "launcher.js",
+        DESTINATION / "privacy-consent.js",
         DESTINATION / "mobile-bridge.js",
         DESTINATION / "mobile-ads.js",
         DESTINATION / "vendor" / "socket.io.min.js",

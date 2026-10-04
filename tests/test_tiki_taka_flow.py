@@ -129,10 +129,35 @@ def test_online():
             second.disconnect()
 
 
+def test_completed_online_exit_is_not_forfeit():
+    first = app.socketio.test_client(app.app)
+    second = app.socketio.test_client(app.app)
+    try:
+        first.emit("tiki_create_room")
+        room_code = payload(first, "tiki_room_created")["room_code"]
+        second.emit("tiki_join_room", {"room_code": room_code})
+        first.get_received()
+        second.get_received()
+        room = app.tiki_rooms[room_code]
+        room["state"].update(finished=True, winner=1, end_reason="completed_line")
+        second.disconnect()
+        notice = payload(first, "tiki_opponent_left")
+        assert not notice["match_finished"]
+        assert notice["match_was_already_finished"]
+        assert "hükmen" not in notice["message"].lower()
+        assert room["state"]["end_reason"] == "completed_line"
+    finally:
+        if first.is_connected():
+            first.disconnect()
+        if second.is_connected():
+            second.disconnect()
+
+
 if __name__ == "__main__":
     test_rules()
     test_turn_timeout()
     test_online()
+    test_completed_online_exit_is_not_forfeit()
     print({
         "wrong_answer_passes_turn": True,
         "used_player_rejected": True,

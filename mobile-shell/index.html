@@ -12,6 +12,16 @@
     #mobileTransitionError>div{width:min(100%,360px);padding:22px;border:1px solid #ffffff24;border-radius:18px;background:#111925;box-shadow:0 22px 70px #000b;text-align:center}
     #mobileTransitionError h2{margin:0 0 9px;font-size:20px}#mobileTransitionError p{margin:0 0 17px;color:#b8c1cc;line-height:1.45}
     #mobileTransitionError button{width:100%;min-height:48px;border:0;border-radius:11px;background:#d4a94e;color:#171207;font-weight:900}
+    #adPrivacyDialog{position:fixed;inset:0;z-index:92000;display:grid;place-items:center;padding:22px;background:#02050be8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    #adPrivacyDialog[hidden]{display:none}
+    #adPrivacyDialog>section{width:min(100%,390px);padding:24px;border:1px solid #d4a94e55;border-radius:20px;background:#111925;box-shadow:0 24px 80px #000d}
+    #adPrivacyDialog h2{margin:0 0 12px;color:#f4f3ef;font-size:22px}
+    #adPrivacyDialog p{margin:0;color:#c4cbd5;font-size:14px;line-height:1.55}
+    #adPrivacyPolicy{display:inline-block;margin:14px 0 18px;padding:0;border:0;background:transparent;color:#e1bb60;font-size:13px;font-weight:800;text-decoration:underline}
+    #adPrivacyDialog .privacy-actions{display:grid;gap:10px}
+    #adPrivacyDialog .privacy-actions button{min-height:49px;border-radius:12px;font-size:13px;font-weight:900}
+    #adPrivacyAccept{border:0;background:#d4a94e;color:#171207}
+    #adPrivacyLimited{border:1px solid #657183;background:#182230;color:#f2f4f7}
   </style>
   <link rel="stylesheet" href="launcher.css">
 </head>
@@ -26,6 +36,18 @@
     <p id="message" class="message" role="status">Lütfen bekle…</p>
     <button id="retryButton" class="hidden" type="button">TEKRAR DENE</button>
   </main>
+  <div id="adPrivacyDialog" role="dialog" aria-modal="true" aria-labelledby="adPrivacyTitle" hidden>
+    <section>
+      <h2 id="adPrivacyTitle">Reklam gizliliği</h2>
+      <p>Google AdMob reklamları, seçimine göre cihaz ve reklam etkileşimi bilgilerini kullanabilir. Kişiselleştirilmiş reklamı kabul edebilir veya kişiselleştirme olmadan devam edebilirsin. Oyun iki tercihte de çalışır ve seçimini Profil bölümünden değiştirebilirsin.</p>
+      <button id="adPrivacyPolicy" type="button">Gizlilik politikasını oku</button>
+      <div class="privacy-actions">
+        <button id="adPrivacyAccept" type="button">KİŞİSELLEŞTİRİLMİŞ REKLAMI KABUL ET</button>
+        <button id="adPrivacyLimited" type="button">KİŞİSELLEŞTİRME OLMADAN DEVAM ET</button>
+      </div>
+    </section>
+  </div>
+  <script src="privacy-consent.js"></script>
   <script src="launcher.js"></script>
 </body>
 </html>

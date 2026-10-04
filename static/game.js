@@ -3907,6 +3907,7 @@ socket.on(
 
         if (
             data.match_finished
+            || data.match_was_already_finished
         ) {
 
             roomWaitingScreen

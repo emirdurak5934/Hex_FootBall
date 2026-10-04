@@ -28,6 +28,7 @@ def main() -> None:
     required = (
         "index.html",
         "launcher.js",
+        "privacy-consent.js",
         "mobile-bridge.js",
         "mobile-ads.js",
         "vendor/socket.io.min.js",
@@ -83,6 +84,12 @@ def main() -> None:
     assert "#mobileTransitionError" in shell
     assert "overflow:hidden;overscroll-behavior:none" in shell
     assert "body{position:fixed;inset:0}" in shell
+    assert 'id="adPrivacyDialog"' in shell
+    assert 'src="privacy-consent.js"' in shell
+    privacy_consent = (bundle / "privacy-consent.js").read_text(encoding="utf-8")
+    assert 'STORAGE_KEY = "football-ad-privacy-v1"' in privacy_consent
+    assert '"personalized"' in privacy_consent
+    assert '"non_personalized"' in privacy_consent
     launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
     assert ".launcher.is-visible { display: block; }" in launcher_css
 
@@ -127,7 +134,9 @@ def main() -> None:
     assert 'errorMessage()' in mobile_ads
     assert 'config.testing || sessionStorage.getItem(CONSENT_KEY) !== "0"' in mobile_ads
     assert 'if (!allowed && !config.testing)' in mobile_ads
-    assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
+    assert "Promise.allSettled([prepare(), prepareRewarded()])" in mobile_ads
+    assert "requestTrackingAuthorization" in mobile_ads
+    assert 'npa: choice !== "personalized"' in mobile_ads
     assert "setStableViewportHeight()" in launcher
     assert "request: (input, options) => window.fetch(input, options)" in launcher
     assert 'style.setProperty("--app-viewport-height"' in launcher
@@ -151,7 +160,7 @@ def main() -> None:
         "ios_input_focus_zoom_prevented": True,
         "transition_loader_hidden_until_error": True,
         "admob_initializes_once_per_app_session": True,
-        "ads_load_only_when_requested": True,
+        "ads_preload_after_privacy_choice": True,
         "previous_screen_preserved_during_navigation": True,
         "connection_error_uses_overlay": True,
         "page_frames_are_disposed_between_routes": True,

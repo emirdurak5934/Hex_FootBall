@@ -271,7 +271,10 @@
         socket.on("tiki_game_state", render);
         socket.on("tiki_move_result", payload => { if (!payload.accepted) el.statusText.textContent = payload.message; });
         socket.on("tiki_room_error", payload => { el.roomStatus.textContent = payload.message; });
-        socket.on("tiki_opponent_left", payload => { el.statusText.textContent = payload.message; });
+        socket.on("tiki_opponent_left", payload => {
+            if (payload.match_was_already_finished) return;
+            el.statusText.textContent = payload.message;
+        });
         socket.on("tiki_rematch_started", payload => {
             el.rematchButton.disabled = false;
             delete el.resultModal.dataset.adsHandled;

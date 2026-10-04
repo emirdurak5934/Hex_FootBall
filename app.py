@@ -2844,6 +2844,8 @@ def remove_socket_from_room(
             "state"
         ]
 
+        match_was_already_finished = bool(state.get("finished"))
+
 
         room["rematch_ready"] = {
             1: False,
@@ -2887,6 +2889,7 @@ def remove_socket_from_room(
             "room_code": room_code,
             "player_number": player_number,
             "match_finished": match_finished,
+            "match_was_already_finished": match_was_already_finished,
             "winner": public_state["winner"],
             "state": public_state
         }
@@ -2918,6 +2921,10 @@ def notify_remaining_player(
             "reason": "disconnect",
             "match_finished": result.get(
                 "match_finished",
+                False
+            ),
+            "match_was_already_finished": result.get(
+                "match_was_already_finished",
                 False
             ),
             "winner": result.get("winner")
@@ -4859,6 +4866,7 @@ def remove_socket_from_tiki_room(socket_id):
             del tiki_rooms[room_code]
             return {"room_code": room_code, "state": None, "match_finished": False}
         state = room["state"]
+        match_was_already_finished = bool(state.get("finished"))
         match_finished = state["started"] and not state["finished"]
         if match_finished:
             winner = next(iter(room["players"].values()))
@@ -4869,7 +4877,9 @@ def remove_socket_from_tiki_room(socket_id):
         room["rematch_ready"] = {1: False, 2: False}
         return {
             "room_code": room_code, "player_number": player_number,
-            "match_finished": match_finished, "state": serialize_tiki_state(state),
+            "match_finished": match_finished,
+            "match_was_already_finished": match_was_already_finished,
+            "state": serialize_tiki_state(state),
         }
 
 
@@ -5074,8 +5084,15 @@ def tiki_leave_room():
     if result["state"]:
         socketio.emit("tiki_game_state", result["state"], to=result["room_code"])
         socketio.emit("tiki_opponent_left", {
-            "message": "Rakip odadan ayrıldı.",
+            "message": (
+                "Rakip odadan ayrıldı. Maçı hükmen kazandın."
+                if result["match_finished"]
+                else "Rakip tamamlanan maçtan ayrıldı."
+            ),
             "match_finished": result["match_finished"],
+            "match_was_already_finished": result.get(
+                "match_was_already_finished", False
+            ),
         }, to=result["room_code"])
 
 
@@ -5180,8 +5197,15 @@ def socket_disconnect():
     if tiki_result and tiki_result["state"]:
         socketio.emit("tiki_game_state", tiki_result["state"], to=tiki_result["room_code"])
         socketio.emit("tiki_opponent_left", {
-            "message": "Rakibin bağlantısı kesildi. Maçı hükmen kazandın.",
+            "message": (
+                "Rakibin bağlantısı kesildi. Maçı hükmen kazandın."
+                if tiki_result["match_finished"]
+                else "Rakip tamamlanan maçtan ayrıldı."
+            ),
             "match_finished": tiki_result["match_finished"],
+            "match_was_already_finished": tiki_result.get(
+                "match_was_already_finished", False
+            ),
         }, to=tiki_result["room_code"])
 
 
@@ -5201,7 +5225,11 @@ def socket_disconnect():
             "Rakibin bağlantısı kesildi. "
             "Maçı hükmen kazandın."
             if result["match_finished"]
-            else "Rakibin bağlantısı kesildi."
+            else (
+                "Rakip tamamlanan maçtan ayrıldı."
+                if result.get("match_was_already_finished")
+                else "Rakibin bağlantısı kesildi."
+            )
         )
     )
 

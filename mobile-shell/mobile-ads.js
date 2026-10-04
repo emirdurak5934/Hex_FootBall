@@ -12,6 +12,8 @@
   const CONFIG_CACHE_KEY = "football-mobile-ad-config";
   const INITIALIZED_KEY = "football-admob-initialized";
   const CONSENT_KEY = "football-admob-can-request";
+  const INTERSTITIAL_READY_KEY = "football-admob-interstitial-ready";
+  const REWARDED_READY_KEY = "football-admob-rewarded-ready";
 
   let cachedConfig = null;
   try { cachedConfig = JSON.parse(sessionStorage.getItem(CONFIG_CACHE_KEY) || "null"); }
@@ -32,6 +34,26 @@
   function admobPlugin() {
     const capacitor = window.Capacitor;
     return capacitor?.Plugins?.AdMob || capacitor?.registerPlugin?.("AdMob");
+  }
+
+  function privacyController() {
+    try { return window.parent?.MobilePrivacy || window.MobilePrivacy || null; }
+    catch (_) { return null; }
+  }
+
+  async function appPrivacyChoice() {
+    const controller = privacyController();
+    return controller ? await controller.ready : "non_personalized";
+  }
+
+  async function requestTrackingIfNeeded(admob, choice) {
+    if (choice !== "personalized") return;
+    try {
+      const tracking = await admob.trackingAuthorizationStatus();
+      if (tracking?.status === "notDetermined") await admob.requestTrackingAuthorization();
+    } catch (error) {
+      rememberError("izleme izni", error);
+    }
   }
 
   function errorDetails(stage, error) {
@@ -103,6 +125,8 @@
         return config.testing || sessionStorage.getItem(CONSENT_KEY) !== "0";
       }
       await admob.initialize({initializeForTesting: Boolean(config.testing), testingDevices: []});
+      const privacyChoice = await appPrivacyChoice();
+      await requestTrackingIfNeeded(admob, privacyChoice);
       let allowed = false;
       try {
         let consent = await admob.requestConsentInfo();
@@ -128,12 +152,18 @@
   }
 
   async function prepare() {
-    if (preparedInterstitial) return true;
+    if (preparedInterstitial || sessionStorage.getItem(INTERSTITIAL_READY_KEY) === "1") return true;
     if (!(await initialize()) || !config.adId) return false;
     const admob = admobPlugin();
     try {
-      await admob.prepareInterstitial({adId: config.adId, isTesting: Boolean(config.testing)});
+      const choice = await appPrivacyChoice();
+      await admob.prepareInterstitial({
+        adId: config.adId,
+        isTesting: Boolean(config.testing),
+        npa: choice !== "personalized",
+      });
       preparedInterstitial = true;
+      sessionStorage.setItem(INTERSTITIAL_READY_KEY, "1");
       clearError();
       return true;
     } catch (error) { rememberCaughtError("geçiş reklamı yükleme", error); return false; }
@@ -146,6 +176,7 @@
     ]);
     if (!loaded) return false;
     preparedInterstitial = false;
+    sessionStorage.removeItem(INTERSTITIAL_READY_KEY);
     try {
       await admobPlugin().showInterstitial({adId: config.adId});
       return true;
@@ -154,14 +185,17 @@
   }
 
   async function prepareRewarded() {
-    if (preparedRewarded) return true;
+    if (preparedRewarded || sessionStorage.getItem(REWARDED_READY_KEY) === "1") return true;
     if (!(await initialize()) || !config.rewardedAdId) return false;
     try {
+      const choice = await appPrivacyChoice();
       await admobPlugin().prepareRewardVideoAd({
         adId: config.rewardedAdId,
         isTesting: Boolean(config.testing),
+        npa: choice !== "personalized",
       });
       preparedRewarded = true;
+      sessionStorage.setItem(REWARDED_READY_KEY, "1");
       clearError();
       return true;
     } catch (error) { rememberCaughtError("ödüllü reklam yükleme", error); return false; }
@@ -174,6 +208,7 @@
     ]);
     if (!loaded) return false;
     preparedRewarded = false;
+    sessionStorage.removeItem(REWARDED_READY_KEY);
     try {
       return Boolean(await admobPlugin().showRewardVideoAd({adId: config.rewardedAdId}));
     } catch (error) { rememberCaughtError("ödüllü reklam gösterme", error); return false; }
@@ -185,10 +220,19 @@
     const admob = admobPlugin();
     if (!admob || !config.enabled) return false;
     try {
+      const choice = await privacyController()?.open?.();
+      await requestTrackingIfNeeded(admob, choice);
+      preparedInterstitial = false;
+      preparedRewarded = false;
+      sessionStorage.removeItem(INTERSTITIAL_READY_KEY);
+      sessionStorage.removeItem(REWARDED_READY_KEY);
       await initialize();
-      await admob.showPrivacyOptionsForm();
+      try { await admob.showPrivacyOptionsForm(); }
+      catch (_) { /* UMP formu bu bölgede gerekli olmayabilir. */ }
       const consent = await admob.requestConsentInfo();
       sessionStorage.setItem(CONSENT_KEY, consent.canRequestAds ? "1" : "0");
+      prepare();
+      prepareRewarded();
       return true;
     } catch (_) { return false; }
   }
@@ -233,4 +277,8 @@
 
   window.FootballAdProvider = Object.freeze({show, prepare, showRewarded, prepareRewarded, privacyOptions, errorMessage});
   window.MatchAds = Object.freeze({present, reward: showRewarded, errorMessage, get config() { return config; }});
+  configReady.then(async () => {
+    await appPrivacyChoice();
+    await Promise.allSettled([prepare(), prepareRewarded()]);
+  });
 })();
