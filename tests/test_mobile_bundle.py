@@ -55,6 +55,12 @@ def main() -> None:
     assert "window.location.reload()" in bridge
     assert "window.location.replace" not in bridge
     assert "document.activeElement.blur()" in bridge
+    assert 'window.fetch("/api/mobile/socket-token"' in bridge
+    assert "mobile_token: data.token" in bridge
+    assert 'TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot"' in bridge
+    assert "saveTransitionSnapshot();" in bridge
+    assert "navigate, reload, remoteUrl" in bridge
+    assert 'clone.querySelectorAll("script,#launchSplash,#mobileTransitionSnapshot,#mobileTransitionError")' in bridge
 
     viewport_css = (bundle / "static" / "fixed_viewport.css").read_text(encoding="utf-8")
     assert 'input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])' in viewport_css
@@ -64,6 +70,8 @@ def main() -> None:
     assert "https://edyn-football.onrender.com" not in shell
     assert 'src="launcher.js"' in shell
     assert 'id="launcher" aria-hidden="true"' in shell
+    assert "#mobileTransitionSnapshot" in shell
+    assert "#mobileTransitionError" in shell
     launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
     assert ".launcher.is-visible { display: block; }" in launcher_css
 
@@ -72,6 +80,12 @@ def main() -> None:
     assert 'INITIALIZED_KEY = "football-admob-initialized"' in mobile_ads
     assert 'sessionStorage.getItem(INITIALIZED_KEY) === "1"' in mobile_ads
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
+    assert "restoreTransitionSnapshot()" in launcher
+    assert 'frame.setAttribute("sandbox", "allow-same-origin")' in launcher
+    assert "Bulunduğun ekran korunuyor." in launcher
+    for script_name in ("heatmap.js", "missing_xi.js", "profile.js", "public_profile.js"):
+        script = (bundle / "static" / script_name).read_text(encoding="utf-8")
+        assert "MobileBridge.reload()" in script
 
     print({
         "local_web_dir": True,
@@ -85,6 +99,8 @@ def main() -> None:
         "transition_loader_hidden_until_error": True,
         "admob_initializes_once_per_app_session": True,
         "ads_load_only_when_requested": True,
+        "previous_screen_preserved_during_navigation": True,
+        "connection_error_uses_overlay": True,
         "document_replacement_is_webview_safe": True,
     })
 

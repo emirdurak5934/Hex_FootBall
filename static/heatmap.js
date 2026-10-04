@@ -355,4 +355,4 @@ function showResult(score, moves, adBreak) {
     }, 500);
 }
 
-document.getElementById("restartGame").addEventListener("click", () => window.location.reload());
+document.getElementById("restartGame").addEventListener("click", () => window.MobileBridge ? window.MobileBridge.reload() : window.location.reload());

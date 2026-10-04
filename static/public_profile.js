@@ -12,7 +12,8 @@
         });
         const payload = await response.json();
         if (!response.ok) throw Error(payload.error || "İşlem başarısız.");
-        location.reload();
+        if (window.MobileBridge) window.MobileBridge.reload();
+        else location.reload();
     }
 
     root.addEventListener("click", event => {

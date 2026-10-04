@@ -17,7 +17,7 @@
     const data = await response.json();
     message.textContent = data.error || 'Değişiklik kaydedildi.';
     message.className = `notice${data.error ? ' error' : ''}`;
-    if (data.success && url === '/api/profile') setTimeout(() => location.reload(), 500);
+    if (data.success && url === '/api/profile') setTimeout(() => window.MobileBridge ? window.MobileBridge.reload() : location.reload(), 500);
     return data;
   }
 

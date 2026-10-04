@@ -1,6 +1,22 @@
 (() => {
   "use strict";
   const API_ORIGIN = "https://edyn-football.onrender.com";
+  const TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot";
+
+  function restoreTransitionSnapshot() {
+    const snapshot = sessionStorage.getItem(TRANSITION_SNAPSHOT_KEY);
+    sessionStorage.removeItem(TRANSITION_SNAPSHOT_KEY);
+    if (!snapshot) return null;
+    const frame = document.createElement("iframe");
+    frame.id = "mobileTransitionSnapshot";
+    frame.setAttribute("sandbox", "allow-same-origin");
+    frame.setAttribute("aria-hidden", "true");
+    frame.srcdoc = snapshot;
+    document.body.appendChild(frame);
+    return frame;
+  }
+
+  const transitionSnapshot = restoreTransitionSnapshot();
   const message = document.getElementById("message");
   const retryButton = document.getElementById("retryButton");
 
@@ -84,6 +100,31 @@
 
   function showFailure(error) {
     console.error(error);
+    if (transitionSnapshot?.isConnected) {
+      let errorModal = document.getElementById("mobileTransitionError");
+      if (!errorModal) {
+        errorModal = document.createElement("section");
+        errorModal.id = "mobileTransitionError";
+        errorModal.setAttribute("role", "alertdialog");
+        errorModal.setAttribute("aria-modal", "true");
+        const card = document.createElement("div");
+        const title = document.createElement("h2");
+        title.textContent = "Bağlantı kurulamadı";
+        const detail = document.createElement("p");
+        detail.textContent = "Bulunduğun ekran korunuyor. İnternetini kontrol edip tekrar dene.";
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.textContent = "TEKRAR DENE";
+        retry.addEventListener("click", () => {
+          errorModal.remove();
+          connect();
+        });
+        card.append(title, detail, retry);
+        errorModal.appendChild(card);
+        document.body.appendChild(errorModal);
+      }
+      return;
+    }
     const activeMessage = document.getElementById("message");
     const activeRetry = document.getElementById("retryButton");
     if (activeMessage && activeRetry) {

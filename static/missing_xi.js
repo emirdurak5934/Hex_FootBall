@@ -280,7 +280,7 @@
   document.getElementById("wordleBack").onclick = showFieldView;
   document.getElementById("helpButton").onclick = () => document.getElementById("helpModal").classList.remove("hidden");
   document.querySelectorAll('[data-close="help"]').forEach(el => el.onclick = () => document.getElementById("helpModal").classList.add("hidden"));
-  document.getElementById("newMatch").onclick = () => window.location.reload();
+  document.getElementById("newMatch").onclick = () => window.MobileBridge ? window.MobileBridge.reload() : window.location.reload();
   buildKeyboard(); positionSlots();
   window.addEventListener("resize", positionSlots);
 })();

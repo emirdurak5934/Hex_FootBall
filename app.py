@@ -15,6 +15,7 @@ from flask_socketio import (
     join_room,
     leave_room
 )
+from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 
 import json
 import os
@@ -61,6 +62,10 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=timedelta(
         days=int(os.environ.get("FOOTBALL_SESSION_DAYS", "30"))
     ),
+)
+MOBILE_SOCKET_TOKEN_MAX_AGE = int(os.environ.get("FOOTBALL_SOCKET_TOKEN_SECONDS", "900"))
+mobile_socket_tokens = URLSafeTimedSerializer(
+    app.config["SECRET_KEY"], salt="football-mobile-socket-v1",
 )
 
 SUPPORT_EMAIL = os.environ.get("FOOTBALL_SUPPORT_EMAIL", "").strip()
@@ -2442,14 +2447,27 @@ online_rooms_lock = threading.Lock()
 
 # Presence is deliberately transient: a user may have several open tabs.
 online_user_sids = {}
+socket_identities = {}
 presence_lock = threading.Lock()
 game_invites = {}
 game_invites_lock = threading.Lock()
 INVITE_TTL_SECONDS = 120
 
 
+def socket_current_user():
+    socket_id = getattr(request, "sid", None)
+    with presence_lock:
+        authenticated = socket_identities.get(socket_id)
+    return authenticated or current_user()
+
+
+def socket_user_id():
+    user = socket_current_user()
+    return user["id"] if user else None
+
+
 def account_identity():
-    user = current_user()
+    user = socket_current_user()
     if not user:
         return None
     return {"user_id": user["id"], "username": user["username"]}
@@ -3052,6 +3070,18 @@ def profile_api():
     if not user:
         return jsonify({"error": "Giriş gerekli."}), 401
     return jsonify(profile_store.profile(user["id"]))
+
+
+@app.get("/api/mobile/socket-token")
+def mobile_socket_token_api():
+    """Issue a short-lived signed identity for native Socket.IO handshakes."""
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Giriş gerekli."}), 401
+    return jsonify({
+        "token": mobile_socket_tokens.dumps({"user_id": user["id"]}),
+        "expires_in": MOBILE_SOCKET_TOKEN_MAX_AGE,
+    })
 
 
 @app.post("/api/profile")
@@ -4012,12 +4042,23 @@ def check():
 @socketio.on(
     "connect"
 )
-def socket_connect():
+def socket_connect(auth=None):
     user = current_user()
+    if not user:
+        token = str((auth or {}).get("mobile_token", "")).strip()
+        if token:
+            try:
+                payload = mobile_socket_tokens.loads(
+                    token, max_age=MOBILE_SOCKET_TOKEN_MAX_AGE,
+                )
+                user = profile_store.get_user(payload.get("user_id"))
+            except (BadSignature, SignatureExpired, TypeError):
+                user = None
     if not user:
         return
     user_id = user["id"]
     with presence_lock:
+        socket_identities[request.sid] = user
         sockets = online_user_sids.setdefault(user_id, set())
         became_online = not sockets
         sockets.add(request.sid)
@@ -4135,7 +4176,7 @@ def socket_create_room():
     )
 
 
-    creator = current_user()
+    creator = socket_current_user()
 
     online_rooms[
         room_code
@@ -4165,7 +4206,7 @@ def socket_create_room():
 
         "timer_generation": 0,
 
-        "user_ids": {1: session.get("user_id"), 2: None},
+        "user_ids": {1: socket_user_id(), 2: None},
 
         "player_names": {1: creator["username"] if creator else "Oyuncu 1", 2: "Oyuncu 2"},
 
@@ -4279,7 +4320,7 @@ def socket_join_game_room(
     ]
 
     reserved = room.get("reserved_user_ids")
-    if reserved is not None and session.get("user_id") not in reserved:
+    if reserved is not None and socket_user_id() not in reserved:
         emit("room_error", {"message": "Bu davet odasına katılamazsın."})
         return
 
@@ -4321,8 +4362,8 @@ def socket_join_game_room(
         socket_id
     ] = player_number
 
-    room.setdefault("user_ids", {})[player_number] = session.get("user_id")
-    joining_user = current_user()
+    room.setdefault("user_ids", {})[player_number] = socket_user_id()
+    joining_user = socket_current_user()
     room.setdefault("player_names", {})[player_number] = (
         joining_user["username"] if joining_user else f"Oyuncu {player_number}"
     )
@@ -4698,7 +4739,7 @@ def socket_request_rematch():
 def socket_forfeit_match():
     """Finish an active Possession match from the authoritative room state."""
     socket_id = request.sid
-    user_id = session.get("user_id")
+    user_id = socket_user_id()
     with online_rooms_lock:
         room_code = find_socket_room(socket_id)
         room = online_rooms.get(room_code) if room_code else None
@@ -4901,14 +4942,14 @@ def tiki_create_room():
             })
             return
         room_code = generate_tiki_room_code()
-        creator = current_user()
+        creator = socket_current_user()
         names = {"1": creator["username"] if creator else "Oyuncu 1", "2": "Oyuncu 2"}
         state = create_tiki_state(tiki_engine.generate_board(), started=False, player_names=names)
         state["starting_player"] = 1
         tiki_rooms[room_code] = {
             "players": {socket_id: 1}, "state": state,
             "rematch_ready": {1: False, 2: False},
-            "user_ids": {1: session.get("user_id"), 2: None},
+            "user_ids": {1: socket_user_id(), 2: None},
             "player_names": names,
             "match_id": uuid.uuid4().hex,
         }
@@ -4932,8 +4973,8 @@ def tiki_join_room(data):
             emit("tiki_room_error", {"message": "Oda dolu."})
             return
         room["players"][socket_id] = 2
-        room["user_ids"][2] = session.get("user_id")
-        joining_user = current_user()
+        room["user_ids"][2] = socket_user_id()
+        joining_user = socket_current_user()
         room.setdefault("player_names", {"1": "Oyuncu 1", "2": "Oyuncu 2"})["2"] = (
             joining_user["username"] if joining_user else "Oyuncu 2"
         )
@@ -5050,7 +5091,7 @@ def user_is_in_game(user_id):
 
 @socketio.on("send_game_invite")
 def send_game_invite(data):
-    sender = current_user()
+    sender = socket_current_user()
     receiver_id = str((data or {}).get("target_user_id", "")).strip()
     game_mode = str((data or {}).get("game_mode", ""))
     if not sender or game_mode != "possession" or not receiver_id or receiver_id == sender["id"]:
@@ -5076,7 +5117,7 @@ def send_game_invite(data):
 
 @socketio.on("accept_game_invite")
 def accept_game_invite(data):
-    receiver = current_user()
+    receiver = socket_current_user()
     invite_id = str((data or {}).get("invite_id", ""))
     with game_invites_lock:
         invite = game_invites.get(invite_id)
@@ -5096,7 +5137,7 @@ def accept_game_invite(data):
 
 @socketio.on("decline_game_invite")
 def decline_game_invite(data):
-    receiver = current_user()
+    receiver = socket_current_user()
     invite_id = str((data or {}).get("invite_id", ""))
     with game_invites_lock:
         invite = game_invites.get(invite_id)
@@ -5122,7 +5163,9 @@ def socket_disconnect():
     remove_from_matchmaking(socket_id)
 
 
-    user_id = session.get("user_id")
+    with presence_lock:
+        authenticated = socket_identities.pop(socket_id, None)
+    user_id = authenticated["id"] if authenticated else session.get("user_id")
     if user_id:
         with presence_lock:
             sockets = online_user_sids.get(user_id, set())

@@ -1,7 +1,25 @@
 (() => {
   "use strict";
   const API_ORIGIN = document.documentElement.dataset.apiOrigin || "https://edyn-football.onrender.com";
+  const TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot";
   const nativeFetch = window.fetch.bind(window);
+
+  function saveTransitionSnapshot() {
+    try {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelectorAll("script,#launchSplash,#mobileTransitionSnapshot,#mobileTransitionError")
+        .forEach(node => node.remove());
+      const base = document.createElement("base");
+      base.href = `${window.location.origin}/`;
+      clone.querySelector("head")?.prepend(base);
+      const snapshot = `<!doctype html>${clone.outerHTML}`;
+      if (snapshot.length <= 3500000) {
+        sessionStorage.setItem(TRANSITION_SNAPSHOT_KEY, snapshot);
+      }
+    } catch (_) {
+      sessionStorage.removeItem(TRANSITION_SNAPSHOT_KEY);
+    }
+  }
 
   function remoteUrl(input) {
     if (typeof input !== "string") return input;
@@ -31,11 +49,22 @@
 
   if (typeof window.io === "function") {
     const socketFactory = window.io;
-    window.io = (uri, options = {}) => socketFactory(uri || API_ORIGIN, {
-      withCredentials: true,
-      transports: ["websocket", "polling"],
-      ...options,
-    });
+    window.io = (uri, options = {}) => {
+      const socketOptions = {
+        withCredentials: true,
+        transports: ["websocket", "polling"],
+        ...options,
+      };
+      if (!socketOptions.auth) {
+        socketOptions.auth = callback => {
+          window.fetch("/api/mobile/socket-token", {cache: "no-store"})
+            .then(response => response.ok ? response.json() : Promise.reject(new Error("Socket kimliği alınamadı.")))
+            .then(data => callback({mobile_token: data.token}))
+            .catch(() => callback({}));
+        };
+      }
+      return socketFactory(uri || API_ORIGIN, socketOptions);
+    };
   }
 
   function navigate(target) {
@@ -44,7 +73,13 @@
       window.open(url.href, "_blank", "noopener,noreferrer");
       return;
     }
+    saveTransitionSnapshot();
     history.replaceState(null, "", `/index.html#${url.pathname}${url.search}`);
+    window.location.reload();
+  }
+
+  function reload() {
+    saveTransitionSnapshot();
     window.location.reload();
   }
 
@@ -68,6 +103,7 @@
     });
     sessionStorage.setItem("football-mobile-pending-html", await response.text());
     sessionStorage.setItem("football-mobile-pending-url", response.url || target.href);
+    saveTransitionSnapshot();
     window.location.reload();
   }
 
@@ -93,5 +129,5 @@
     });
   });
 
-  window.MobileBridge = Object.freeze({API_ORIGIN, navigate, remoteUrl});
+  window.MobileBridge = Object.freeze({API_ORIGIN, navigate, reload, remoteUrl, saveTransitionSnapshot});
 })();
