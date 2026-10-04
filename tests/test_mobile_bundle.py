@@ -108,6 +108,9 @@ def main() -> None:
     assert "IOS_PROVISIONING_PROFILE_BASE64" in release_workflow
     assert "APP_STORE_CONNECT_API_KEY_BASE64" in release_workflow
     assert "ITSAppUsesNonExemptEncryption false" in release_workflow
+    assert "GADIsAdManagerApp true" in release_workflow
+    assert "Validate exported IPA metadata" in release_workflow
+    assert "Package debug symbols" in release_workflow
     assert "xcodebuild" in release_workflow and "archive" in release_workflow
     assert "-exportArchive" in release_workflow
     assert "altool --validate-app" in release_workflow

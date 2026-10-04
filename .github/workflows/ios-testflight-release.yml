@@ -64,6 +64,10 @@ jobs:
             fi
           done
           [[ "$missing" -eq 0 ]]
+          if [[ ! "$ADMOB_APP_ID" =~ ^ca-app-pub-[0-9]+~[0-9]+$ ]]; then
+            echo "::error::ADMOB_IOS_APP_ID must be an AdMob app ID (ca-app-pub-...~...), not an ad unit ID."
+            exit 1
+          fi
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -95,6 +99,8 @@ jobs:
             /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 'Football Match: HEX'" "$PLIST"
           /usr/libexec/PlistBuddy -c "Set :GADApplicationIdentifier $ADMOB_IOS_APP_ID" "$PLIST" || \
             /usr/libexec/PlistBuddy -c "Add :GADApplicationIdentifier string $ADMOB_IOS_APP_ID" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :GADIsAdManagerApp true" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :GADIsAdManagerApp bool true" "$PLIST"
           /usr/libexec/PlistBuddy -c "Set :NSUserTrackingUsageDescription 'Reklamları daha ilgili hale getirmek için cihaz izni kullanılır.'" "$PLIST" || \
             /usr/libexec/PlistBuddy -c "Add :NSUserTrackingUsageDescription string 'Reklamları daha ilgili hale getirmek için cihaz izni kullanılır.'" "$PLIST"
           /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST" || \
@@ -103,6 +109,12 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0 dict" "$PLIST" || true
           /usr/libexec/PlistBuddy -c "Set :SKAdNetworkItems:0:SKAdNetworkIdentifier cstr6suwn9.skadnetwork" "$PLIST" || \
             /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0:SKAdNetworkIdentifier string cstr6suwn9.skadnetwork" "$PLIST"
+
+          ACTUAL_ADMOB_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :GADApplicationIdentifier" "$PLIST")
+          ACTUAL_AD_MANAGER_FLAG=$(/usr/libexec/PlistBuddy -c "Print :GADIsAdManagerApp" "$PLIST")
+          [[ "$ACTUAL_ADMOB_APP_ID" == "$ADMOB_IOS_APP_ID" ]]
+          [[ "$ACTUAL_AD_MANAGER_FLAG" == "true" ]]
+          plutil -lint "$PLIST"
 
       - name: Install signing certificate and provisioning profile
         id: signing
@@ -228,6 +240,34 @@ jobs:
             "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
           chmod 600 "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
 
+      - name: Validate exported IPA metadata
+        env:
+          ADMOB_IOS_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
+        run: |
+          set -euo pipefail
+          IPA_FILES=(Football-Match-HEX-*.ipa)
+          IPA_PATH="${IPA_FILES[0]}"
+          test -f "$IPA_PATH"
+          EXTRACTED_IPA="$RUNNER_TEMP/exported-ipa"
+          mkdir -p "$EXTRACTED_IPA"
+          unzip -q "$IPA_PATH" -d "$EXTRACTED_IPA"
+          APP_PLISTS=("$EXTRACTED_IPA"/Payload/*.app/Info.plist)
+          APP_PLIST="${APP_PLISTS[0]}"
+          test -f "$APP_PLIST"
+          [[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PLIST")" == "$BUNDLE_ID" ]]
+          [[ "$(/usr/libexec/PlistBuddy -c 'Print :GADApplicationIdentifier' "$APP_PLIST")" == "$ADMOB_IOS_APP_ID" ]]
+          [[ "$(/usr/libexec/PlistBuddy -c 'Print :GADIsAdManagerApp' "$APP_PLIST")" == "true" ]]
+          [[ "$(/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' "$APP_PLIST")" == "false" ]]
+
+      - name: Package debug symbols
+        run: |
+          set -euo pipefail
+          DSYM_DIRECTORY="$RUNNER_TEMP/FootballMatchHEX.xcarchive/dSYMs"
+          test -d "$DSYM_DIRECTORY"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$DSYM_DIRECTORY" \
+            "Football-Match-HEX-dSYMs-${MARKETING_VERSION}-${GITHUB_RUN_NUMBER}.zip"
+
       - name: Validate signed IPA
         env:
           API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -262,7 +302,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Football-Match-HEX-signed-${{ github.run_number }}
-          path: Football-Match-HEX-*.ipa
+          path: |
+            Football-Match-HEX-*.ipa
+            Football-Match-HEX-dSYMs-*.zip
           if-no-files-found: error
           retention-days: 14
 
