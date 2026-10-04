@@ -44,7 +44,8 @@
       window.open(url.href, "_blank", "noopener,noreferrer");
       return;
     }
-    window.location.replace(`/index.html#${url.pathname}${url.search}`);
+    history.replaceState(null, "", `/index.html#${url.pathname}${url.search}`);
+    window.location.reload();
   }
 
   async function submitForm(form) {

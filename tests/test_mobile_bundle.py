@@ -51,6 +51,9 @@ def main() -> None:
     assert 'form.getAttribute("action")' in bridge
     assert "form.action ||" not in bridge
     assert 'window.location.hash.replace(/^#/, "")' in bridge
+    assert 'history.replaceState(null, "", `/index.html#${url.pathname}${url.search}`)' in bridge
+    assert "window.location.reload()" in bridge
+    assert "window.location.replace" not in bridge
 
     shell = (bundle / "index.html").read_text(encoding="utf-8")
     assert "https://edyn-football.onrender.com" not in shell
@@ -63,6 +66,7 @@ def main() -> None:
         "remote_scripts_blocked": True,
         "mobile_api_bridge_present": True,
         "forms_post_to_remote_route": True,
+        "menu_navigation_forces_shell_reload": True,
         "document_replacement_is_webview_safe": True,
     })
 
