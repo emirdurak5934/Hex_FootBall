@@ -15,6 +15,7 @@ env:
   BUNDLE_ID: app.edynfootball.mobile
   APPLE_TEAM_ID: 6UV8K8XK57
   APP_STORE_APP_ID: "6819015024"
+  ADMOB_IOS_APP_ID: ca-app-pub-9465267312690427~4567950831
   MARKETING_VERSION: "1.0.0"
 
 jobs:
@@ -45,7 +46,6 @@ jobs:
           API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          ADMOB_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
         run: |
           set -euo pipefail
           missing=0
@@ -55,8 +55,7 @@ jobs:
             PROVISIONING_PROFILE_BASE64 \
             API_KEY_BASE64 \
             API_KEY_ID \
-            API_ISSUER_ID \
-            ADMOB_APP_ID
+            API_ISSUER_ID
           do
             if [[ -z "${!variable:-}" ]]; then
               echo "::error::Required release secret is missing: ${variable}"
@@ -64,7 +63,7 @@ jobs:
             fi
           done
           [[ "$missing" -eq 0 ]]
-          if [[ ! "$ADMOB_APP_ID" =~ ^ca-app-pub-[0-9]+~[0-9]+$ ]]; then
+          if [[ ! "$ADMOB_IOS_APP_ID" =~ ^ca-app-pub-[0-9]+~[0-9]+$ ]]; then
             echo "::error::ADMOB_IOS_APP_ID must be an AdMob app ID (ca-app-pub-...~...), not an ad unit ID."
             exit 1
           fi
@@ -82,8 +81,6 @@ jobs:
           pnpm exec cap sync ios
 
       - name: Apply native iOS shell and release metadata
-        env:
-          ADMOB_IOS_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
         run: |
           set -euo pipefail
           PLIST="ios/App/App/Info.plist"
@@ -241,8 +238,6 @@ jobs:
           chmod 600 "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
 
       - name: Validate exported IPA metadata
-        env:
-          ADMOB_IOS_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
         run: |
           set -euo pipefail
           IPA_FILES=(Football-Match-HEX-*.ipa)
