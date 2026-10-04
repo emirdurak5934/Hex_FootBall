@@ -18,6 +18,7 @@ body {
 }
 
 .launcher {
+  display: none;
   width: min(100%, 430px);
   padding: 28px 22px;
   border: 1px solid rgba(255, 255, 255, .14);
@@ -25,6 +26,8 @@ body {
   background: #090d13;
   box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
 }
+
+.launcher.is-visible { display: block; }
 
 .eyebrow { color: #d4a94e; font-weight: 800; letter-spacing: .12em; }
 h1 { margin: 8px 0 12px; font-size: 30px; }

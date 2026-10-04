@@ -87,6 +87,9 @@
     const activeMessage = document.getElementById("message");
     const activeRetry = document.getElementById("retryButton");
     if (activeMessage && activeRetry) {
+      const activeLauncher = document.getElementById("launcher");
+      activeLauncher?.classList.add("is-visible");
+      activeLauncher?.removeAttribute("aria-hidden");
       activeMessage.textContent = "Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.";
       activeRetry.classList.remove("hidden");
       return;

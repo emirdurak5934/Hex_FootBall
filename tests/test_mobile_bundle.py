@@ -58,6 +58,9 @@ def main() -> None:
     shell = (bundle / "index.html").read_text(encoding="utf-8")
     assert "https://edyn-football.onrender.com" not in shell
     assert 'src="launcher.js"' in shell
+    assert 'id="launcher" aria-hidden="true"' in shell
+    launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
+    assert ".launcher.is-visible { display: block; }" in launcher_css
 
     print({
         "local_web_dir": True,
@@ -67,6 +70,7 @@ def main() -> None:
         "mobile_api_bridge_present": True,
         "forms_post_to_remote_route": True,
         "menu_navigation_forces_shell_reload": True,
+        "transition_loader_hidden_until_error": True,
         "document_replacement_is_webview_safe": True,
     })
 
