@@ -61,6 +61,9 @@ def main() -> None:
     assert "saveTransitionSnapshot();" in bridge
     assert "navigate, reload, remoteUrl" in bridge
     assert 'clone.querySelectorAll("script,#launchSplash,#mobileTransitionSnapshot,#mobileTransitionError")' in bridge
+    assert "collectStylesheetText" in bridge
+    assert 'inlineStyles.dataset.mobileTransitionCss = "true"' in bridge
+    assert "CSSRule.IMPORT_RULE" in bridge
 
     viewport_css = (bundle / "static" / "fixed_viewport.css").read_text(encoding="utf-8")
     assert 'input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])' in viewport_css
@@ -82,6 +85,9 @@ def main() -> None:
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
     assert "restoreTransitionSnapshot()" in launcher
     assert 'frame.setAttribute("sandbox", "allow-same-origin")' in launcher
+    assert 'transition: "opacity 120ms ease-out"' in launcher
+    assert 'snapshotFrame.style.opacity = "0"' in launcher
+    assert "requestAnimationFrame(() => requestAnimationFrame(resolve))" in launcher
     assert "Bulunduğun ekran korunuyor." in launcher
     for script_name in ("heatmap.js", "missing_xi.js", "profile.js", "public_profile.js"):
         script = (bundle / "static" / script_name).read_text(encoding="utf-8")

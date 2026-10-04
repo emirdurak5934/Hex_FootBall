@@ -4,6 +4,21 @@
   const TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot";
   const nativeFetch = window.fetch.bind(window);
 
+  function collectStylesheetText(stylesheet, visited = new Set()) {
+    if (!stylesheet || visited.has(stylesheet)) return "";
+    visited.add(stylesheet);
+    try {
+      return [...stylesheet.cssRules].map(rule => {
+        if (rule.type === CSSRule.IMPORT_RULE && rule.styleSheet) {
+          return collectStylesheetText(rule.styleSheet, visited);
+        }
+        return rule.cssText;
+      }).join("\n");
+    } catch (_) {
+      return "";
+    }
+  }
+
   function saveTransitionSnapshot() {
     try {
       const clone = document.documentElement.cloneNode(true);
@@ -11,7 +26,13 @@
         .forEach(node => node.remove());
       const base = document.createElement("base");
       base.href = `${window.location.origin}/`;
-      clone.querySelector("head")?.prepend(base);
+      const inlineStyles = document.createElement("style");
+      inlineStyles.dataset.mobileTransitionCss = "true";
+      inlineStyles.textContent = [...document.styleSheets]
+        .map(stylesheet => collectStylesheetText(stylesheet))
+        .filter(Boolean)
+        .join("\n");
+      clone.querySelector("head")?.prepend(base, inlineStyles);
       const snapshot = `<!doctype html>${clone.outerHTML}`;
       if (snapshot.length <= 3500000) {
         sessionStorage.setItem(TRANSITION_SNAPSHOT_KEY, snapshot);

@@ -11,6 +11,18 @@
     frame.id = "mobileTransitionSnapshot";
     frame.setAttribute("sandbox", "allow-same-origin");
     frame.setAttribute("aria-hidden", "true");
+    Object.assign(frame.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "90000",
+      width: "100%",
+      height: "100%",
+      border: "0",
+      background: "#070b13",
+      pointerEvents: "none",
+      opacity: "1",
+      transition: "opacity 120ms ease-out",
+    });
     frame.srcdoc = snapshot;
     document.body.appendChild(frame);
     return frame;
@@ -89,13 +101,20 @@
 
   async function renderDocument(html, responseUrl) {
     const {page, scripts} = prepareDocument(html, responseUrl);
+    const snapshotFrame = transitionSnapshot?.isConnected ? transitionSnapshot : null;
     document.title = page.title;
     document.documentElement.lang = page.documentElement.lang || "tr";
     document.documentElement.dataset.mobileShell = "true";
     document.documentElement.dataset.apiOrigin = API_ORIGIN;
     document.head.replaceChildren(...importedChildren(page.head));
     document.body.replaceChildren(...importedChildren(page.body));
+    if (snapshotFrame) document.body.appendChild(snapshotFrame);
     for (const source of scripts) await loadScript(source);
+    if (snapshotFrame) {
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      snapshotFrame.style.opacity = "0";
+      window.setTimeout(() => snapshotFrame.remove(), 140);
+    }
   }
 
   function showFailure(error) {
