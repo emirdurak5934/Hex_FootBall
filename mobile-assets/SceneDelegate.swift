@@ -10,24 +10,36 @@ final class FootballBridgeViewController: CAPBridgeViewController {
         alpha: 1.0
     )
 
+    private func configureAppWebView(_ webView: WKWebView) {
+        webView.isOpaque = false
+        webView.backgroundColor = appBackground
+        webView.underPageBackgroundColor = appBackground
+
+        let scrollView = webView.scrollView
+        scrollView.backgroundColor = appBackground
+        scrollView.bounces = false
+        scrollView.alwaysBounceVertical = false
+        scrollView.alwaysBounceHorizontal = false
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+    }
+
     override func webView(
         with frame: CGRect,
         configuration: WKWebViewConfiguration
     ) -> WKWebView {
         let webView = super.webView(with: frame, configuration: configuration)
-        webView.isOpaque = false
-        webView.backgroundColor = appBackground
-        webView.scrollView.backgroundColor = appBackground
-        webView.underPageBackgroundColor = appBackground
+        configureAppWebView(webView)
         return webView
     }
 
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
         view.backgroundColor = appBackground
-        webView?.backgroundColor = appBackground
-        webView?.scrollView.backgroundColor = appBackground
-        webView?.underPageBackgroundColor = appBackground
+        if let webView {
+            configureAppWebView(webView)
+        }
     }
 }
 

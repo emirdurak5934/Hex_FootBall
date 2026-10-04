@@ -81,6 +81,8 @@ def main() -> None:
     assert 'id="launcher" aria-hidden="true"' in shell
     assert "#mobileTransitionSnapshot" not in shell
     assert "#mobileTransitionError" in shell
+    assert "overflow:hidden;overscroll-behavior:none" in shell
+    assert "body{position:fixed;inset:0}" in shell
     launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
     assert ".launcher.is-visible { display: block; }" in launcher_css
 
@@ -89,6 +91,10 @@ def main() -> None:
     assert "webView.isOpaque = false" in scene_delegate
     assert "webView.underPageBackgroundColor = appBackground" in scene_delegate
     assert "appWindow.backgroundColor = appBackground" in scene_delegate
+    assert "scrollView.bounces = false" in scene_delegate
+    assert "scrollView.alwaysBounceVertical = false" in scene_delegate
+    assert "scrollView.alwaysBounceHorizontal = false" in scene_delegate
+    assert "scrollView.contentInsetAdjustmentBehavior = .never" in scene_delegate
     ios_workflow = (ROOT / ".github" / "workflows" / "ios-unsigned-ipa.yml").read_text(encoding="utf-8")
     assert 'cp "mobile-assets/SceneDelegate.swift" "ios/App/App/SceneDelegate.swift"' in ios_workflow
 
