@@ -46,6 +46,11 @@ jobs:
           pnpm exec cap add ios
           pnpm exec cap sync ios
 
+      - name: Apply dark iOS WebView background
+        run: |
+          test -f "mobile-assets/SceneDelegate.swift"
+          cp "mobile-assets/SceneDelegate.swift" "ios/App/App/SceneDelegate.swift"
+
       - name: Configure iOS AdMob
         env:
           ADMOB_IOS_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}

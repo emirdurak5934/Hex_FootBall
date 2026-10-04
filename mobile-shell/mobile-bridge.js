@@ -1,54 +1,30 @@
 (() => {
   "use strict";
   const API_ORIGIN = document.documentElement.dataset.apiOrigin || "https://edyn-football.onrender.com";
-  const TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot";
   const nativeFetch = window.fetch.bind(window);
+  const LOCAL_BASE_URL = document.baseURI || `${window.location.origin}/`;
+  const LOCAL_ORIGIN = new URL(LOCAL_BASE_URL).origin;
 
-  function collectStylesheetText(stylesheet, visited = new Set()) {
-    if (!stylesheet || visited.has(stylesheet)) return "";
-    visited.add(stylesheet);
+  function hostShell() {
     try {
-      return [...stylesheet.cssRules].map(rule => {
-        if (rule.type === CSSRule.IMPORT_RULE && rule.styleSheet) {
-          return collectStylesheetText(rule.styleSheet, visited);
-        }
-        return rule.cssText;
-      }).join("\n");
+      return window.parent !== window ? window.parent.MobileShell : null;
     } catch (_) {
-      return "";
+      return null;
     }
   }
 
-  function saveTransitionSnapshot() {
-    try {
-      const clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll("script,#launchSplash,#mobileTransitionSnapshot,#mobileTransitionError")
-        .forEach(node => node.remove());
-      const base = document.createElement("base");
-      base.href = `${window.location.origin}/`;
-      const inlineStyles = document.createElement("style");
-      inlineStyles.dataset.mobileTransitionCss = "true";
-      inlineStyles.textContent = [...document.styleSheets]
-        .map(stylesheet => collectStylesheetText(stylesheet))
-        .filter(Boolean)
-        .join("\n");
-      clone.querySelector("head")?.prepend(base, inlineStyles);
-      const snapshot = `<!doctype html>${clone.outerHTML}`;
-      if (snapshot.length <= 3500000) {
-        sessionStorage.setItem(TRANSITION_SNAPSHOT_KEY, snapshot);
-      }
-    } catch (_) {
-      sessionStorage.removeItem(TRANSITION_SNAPSHOT_KEY);
-    }
+  function currentUrl() {
+    const path = document.documentElement.dataset.remotePath || "/";
+    return new URL(path, API_ORIGIN).href;
   }
 
   function remoteUrl(input) {
     if (typeof input !== "string") return input;
     if (/^(data:|blob:|mailto:|tel:)/i.test(input)) return input;
-    const parsed = new URL(input, window.location.origin);
+    const parsed = new URL(input, LOCAL_BASE_URL);
     const localAsset = parsed.pathname.startsWith("/static/") || parsed.pathname.startsWith("/vendor/") ||
       parsed.pathname.startsWith("/mobile-") || parsed.pathname === "/index.html";
-    if (parsed.origin === window.location.origin && !localAsset) {
+    if (parsed.origin === LOCAL_ORIGIN && !localAsset) {
       return `${API_ORIGIN}${parsed.pathname}${parsed.search}${parsed.hash}`;
     }
     return input;
@@ -94,20 +70,28 @@
       window.open(url.href, "_blank", "noopener,noreferrer");
       return;
     }
-    saveTransitionSnapshot();
+    const shell = hostShell();
+    if (shell?.navigate) {
+      shell.navigate(url.href);
+      return;
+    }
     history.replaceState(null, "", `/index.html#${url.pathname}${url.search}`);
     window.location.reload();
   }
 
   function reload() {
-    saveTransitionSnapshot();
+    const shell = hostShell();
+    if (shell?.reload) {
+      shell.reload(currentUrl());
+      return;
+    }
     window.location.reload();
   }
 
   async function submitForm(form) {
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
     const method = String(form.method || "GET").toUpperCase();
-    const currentPath = window.location.hash.replace(/^#/, "") || "/";
+    const currentPath = document.documentElement.dataset.remotePath || window.location.hash.replace(/^#/, "") || "/";
     const currentRemoteUrl = new URL(currentPath, API_ORIGIN);
     const action = form.getAttribute("action");
     const target = new URL(action || currentRemoteUrl.href, API_ORIGIN);
@@ -122,9 +106,15 @@
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
       body: new URLSearchParams(values).toString(),
     });
-    sessionStorage.setItem("football-mobile-pending-html", await response.text());
-    sessionStorage.setItem("football-mobile-pending-url", response.url || target.href);
-    saveTransitionSnapshot();
+    const responseHtml = await response.text();
+    const responseUrl = response.url || target.href;
+    const shell = hostShell();
+    if (shell?.render) {
+      shell.render(responseHtml, responseUrl);
+      return;
+    }
+    const fallbackUrl = new URL(responseUrl, API_ORIGIN);
+    history.replaceState(null, "", `/index.html#${fallbackUrl.pathname}${fallbackUrl.search}`);
     window.location.reload();
   }
 
@@ -150,5 +140,22 @@
     });
   });
 
-  window.MobileBridge = Object.freeze({API_ORIGIN, navigate, reload, remoteUrl, saveTransitionSnapshot});
+  function replaceCurrentPath(target) {
+    const shell = hostShell();
+    if (shell?.replaceCurrentPath) {
+      shell.replaceCurrentPath(target);
+      document.documentElement.dataset.remotePath = new URL(target || "/", API_ORIGIN).pathname;
+      return;
+    }
+    history.replaceState({}, "", target);
+  }
+
+  window.MobileBridge = Object.freeze({
+    API_ORIGIN,
+    navigate,
+    reload,
+    remoteUrl,
+    currentUrl,
+    replaceCurrentPath,
+  });
 })();

@@ -3284,10 +3284,12 @@ socket.on(
             socket.id
         );
 
-        const invitedRoom = new URLSearchParams(window.location.search).get("room");
+        const routeUrl = window.MobileBridge?.currentUrl?.() || window.location.href;
+        const invitedRoom = new URL(routeUrl, window.location.href).searchParams.get("room");
         if (invitedRoom && /^[A-Z0-9]{6}$/.test(invitedRoom)) {
             socket.emit("join_game_room", { room_code: invitedRoom });
-            window.history.replaceState({}, "", "/possession");
+            if (window.MobileBridge) window.MobileBridge.replaceCurrentPath("/possession");
+            else window.history.replaceState({}, "", "/possession");
         }
 
     }

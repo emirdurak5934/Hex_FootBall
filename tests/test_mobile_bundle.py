@@ -45,7 +45,10 @@ def main() -> None:
     assert 'scripts.push("/vendor/socket.io.min.js")' in launcher
     assert 'scripts.push("/mobile-bridge.js", "/mobile-ads.js")' in launcher
     assert "document.write" not in launcher
-    assert "document.body.replaceChildren" in launcher
+    assert "frame.srcdoc = prepared.source" in launcher
+    assert "previousFrame?.remove()" in launcher
+    assert "pageReady(sourceWindow)" in launcher
+    assert "window.location.reload" not in launcher
 
     bridge = (bundle / "mobile-bridge.js").read_text(encoding="utf-8")
     assert 'form.getAttribute("action")' in bridge
@@ -57,13 +60,12 @@ def main() -> None:
     assert "document.activeElement.blur()" in bridge
     assert 'window.fetch("/api/mobile/socket-token"' in bridge
     assert "mobile_token: data.token" in bridge
-    assert 'TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot"' in bridge
-    assert "saveTransitionSnapshot();" in bridge
-    assert "navigate, reload, remoteUrl" in bridge
-    assert 'clone.querySelectorAll("script,#launchSplash,#mobileTransitionSnapshot,#mobileTransitionError")' in bridge
-    assert "collectStylesheetText" in bridge
-    assert 'inlineStyles.dataset.mobileTransitionCss = "true"' in bridge
-    assert "CSSRule.IMPORT_RULE" in bridge
+    assert "navigate," in bridge and "reload," in bridge and "remoteUrl," in bridge
+    assert "saveTransitionSnapshot" not in bridge
+    assert "window.parent.MobileShell" in bridge
+    assert "shell?.navigate" in bridge
+    assert "shell?.render" in bridge
+    assert "document.documentElement.dataset.remotePath" in bridge
 
     viewport_css = (bundle / "static" / "fixed_viewport.css").read_text(encoding="utf-8")
     assert 'input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])' in viewport_css
@@ -75,23 +77,27 @@ def main() -> None:
     assert "https://edyn-football.onrender.com" not in shell
     assert 'src="launcher.js"' in shell
     assert 'id="launcher" aria-hidden="true"' in shell
-    assert "#mobileTransitionSnapshot" in shell
+    assert "#mobileTransitionSnapshot" not in shell
     assert "#mobileTransitionError" in shell
     launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
     assert ".launcher.is-visible { display: block; }" in launcher_css
+
+    scene_delegate = (ROOT / "mobile-assets" / "SceneDelegate.swift").read_text(encoding="utf-8")
+    assert "FootballBridgeViewController" in scene_delegate
+    assert "webView.isOpaque = false" in scene_delegate
+    assert "webView.underPageBackgroundColor = appBackground" in scene_delegate
+    assert "appWindow.backgroundColor = appBackground" in scene_delegate
+    ios_workflow = (ROOT / ".github" / "workflows" / "ios-unsigned-ipa.yml").read_text(encoding="utf-8")
+    assert 'cp "mobile-assets/SceneDelegate.swift" "ios/App/App/SceneDelegate.swift"' in ios_workflow
 
     mobile_ads = (bundle / "mobile-ads.js").read_text(encoding="utf-8")
     assert 'CONFIG_CACHE_KEY = "football-mobile-ad-config"' in mobile_ads
     assert 'INITIALIZED_KEY = "football-admob-initialized"' in mobile_ads
     assert 'sessionStorage.getItem(INITIALIZED_KEY) === "1"' in mobile_ads
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
-    assert "restoreTransitionSnapshot()" in launcher
-    assert 'frame.setAttribute("sandbox", "allow-same-origin")' in launcher
     assert "setStableViewportHeight()" in launcher
     assert 'style.setProperty("--app-viewport-height"' in launcher
-    assert "await waitForStylesheets()" in launcher
-    assert "snapshotFrame.remove()" in launcher
-    assert "requestAnimationFrame(() => requestAnimationFrame(resolve))" in launcher
+    assert "window.requestAnimationFrame(() => window.requestAnimationFrame(() =>" in launcher
     assert "Bulunduğun ekran korunuyor." in launcher
     for script_name in ("heatmap.js", "missing_xi.js", "profile.js", "public_profile.js"):
         script = (bundle / "static" / script_name).read_text(encoding="utf-8")
@@ -104,14 +110,15 @@ def main() -> None:
         "remote_scripts_blocked": True,
         "mobile_api_bridge_present": True,
         "forms_post_to_remote_route": True,
-        "menu_navigation_forces_shell_reload": True,
+        "menu_navigation_uses_background_frame": True,
         "ios_input_focus_zoom_prevented": True,
         "transition_loader_hidden_until_error": True,
         "admob_initializes_once_per_app_session": True,
         "ads_load_only_when_requested": True,
         "previous_screen_preserved_during_navigation": True,
         "connection_error_uses_overlay": True,
-        "document_replacement_is_webview_safe": True,
+        "page_frames_are_disposed_between_routes": True,
+        "ios_webview_background_is_dark": True,
     })
 
 
