@@ -115,10 +115,13 @@
     frame.dataset.navigationSequence = String(sequence);
     Object.assign(frame.style, {
       position: "fixed",
-      inset: "0",
+      top: "env(safe-area-inset-top, 0px)",
+      right: "0",
+      bottom: "0",
+      left: "0",
       zIndex: "1",
       width: "100%",
-      height: "100%",
+      height: "auto",
       border: "0",
       background: "#070b13",
       visibility: "hidden",
@@ -140,6 +143,13 @@
     if (sequence !== navigationSequence) {
       frame.remove();
       return;
+    }
+    const frameHeight = Math.round(frame.getBoundingClientRect().height);
+    if (frameHeight > 0) {
+      frame.contentDocument?.documentElement.style.setProperty(
+        "--app-viewport-height",
+        `${frameHeight}px`,
+      );
     }
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
       if (pendingFrame !== frame) return;

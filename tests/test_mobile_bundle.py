@@ -106,6 +106,9 @@ def main() -> None:
     assert "setStableViewportHeight()" in launcher
     assert "request: (input, options) => window.fetch(input, options)" in launcher
     assert 'style.setProperty("--app-viewport-height"' in launcher
+    assert 'top: "env(safe-area-inset-top, 0px)"' in launcher
+    assert 'height: "auto"' in launcher
+    assert "frame.getBoundingClientRect().height" in launcher
     assert "window.requestAnimationFrame(() => window.requestAnimationFrame(() =>" in launcher
     assert "Bulunduğun ekran korunuyor." in launcher
     for script_name in ("heatmap.js", "missing_xi.js", "profile.js", "public_profile.js"):
