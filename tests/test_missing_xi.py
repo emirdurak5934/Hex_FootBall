@@ -37,6 +37,7 @@ def main():
     assert 'id="rewardHintButton"' in html
     assert 'id="rewardHintLetters"' in html
     assert "MatchAds.reward" in script and "/missing-xi/reward-hint" in script
+    assert "MatchAds.errorMessage" in script and "Reklam yüklenemedi" in script
     assert "/search_players" not in script and "player_id" not in script
     assert "for (let rowIndex = 0; rowIndex < 6" in script
     assert "overflow:hidden" in css and "sideRank" in script

@@ -244,7 +244,14 @@
           throw new Error("Ödüllü reklam yalnızca iPhone uygulamasında kullanılabilir.");
         }
         const earned = await window.MatchAds.reward({game_mode: "missing_xi", slot});
-        if (!earned) throw new Error("Reklam tamamlanmadı; ipucu verilmedi.");
+        if (!earned) {
+          const detail = typeof window.MatchAds.errorMessage === "function"
+            ? window.MatchAds.errorMessage()
+            : "";
+          throw new Error(detail
+            ? `Reklam yüklenemedi · ${detail}`
+            : "Reklam tamamlanmadı; ipucu verilmedi.");
+        }
         state.rewardEarned = true;
       }
       await requestRewardHint(slot, state);

@@ -123,6 +123,10 @@ def main() -> None:
     assert 'CONFIG_CACHE_KEY = "football-mobile-ad-config"' in mobile_ads
     assert 'INITIALIZED_KEY = "football-admob-initialized"' in mobile_ads
     assert 'sessionStorage.getItem(INITIALIZED_KEY) === "1"' in mobile_ads
+    assert 'onRewardedVideoAdFailedToLoad' in mobile_ads
+    assert 'errorMessage()' in mobile_ads
+    assert 'config.testing || sessionStorage.getItem(CONSENT_KEY) !== "0"' in mobile_ads
+    assert 'if (!allowed && !config.testing)' in mobile_ads
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
     assert "setStableViewportHeight()" in launcher
     assert "request: (input, options) => window.fetch(input, options)" in launcher

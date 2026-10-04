@@ -4,6 +4,9 @@
   let initialization = null;
   let preparedInterstitial = false;
   let preparedRewarded = false;
+  let lastError = null;
+  let failureListenersInstalled = false;
+  const listenerHandles = [];
   const handled = new Set();
   const pending = new Map();
   const CONFIG_CACHE_KEY = "football-mobile-ad-config";
@@ -31,23 +34,93 @@
     return capacitor?.Plugins?.AdMob || capacitor?.registerPlugin?.("AdMob");
   }
 
+  function errorDetails(stage, error) {
+    const message = String(error?.message || error || "Bilinmeyen AdMob hatası")
+      .replace(/ca-app-pub-[0-9]+\/[0-9]+/g, "[reklam-kimliği]")
+      .slice(0, 220);
+    return {stage, code: Number.isFinite(Number(error?.code)) ? Number(error.code) : null, message};
+  }
+
+  function rememberError(stage, error) {
+    lastError = errorDetails(stage, error);
+    console.error("AdMob", lastError);
+  }
+
+  function rememberCaughtError(stage, error) {
+    const message = String(error?.message || error || "");
+    if (lastError?.stage === stage && message === "Loading failed") return;
+    rememberError(stage, error);
+  }
+
+  function clearError() { lastError = null; }
+
+  function errorMessage() {
+    if (!lastError) return "";
+    const code = lastError.code === null ? "" : ` (${lastError.code})`;
+    return `${lastError.stage}${code}: ${lastError.message}`;
+  }
+
+  async function installFailureListeners(admob) {
+    if (failureListenersInstalled || typeof admob?.addListener !== "function") return;
+    failureListenersInstalled = true;
+    const events = [
+      ["interstitialAdFailedToLoad", "geçiş reklamı yükleme"],
+      ["interstitialAdFailedToShow", "geçiş reklamı gösterme"],
+      ["onRewardedVideoAdFailedToLoad", "ödüllü reklam yükleme"],
+      ["onRewardedVideoAdFailedToShow", "ödüllü reklam gösterme"],
+    ];
+    for (const [eventName, stage] of events) {
+      try {
+        const handle = await admob.addListener(eventName, error => rememberError(stage, error));
+        if (handle) listenerHandles.push(handle);
+      } catch (error) {
+        rememberError("tanılama", error);
+      }
+    }
+  }
+
+  window.addEventListener("pagehide", () => {
+    for (const handle of listenerHandles.splice(0)) {
+      try { handle.remove(); } catch (_) { /* best effort cleanup */ }
+    }
+  }, {once: true});
+
   async function initialize() {
     await configReady;
     const admob = admobPlugin();
-    if (!config.enabled || config.provider !== "admob" || !admob) return false;
+    if (!config.enabled || config.provider !== "admob") {
+      rememberError("yapılandırma", "Reklam servisi kapalı.");
+      return false;
+    }
+    if (!admob) {
+      rememberError("native köprü", "AdMob eklentisi bulunamadı.");
+      return false;
+    }
     if (initialization) return initialization;
     initialization = (async () => {
+      await installFailureListeners(admob);
       if (sessionStorage.getItem(INITIALIZED_KEY) === "1") {
-        return sessionStorage.getItem(CONSENT_KEY) !== "0";
+        return config.testing || sessionStorage.getItem(CONSENT_KEY) !== "0";
       }
       await admob.initialize({initializeForTesting: Boolean(config.testing), testingDevices: []});
-      let consent = await admob.requestConsentInfo();
-      if (!consent.canRequestAds && consent.isConsentFormAvailable) consent = await admob.showConsentForm();
-      const allowed = Boolean(consent.canRequestAds);
+      let allowed = false;
+      try {
+        let consent = await admob.requestConsentInfo();
+        if (!consent.canRequestAds && consent.isConsentFormAvailable) consent = await admob.showConsentForm();
+        allowed = Boolean(consent.canRequestAds);
+      } catch (error) {
+        rememberError("reklam izni", error);
+        if (!config.testing) throw error;
+      }
       sessionStorage.setItem(INITIALIZED_KEY, "1");
       sessionStorage.setItem(CONSENT_KEY, allowed ? "1" : "0");
-      return allowed;
-    })().catch(() => {
+      if (!allowed && !config.testing) {
+        rememberError("reklam izni", "Reklam isteği için izin hazır değil.");
+        return false;
+      }
+      return true;
+    })().catch(error => {
+      rememberError("başlatma", error);
       sessionStorage.removeItem(INITIALIZED_KEY);
       return false;
     });
@@ -61,8 +134,9 @@
     try {
       await admob.prepareInterstitial({adId: config.adId, isTesting: Boolean(config.testing)});
       preparedInterstitial = true;
+      clearError();
       return true;
-    } catch (_) { return false; }
+    } catch (error) { rememberCaughtError("geçiş reklamı yükleme", error); return false; }
   }
 
   async function show() {
@@ -75,7 +149,7 @@
     try {
       await admobPlugin().showInterstitial({adId: config.adId});
       return true;
-    } catch (_) { return false; }
+    } catch (error) { rememberCaughtError("geçiş reklamı gösterme", error); return false; }
     finally { setTimeout(prepare, 250); }
   }
 
@@ -88,8 +162,9 @@
         isTesting: Boolean(config.testing),
       });
       preparedRewarded = true;
+      clearError();
       return true;
-    } catch (_) { return false; }
+    } catch (error) { rememberCaughtError("ödüllü reklam yükleme", error); return false; }
   }
 
   async function showRewarded() {
@@ -101,7 +176,7 @@
     preparedRewarded = false;
     try {
       return Boolean(await admobPlugin().showRewardVideoAd({adId: config.rewardedAdId}));
-    } catch (_) { return false; }
+    } catch (error) { rememberCaughtError("ödüllü reklam gösterme", error); return false; }
     finally { setTimeout(prepareRewarded, 250); }
   }
 
@@ -156,6 +231,6 @@
     show().catch(() => false).finally(() => { clearTimeout(timer); finish(); });
   }
 
-  window.FootballAdProvider = Object.freeze({show, prepare, showRewarded, prepareRewarded, privacyOptions});
-  window.MatchAds = Object.freeze({present, reward: showRewarded, get config() { return config; }});
+  window.FootballAdProvider = Object.freeze({show, prepare, showRewarded, prepareRewarded, privacyOptions, errorMessage});
+  window.MatchAds = Object.freeze({present, reward: showRewarded, errorMessage, get config() { return config; }});
 })();
