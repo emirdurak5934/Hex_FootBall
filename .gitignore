@@ -16,3 +16,4 @@ reklam_kimligi.txt
 data/*
 !data/players.json
 !data/missing_xi_matches.json
+!data/heatmap_boards.json

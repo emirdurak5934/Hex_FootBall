@@ -6,11 +6,25 @@
   let preparedRewarded = false;
   const handled = new Set();
   const pending = new Map();
+  const CONFIG_CACHE_KEY = "football-mobile-ad-config";
+  const INITIALIZED_KEY = "football-admob-initialized";
+  const CONSENT_KEY = "football-admob-can-request";
 
-  const configReady = fetch("/api/mobile/ad-config", {cache: "no-store"})
-    .then(response => response.ok ? response.json() : Promise.reject(new Error("Reklam ayarı alınamadı.")))
-    .then(value => { config = {...config, ...value}; return config; })
-    .catch(() => config);
+  let cachedConfig = null;
+  try { cachedConfig = JSON.parse(sessionStorage.getItem(CONFIG_CACHE_KEY) || "null"); }
+  catch (_) { sessionStorage.removeItem(CONFIG_CACHE_KEY); }
+  if (cachedConfig) config = {...config, ...cachedConfig};
+
+  const configReady = cachedConfig
+    ? Promise.resolve(config)
+    : fetch("/api/mobile/ad-config", {cache: "no-store"})
+      .then(response => response.ok ? response.json() : Promise.reject(new Error("Reklam ayarı alınamadı.")))
+      .then(value => {
+        config = {...config, ...value};
+        sessionStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+        return config;
+      })
+      .catch(() => config);
 
   function admobPlugin() {
     const capacitor = window.Capacitor;
@@ -23,11 +37,20 @@
     if (!config.enabled || config.provider !== "admob" || !admob) return false;
     if (initialization) return initialization;
     initialization = (async () => {
+      if (sessionStorage.getItem(INITIALIZED_KEY) === "1") {
+        return sessionStorage.getItem(CONSENT_KEY) !== "0";
+      }
       await admob.initialize({initializeForTesting: Boolean(config.testing), testingDevices: []});
       let consent = await admob.requestConsentInfo();
       if (!consent.canRequestAds && consent.isConsentFormAvailable) consent = await admob.showConsentForm();
-      return Boolean(consent.canRequestAds);
-    })().catch(() => false);
+      const allowed = Boolean(consent.canRequestAds);
+      sessionStorage.setItem(INITIALIZED_KEY, "1");
+      sessionStorage.setItem(CONSENT_KEY, allowed ? "1" : "0");
+      return allowed;
+    })().catch(() => {
+      sessionStorage.removeItem(INITIALIZED_KEY);
+      return false;
+    });
     return initialization;
   }
 
@@ -89,6 +112,8 @@
     try {
       await initialize();
       await admob.showPrivacyOptionsForm();
+      const consent = await admob.requestConsentInfo();
+      sessionStorage.setItem(CONSENT_KEY, consent.canRequestAds ? "1" : "0");
       return true;
     } catch (_) { return false; }
   }
@@ -133,5 +158,4 @@
 
   window.FootballAdProvider = Object.freeze({show, prepare, showRewarded, prepareRewarded, privacyOptions});
   window.MatchAds = Object.freeze({present, reward: showRewarded, get config() { return config; }});
-  configReady.then(() => { prepare(); prepareRewarded(); });
 })();

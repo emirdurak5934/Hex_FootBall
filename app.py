@@ -120,6 +120,14 @@ MISSING_XI_MATCHES_FILE = os.path.join(
     "data",
     "missing_xi_matches.json",
 )
+HEATMAP_BOARDS_FILE = os.path.join(
+    PROJECT_ROOT,
+    "data",
+    "heatmap_boards.json",
+)
+LOCAL_GAME_TTL_SECONDS = int(os.environ.get("FOOTBALL_LOCAL_GAME_TTL_SECONDS", "3600"))
+FINISHED_GAME_TTL_SECONDS = int(os.environ.get("FOOTBALL_FINISHED_GAME_TTL_SECONDS", "900"))
+MAX_LOCAL_GAME_STATES = int(os.environ.get("FOOTBALL_MAX_LOCAL_GAME_STATES", "300"))
 
 
 # ==================================================
@@ -223,6 +231,30 @@ print(
     f"Oyuncu veritabanı yüklendi: "
     f"{len(players)} oyuncu"
 )
+
+
+def prune_local_game_store(store, now=None, reserve=0):
+    """Bound transient local-game memory without affecting active games."""
+    now = time.time() if now is None else now
+    stale = []
+    for token, game in store.items():
+        created_at = game.get("created_at", now)
+        ttl = FINISHED_GAME_TTL_SECONDS if game.get("finished") else LOCAL_GAME_TTL_SECONDS
+        if now - created_at > ttl:
+            stale.append(token)
+    for token in stale:
+        store.pop(token, None)
+
+    allowed = max(1, MAX_LOCAL_GAME_STATES - max(0, reserve))
+    overflow = len(store) - allowed
+    if overflow > 0:
+        oldest = sorted(
+            store,
+            key=lambda token: store[token].get("created_at", now),
+        )[:overflow]
+        for token in oldest:
+            store.pop(token, None)
+    return len(stale) + max(0, overflow)
 
 
 # ==================================================
@@ -2272,6 +2304,7 @@ conditions, initial_board_analysis = (
 HEATMAP_SCORE_INDEX = 15
 heatmap_games = {}
 heatmap_games_lock = threading.Lock()
+heatmap_board_pool = []
 
 
 def generate_heatmap_board(seed=None):
@@ -2295,7 +2328,11 @@ def generate_heatmap_board(seed=None):
 
 def create_heatmap_game(seed=None, user_id=None):
     token = uuid.uuid4().hex
-    cells = generate_heatmap_board(seed=seed)
+    if seed is None and heatmap_board_pool:
+        cells = [dict(cell) for cell in random.choice(heatmap_board_pool)]
+    else:
+        cells = generate_heatmap_board(seed=seed)
+    prune_local_game_store(heatmap_games, reserve=1)
     heatmap_games[token] = {
         "cells": cells,
         "heated": {},
@@ -2363,6 +2400,36 @@ def analyze_heatmap_board(cells):
         "isolated_cells": sum(value == 0 for value in playable_neighbors.values()),
         "regions": regions,
     }
+
+
+def load_heatmap_board_pool():
+    """Load prevalidated boards so page requests never run the heavy generator."""
+    try:
+        with open(HEATMAP_BOARDS_FILE, "r", encoding="utf-8") as source:
+            candidates = json.load(source)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"Hazır Isı Haritası havuzu okunamadı: {exc}")
+        return [generate_heatmap_board(seed=2026100401)]
+
+    valid = []
+    for board in candidates:
+        if not isinstance(board, list) or len(board) != 31:
+            continue
+        if board[HEATMAP_SCORE_INDEX].get("type") != "score":
+            continue
+        try:
+            analysis = analyze_heatmap_board(board)
+        except (KeyError, TypeError):
+            continue
+        if analysis["isolated_cells"] == 0:
+            valid.append(tuple(dict(cell) for cell in board))
+    if not valid:
+        raise RuntimeError("Geçerli hazır Isı Haritası tahtası bulunamadı.")
+    print(f"Hazır Isı Haritası havuzu yüklendi: {len(valid)} tahta")
+    return valid
+
+
+heatmap_board_pool.extend(load_heatmap_board_pool())
 
 
 # ==================================================
@@ -3141,6 +3208,7 @@ def tiki_taka_toe():
     board = tiki_engine.generate_board()
     game_token = uuid.uuid4().hex
     with tiki_local_games_lock:
+        prune_local_game_store(tiki_local_games, reserve=1)
         tiki_local_games[game_token] = create_tiki_state(board, started=False)
         tiki_local_games[game_token]["user_id"] = session.get("user_id")
     return render_template(
@@ -3220,6 +3288,7 @@ def missing_xi():
     match = random.choice(missing_xi_matches)
     game_token = uuid.uuid4().hex
     with missing_xi_games_lock:
+        prune_local_game_store(missing_xi_games, reserve=1)
         missing_xi_games[game_token] = {
             "match_id": match["id"], "slot_states": {},
             "attempts": {}, "errors": 0, "finished": False,

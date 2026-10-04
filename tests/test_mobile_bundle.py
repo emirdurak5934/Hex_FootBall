@@ -67,6 +67,12 @@ def main() -> None:
     launcher_css = (bundle / "launcher.css").read_text(encoding="utf-8")
     assert ".launcher.is-visible { display: block; }" in launcher_css
 
+    mobile_ads = (bundle / "mobile-ads.js").read_text(encoding="utf-8")
+    assert 'CONFIG_CACHE_KEY = "football-mobile-ad-config"' in mobile_ads
+    assert 'INITIALIZED_KEY = "football-admob-initialized"' in mobile_ads
+    assert 'sessionStorage.getItem(INITIALIZED_KEY) === "1"' in mobile_ads
+    assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
+
     print({
         "local_web_dir": True,
         "remote_server_url_removed": True,
@@ -77,6 +83,8 @@ def main() -> None:
         "menu_navigation_forces_shell_reload": True,
         "ios_input_focus_zoom_prevented": True,
         "transition_loader_hidden_until_error": True,
+        "admob_initializes_once_per_app_session": True,
+        "ads_load_only_when_requested": True,
         "document_replacement_is_webview_safe": True,
     })
 
