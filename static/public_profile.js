@@ -39,7 +39,9 @@
         indicator.classList.toggle("online", data.status === "online");
     });
     socket.on("game_invite_accepted", data => {
-        location.href = `/possession?room=${encodeURIComponent(data.room_code)}`;
+        const target = `/possession?room=${encodeURIComponent(data.room_code)}`;
+        if (window.MobileBridge) window.MobileBridge.navigate(target);
+        else location.href = target;
     });
     socket.on("game_invite_error", data => alert(data.message));
 })();

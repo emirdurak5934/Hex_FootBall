@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "mobile:sync": "cap sync ios",
-    "mobile:copy": "cap copy ios",
+    "mobile:bundle": "python tools/build_mobile_bundle.py",
+    "mobile:sync": "pnpm run mobile:bundle && cap sync ios",
+    "mobile:copy": "pnpm run mobile:bundle && cap copy ios",
     "mobile:doctor": "cap doctor"
   },
   "dependencies": {
     "@capacitor-community/admob": "8.1.0",
     "@capacitor/core": "^8.0.0",
-    "@capacitor/ios": "^8.0.0"
+    "@capacitor/ios": "^8.0.0",
+    "socket.io-client": "4.7.5"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.0.0"

@@ -46,12 +46,18 @@ app = Flask(__name__)
 register_ads(app)
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+IS_PRODUCTION = os.environ.get("FLASK_ENV") == "production"
+MOBILE_ORIGINS = {
+    "capacitor://localhost",
+    "http://localhost",
+    "https://localhost",
+}
 
 app.config["SECRET_KEY"] = os.environ.get("FOOTBALL_MATCH_SECRET_KEY") or secrets.token_hex(32)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=os.environ.get("FLASK_ENV") == "production",
+    SESSION_COOKIE_SAMESITE="None" if IS_PRODUCTION else "Lax",
+    SESSION_COOKIE_SECURE=IS_PRODUCTION,
     PERMANENT_SESSION_LIFETIME=timedelta(
         days=int(os.environ.get("FOOTBALL_SESSION_DAYS", "30"))
     ),
@@ -85,9 +91,26 @@ def valid_csrf():
 app.jinja_env.globals.update(current_user=current_user, csrf_token=csrf_token)
 
 
+@app.after_request
+def allow_mobile_app_origin(response):
+    origin = request.headers.get("Origin", "")
+    if origin in MOBILE_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Headers"] = (
+            "Content-Type, X-CSRF-Token, X-Football-Mobile-Shell"
+        )
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        response.headers["Vary"] = "Origin"
+    return response
+
+
 socketio = SocketIO(
     app,
-    cors_allowed_origins="*"
+    cors_allowed_origins=[
+        "https://edyn-football.onrender.com",
+        *sorted(MOBILE_ORIGINS),
+    ],
 )
 
 

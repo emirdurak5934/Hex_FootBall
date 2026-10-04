@@ -1,5 +1,10 @@
 let currentPlayer = 1;
 
+function navigateTo(path) {
+    if (window.MobileBridge) window.MobileBridge.navigate(path);
+    else window.location.href = path;
+}
+
 let selectedIndex = null;
 
 let selectedPlayerId = null;
@@ -2361,8 +2366,7 @@ function returnToMainMenu() {
     }
 
 
-    window.location.href =
-        "/";
+    navigateTo("/");
 
 }
 
@@ -2406,13 +2410,13 @@ function closeForfeitModal() {
 
 forfeitMenuButton.addEventListener("click", () => {
     if (gameFinished) {
-        window.location.href = forfeitMenuButton.dataset.homeUrl;
+        navigateTo(forfeitMenuButton.dataset.homeUrl);
         return;
     }
     if (onlineGame && onlineMatchStarted) {
         forfeitModal.classList.remove("hidden");
     } else {
-        window.location.href = forfeitMenuButton.dataset.homeUrl;
+        navigateTo(forfeitMenuButton.dataset.homeUrl);
     }
 });
 
@@ -2425,7 +2429,7 @@ confirmForfeitButton.addEventListener("click", () => {
     confirmForfeitButton.disabled = true;
     socket.emit("forfeit_match", response => {
         if (response && response.ok) {
-            window.location.href = forfeitMenuButton.dataset.homeUrl;
+            navigateTo(forfeitMenuButton.dataset.homeUrl);
             return;
         }
         confirmForfeitButton.disabled = false;

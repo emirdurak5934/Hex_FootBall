@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - "mobile-shell/**"
+      - "static/**"
+      - "templates/**"
+      - "tools/build_mobile_bundle.py"
+      - "app.py"
+      - "ads.py"
       - "mobile-assets/**"
       - "capacitor.config.json"
       - "package.json"
@@ -32,6 +37,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build bundled mobile interface
+        run: python3 tools/build_mobile_bundle.py
 
       - name: Generate and sync iOS project
         run: |

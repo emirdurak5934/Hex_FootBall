@@ -109,6 +109,12 @@
         </div>
     </div>
 
+    <script type="application/json" data-mobile-config="HEATMAP_DATA">{{ {
+        'cells': cells,
+        'neighbors': neighbors,
+        'gameToken': game_token,
+        'scoreIndex': score_index
+    } | tojson }}</script>
     <script>
         window.HEATMAP_DATA = {{ {
             'cells': cells,

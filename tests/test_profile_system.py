@@ -68,6 +68,14 @@ def main():
         assert client.get("/privacy").status_code == 200
         assert client.get("/terms").status_code == 200
         assert client.get("/support").status_code == 200
+        mobile_health = client.get(
+            "/healthz", headers={"Origin": "capacitor://localhost"}
+        )
+        assert mobile_health.headers["Access-Control-Allow-Origin"] == "capacitor://localhost"
+        assert mobile_health.headers["Access-Control-Allow-Credentials"] == "true"
+        mobile_ads = client.get("/api/mobile/ad-config")
+        assert mobile_ads.status_code == 200
+        assert {"enabled", "provider", "adId", "rewardedAdId"} <= set(mobile_ads.json)
         token = csrf(client)
 
         response = client.post("/register", data={
@@ -83,6 +91,16 @@ def main():
         home_html = client.get("/").get_data(as_text=True)
         assert 'id="launchSplash"' in home_html
         assert "icon-button" not in home_html
+        mobile_pages = {
+            "/possession": "GAME_DATA",
+            "/heatmap": "HEATMAP_DATA",
+            "/missing-xi": "MISSING_XI_DATA",
+            "/tiki-taka-toe": "TIKI_CONFIG",
+        }
+        for path, config_name in mobile_pages.items():
+            page_response = client.get(path)
+            assert page_response.status_code == 200
+            assert f'data-mobile-config="{config_name}"' in page_response.get_data(as_text=True)
 
         client.post("/logout", data={"csrf_token": csrf(client)})
         duplicate_name = client.post("/register", data={

@@ -1,13 +1,19 @@
 {
   "appId": "app.edynfootball.mobile",
   "appName": "Football Match: HEX",
-  "webDir": "mobile-shell",
+  "webDir": "mobile-dist",
+  "loggingBehavior": "none",
   "server": {
-    "url": "https://edyn-football.onrender.com",
-    "cleartext": false,
-    "allowNavigation": [
-      "edyn-football.onrender.com"
-    ]
+    "hostname": "localhost",
+    "iosScheme": "capacitor"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "CapacitorCookies": {
+      "enabled": true
+    }
   },
   "ios": {
     "contentInset": "automatic",

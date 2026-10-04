@@ -9,7 +9,7 @@ import os
 import unicodedata
 import uuid
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, jsonify
 
 
 ADS_TIMEOUT_MS = int(os.environ.get("FOOTBALL_AD_TIMEOUT_MS", "5000"))
@@ -313,5 +313,17 @@ def register_ads(app):
             mimetype="application/javascript",
             headers={"Cache-Control": "no-store"},
         )
+
+    @blueprint.get("/api/mobile/ad-config")
+    def mobile_ad_config():
+        return jsonify({
+            "enabled": ADS_ENABLED,
+            "provider": ADS_PROVIDER,
+            "adId": ADS_UNIT_PATH,
+            "rewardedAdId": REWARDED_AD_UNIT_PATH,
+            "testing": ADS_MODE == "test",
+            "timeoutMs": ADS_TIMEOUT_MS,
+            "loadTimeoutMs": min(4500, ADS_TIMEOUT_MS),
+        })
 
     app.register_blueprint(blueprint)

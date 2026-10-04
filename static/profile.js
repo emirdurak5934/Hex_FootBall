@@ -42,6 +42,7 @@
     event.preventDefault();
     if (!window.confirm('Hesabın kalıcı olarak silinecek. Son kez onaylıyor musun?')) return;
     const data = await send('/api/profile/delete', event.target);
-    if (data.success) window.location.replace(data.redirect || '/login');
+    if (data.success && window.MobileBridge) window.MobileBridge.navigate(data.redirect || '/login');
+    else if (data.success) window.location.replace(data.redirect || '/login');
   });
 })();

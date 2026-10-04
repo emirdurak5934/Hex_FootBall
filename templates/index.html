@@ -866,6 +866,12 @@ ODA BEKLEME EKRANI
 PYTHON -> JAVASCRIPT DATA
 ================================================== -->
 
+<script type="application/json" data-mobile-config="GAME_DATA">{{ {
+    'conditions': conditions,
+    'rows': rows,
+    'neighbors': neighbors
+} | tojson }}</script>
+
 <script>
 
     window.GAME_DATA = {
