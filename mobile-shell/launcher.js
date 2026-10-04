@@ -14,7 +14,7 @@
     return url.pathname.startsWith("/static/") ? `${url.pathname}${url.search}` : path;
   }
 
-  function addRuntimeScripts(documentNode, originalScripts) {
+  function runtimeScripts(originalScripts) {
     const scripts = [];
     if (originalScripts.some(script => String(script.src || "").includes("socket.io"))) {
       scripts.push("/vendor/socket.io.min.js");
@@ -25,12 +25,7 @@
       const source = new URL(script.src, API_ORIGIN);
       if (source.pathname.startsWith("/static/")) scripts.push(`${source.pathname}${source.search}`);
     }
-    for (const source of [...new Set(scripts)]) {
-      const script = documentNode.createElement("script");
-      script.src = source;
-      script.defer = false;
-      documentNode.body.appendChild(script);
-    }
+    return [...new Set(scripts)];
   }
 
   function prepareDocument(html, responseUrl) {
@@ -54,12 +49,63 @@
     });
     page.documentElement.dataset.mobileShell = "true";
     page.documentElement.dataset.apiOrigin = API_ORIGIN;
-    addRuntimeScripts(page, originalScripts);
     try {
       const finalUrl = new URL(responseUrl || API_ORIGIN, API_ORIGIN);
       history.replaceState(null, "", `/index.html#${finalUrl.pathname}${finalUrl.search}`);
     } catch (_) {}
-    return `<!doctype html>${page.documentElement.outerHTML}`;
+    return {page, scripts: runtimeScripts(originalScripts)};
+  }
+
+  function importedChildren(parent) {
+    return [...parent.childNodes].map(node => document.importNode(node, true));
+  }
+
+  function loadScript(source) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = source;
+      script.async = false;
+      script.addEventListener("load", resolve, {once: true});
+      script.addEventListener("error", () => reject(new Error(`${source} yüklenemedi.`)), {once: true});
+      document.body.appendChild(script);
+    });
+  }
+
+  async function renderDocument(html, responseUrl) {
+    const {page, scripts} = prepareDocument(html, responseUrl);
+    document.title = page.title;
+    document.documentElement.lang = page.documentElement.lang || "tr";
+    document.documentElement.dataset.mobileShell = "true";
+    document.documentElement.dataset.apiOrigin = API_ORIGIN;
+    document.head.replaceChildren(...importedChildren(page.head));
+    document.body.replaceChildren(...importedChildren(page.body));
+    for (const source of scripts) await loadScript(source);
+  }
+
+  function showFailure(error) {
+    console.error(error);
+    const activeMessage = document.getElementById("message");
+    const activeRetry = document.getElementById("retryButton");
+    if (activeMessage && activeRetry) {
+      activeMessage.textContent = "Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.";
+      activeRetry.classList.remove("hidden");
+      return;
+    }
+    document.head.replaceChildren();
+    const style = document.createElement("style");
+    style.textContent = "body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#000;color:#fff;font:16px -apple-system,BlinkMacSystemFont,sans-serif;text-align:center}main{max-width:420px}button{min-height:48px;padding:0 22px;border:0;border-radius:12px;background:#d4a94e;color:#090d13;font-weight:900}";
+    document.head.appendChild(style);
+    const main = document.createElement("main");
+    const title = document.createElement("h1");
+    title.textContent = "Uygulama açılamadı";
+    const detail = document.createElement("p");
+    detail.textContent = "Sunucu bağlantısı veya yerel arayüz yüklenemedi.";
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "TEKRAR DENE";
+    retry.addEventListener("click", () => window.location.reload());
+    main.append(title, detail, retry);
+    document.body.replaceChildren(main);
   }
 
   async function connect() {
@@ -82,14 +128,9 @@
         html = await response.text();
         finalUrl = response.url;
       }
-      const rendered = prepareDocument(html, finalUrl);
-      document.open();
-      document.write(rendered);
-      document.close();
+      await renderDocument(html, finalUrl);
     } catch (error) {
-      console.error(error);
-      message.textContent = "Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.";
-      retryButton.classList.remove("hidden");
+      showFailure(error);
     }
   }
 

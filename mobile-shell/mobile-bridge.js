@@ -49,7 +49,10 @@
 
   async function submitForm(form) {
     const method = String(form.method || "GET").toUpperCase();
-    const target = new URL(form.action || API_ORIGIN, API_ORIGIN);
+    const currentPath = window.location.hash.replace(/^#/, "") || "/";
+    const currentRemoteUrl = new URL(currentPath, API_ORIGIN);
+    const action = form.getAttribute("action");
+    const target = new URL(action || currentRemoteUrl.href, API_ORIGIN);
     const values = new FormData(form);
     if (method === "GET") {
       target.search = new URLSearchParams(values).toString();

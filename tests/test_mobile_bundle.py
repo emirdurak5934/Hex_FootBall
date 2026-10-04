@@ -44,6 +44,13 @@ def main() -> None:
     assert 'script.type === "application/json"' in launcher
     assert 'scripts.push("/vendor/socket.io.min.js")' in launcher
     assert 'scripts.push("/mobile-bridge.js", "/mobile-ads.js")' in launcher
+    assert "document.write" not in launcher
+    assert "document.body.replaceChildren" in launcher
+
+    bridge = (bundle / "mobile-bridge.js").read_text(encoding="utf-8")
+    assert 'form.getAttribute("action")' in bridge
+    assert "form.action ||" not in bridge
+    assert 'window.location.hash.replace(/^#/, "")' in bridge
 
     shell = (bundle / "index.html").read_text(encoding="utf-8")
     assert "https://edyn-football.onrender.com" not in shell
@@ -55,6 +62,8 @@ def main() -> None:
         "local_assets_present": True,
         "remote_scripts_blocked": True,
         "mobile_api_bridge_present": True,
+        "forms_post_to_remote_route": True,
+        "document_replacement_is_webview_safe": True,
     })
 
 
