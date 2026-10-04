@@ -54,6 +54,11 @@ def main() -> None:
     assert 'history.replaceState(null, "", `/index.html#${url.pathname}${url.search}`)' in bridge
     assert "window.location.reload()" in bridge
     assert "window.location.replace" not in bridge
+    assert "document.activeElement.blur()" in bridge
+
+    viewport_css = (bundle / "static" / "fixed_viewport.css").read_text(encoding="utf-8")
+    assert 'input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])' in viewport_css
+    assert "font-size: 16px;" in viewport_css
 
     shell = (bundle / "index.html").read_text(encoding="utf-8")
     assert "https://edyn-football.onrender.com" not in shell
@@ -70,6 +75,7 @@ def main() -> None:
         "mobile_api_bridge_present": True,
         "forms_post_to_remote_route": True,
         "menu_navigation_forces_shell_reload": True,
+        "ios_input_focus_zoom_prevented": True,
         "transition_loader_hidden_until_error": True,
         "document_replacement_is_webview_safe": True,
     })

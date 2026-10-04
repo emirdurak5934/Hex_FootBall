@@ -15,6 +15,13 @@ body {
     inset: 0;
 }
 
+/* iOS, 16px altındaki form alanlarına odaklanırken sayfayı otomatik büyütür. */
+input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"]),
+textarea,
+select {
+    font-size: 16px;
+}
+
 /* Main menu */
 .app-frame {
     height: 100dvh;

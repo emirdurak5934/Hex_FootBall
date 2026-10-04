@@ -49,6 +49,7 @@
   }
 
   async function submitForm(form) {
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
     const method = String(form.method || "GET").toUpperCase();
     const currentPath = window.location.hash.replace(/^#/, "") || "/";
     const currentRemoteUrl = new URL(currentPath, API_ORIGIN);
