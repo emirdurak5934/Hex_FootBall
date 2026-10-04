@@ -68,6 +68,8 @@ def main() -> None:
     viewport_css = (bundle / "static" / "fixed_viewport.css").read_text(encoding="utf-8")
     assert 'input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])' in viewport_css
     assert "font-size: 16px;" in viewport_css
+    assert "var(--app-viewport-height, 100svh)" in viewport_css
+    assert "100dvh" not in viewport_css
 
     shell = (bundle / "index.html").read_text(encoding="utf-8")
     assert "https://edyn-football.onrender.com" not in shell
@@ -85,8 +87,10 @@ def main() -> None:
     assert "configReady.then(() => { prepare(); prepareRewarded(); })" not in mobile_ads
     assert "restoreTransitionSnapshot()" in launcher
     assert 'frame.setAttribute("sandbox", "allow-same-origin")' in launcher
-    assert 'transition: "opacity 120ms ease-out"' in launcher
-    assert 'snapshotFrame.style.opacity = "0"' in launcher
+    assert "setStableViewportHeight()" in launcher
+    assert 'style.setProperty("--app-viewport-height"' in launcher
+    assert "await waitForStylesheets()" in launcher
+    assert "snapshotFrame.remove()" in launcher
     assert "requestAnimationFrame(() => requestAnimationFrame(resolve))" in launcher
     assert "Bulunduğun ekran korunuyor." in launcher
     for script_name in ("heatmap.js", "missing_xi.js", "profile.js", "public_profile.js"):

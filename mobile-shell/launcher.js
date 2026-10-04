@@ -3,6 +3,18 @@
   const API_ORIGIN = "https://edyn-football.onrender.com";
   const TRANSITION_SNAPSHOT_KEY = "football-mobile-transition-snapshot";
 
+  function setStableViewportHeight() {
+    const height = Math.round(window.innerHeight);
+    if (height > 0) {
+      document.documentElement.style.setProperty("--app-viewport-height", `${height}px`);
+    }
+  }
+
+  setStableViewportHeight();
+  window.addEventListener("orientationchange", () => {
+    window.setTimeout(setStableViewportHeight, 250);
+  });
+
   function restoreTransitionSnapshot() {
     const snapshot = sessionStorage.getItem(TRANSITION_SNAPSHOT_KEY);
     sessionStorage.removeItem(TRANSITION_SNAPSHOT_KEY);
@@ -20,8 +32,6 @@
       border: "0",
       background: "#070b13",
       pointerEvents: "none",
-      opacity: "1",
-      transition: "opacity 120ms ease-out",
     });
     frame.srcdoc = snapshot;
     document.body.appendChild(frame);
@@ -99,6 +109,22 @@
     });
   }
 
+  function waitForStylesheets() {
+    const stylesheets = [...document.querySelectorAll('link[rel~="stylesheet"]')];
+    return Promise.all(stylesheets.map(link => {
+      if (link.sheet) return Promise.resolve();
+      return new Promise(resolve => {
+        const timeout = window.setTimeout(resolve, 1500);
+        const complete = () => {
+          window.clearTimeout(timeout);
+          resolve();
+        };
+        link.addEventListener("load", complete, {once: true});
+        link.addEventListener("error", complete, {once: true});
+      });
+    }));
+  }
+
   async function renderDocument(html, responseUrl) {
     const {page, scripts} = prepareDocument(html, responseUrl);
     const snapshotFrame = transitionSnapshot?.isConnected ? transitionSnapshot : null;
@@ -109,11 +135,11 @@
     document.head.replaceChildren(...importedChildren(page.head));
     document.body.replaceChildren(...importedChildren(page.body));
     if (snapshotFrame) document.body.appendChild(snapshotFrame);
+    await waitForStylesheets();
     for (const source of scripts) await loadScript(source);
     if (snapshotFrame) {
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-      snapshotFrame.style.opacity = "0";
-      window.setTimeout(() => snapshotFrame.remove(), 140);
+      snapshotFrame.remove();
     }
   }
 

@@ -2,9 +2,9 @@
 html,
 body {
     width: 100%;
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     margin: 0;
     overflow: hidden !important;
     overscroll-behavior: none;
@@ -24,14 +24,14 @@ select {
 
 /* Main menu */
 .app-frame {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     overflow: hidden;
 }
 
 .app-frame .games {
-    height: calc(100dvh - 202px);
+    height: calc(var(--app-viewport-height, 100svh) - 202px);
     min-height: 0;
     grid-template-rows: minmax(0, 1.55fr) minmax(0, 1.1fr) minmax(0, .9fr);
 }
@@ -49,9 +49,9 @@ select {
 
 /* Altın Petek */
 .app {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -74,18 +74,18 @@ select {
 
 .multiplayer-menu,
 .room-waiting-screen {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     margin: 0;
     overflow: hidden !important;
 }
 
 /* Isı Haritası */
 .heatmap-app {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -101,9 +101,9 @@ select {
 
 /* Kayıp 11 */
 .missing-app {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -140,9 +140,9 @@ select {
 
 /* Tiki Taka Toe */
 .tiki-shell {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0 !important;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -173,17 +173,17 @@ select {
 
 /* Login is fixed. Long data screens use one deliberate inner scroller. */
 .auth-shell {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     overflow: hidden;
 }
 
 .account-shell:not(.auth-shell),
 .leader-shell {
-    height: 100dvh;
+    height: var(--app-viewport-height, 100svh);
     min-height: 0;
-    max-height: 100dvh;
+    max-height: var(--app-viewport-height, 100svh);
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -200,7 +200,7 @@ select {
     }
 
     .app-frame .games {
-        height: calc(100dvh - 176px);
+        height: calc(var(--app-viewport-height, 100svh) - 176px);
         gap: 8px;
     }
 
