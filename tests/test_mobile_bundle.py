@@ -98,6 +98,24 @@ def main() -> None:
     ios_workflow = (ROOT / ".github" / "workflows" / "ios-unsigned-ipa.yml").read_text(encoding="utf-8")
     assert 'cp "mobile-assets/SceneDelegate.swift" "ios/App/App/SceneDelegate.swift"' in ios_workflow
 
+    release_workflow = (ROOT / ".github" / "workflows" / "ios-testflight-release.yml").read_text(encoding="utf-8")
+    assert "workflow_dispatch:" in release_workflow
+    assert "runs-on: macos-26" in release_workflow
+    assert "BUNDLE_ID: app.edynfootball.mobile" in release_workflow
+    assert "APPLE_TEAM_ID: 6UV8K8XK57" in release_workflow
+    assert 'APP_STORE_APP_ID: "6819015024"' in release_workflow
+    assert "IOS_DISTRIBUTION_CERT_BASE64" in release_workflow
+    assert "IOS_PROVISIONING_PROFILE_BASE64" in release_workflow
+    assert "APP_STORE_CONNECT_API_KEY_BASE64" in release_workflow
+    assert "ITSAppUsesNonExemptEncryption false" in release_workflow
+    assert "xcodebuild" in release_workflow and "archive" in release_workflow
+    assert "-exportArchive" in release_workflow
+    assert "altool --validate-app" in release_workflow
+    assert "altool --upload-app" in release_workflow
+    assert "base64 -D" in release_workflow
+    assert "find . -maxdepth" not in release_workflow
+    assert "Clean signing material" in release_workflow
+
     mobile_ads = (bundle / "mobile-ads.js").read_text(encoding="utf-8")
     assert 'CONFIG_CACHE_KEY = "football-mobile-ad-config"' in mobile_ads
     assert 'INITIALIZED_KEY = "football-admob-initialized"' in mobile_ads

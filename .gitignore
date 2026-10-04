@@ -11,6 +11,11 @@ mobile-dist/
 server.stdout.log
 server.stderr.log
 reklam_kimligi.txt
+*.p8
+*.p12
+*.mobileprovision
+AuthKey_*.p8
+tools/ios_signing_helper.ps1
 
 # Uygulamanın çalışması için yalnız bu iki veri dosyası gereklidir.
 data/*

@@ -1,0 +1,284 @@
+name: Upload signed iOS build to TestFlight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: football-match-hex-testflight
+  cancel-in-progress: false
+
+env:
+  APP_NAME: Football Match HEX
+  BUNDLE_ID: app.edynfootball.mobile
+  APPLE_TEAM_ID: 6UV8K8XK57
+  APP_STORE_APP_ID: "6819015024"
+  MARKETING_VERSION: "1.0.0"
+
+jobs:
+  build-sign-upload:
+    name: Build, sign and upload
+    runs-on: macos-26
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+
+      - name: Verify release secrets
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.IOS_DISTRIBUTION_CERT_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERT_PASSWORD }}
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          ADMOB_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for variable in \
+            CERTIFICATE_BASE64 \
+            CERTIFICATE_PASSWORD \
+            PROVISIONING_PROFILE_BASE64 \
+            API_KEY_BASE64 \
+            API_KEY_ID \
+            API_ISSUER_ID \
+            ADMOB_APP_ID
+          do
+            if [[ -z "${!variable:-}" ]]; then
+              echo "::error::Required release secret is missing: ${variable}"
+              missing=1
+            fi
+          done
+          [[ "$missing" -eq 0 ]]
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build bundled mobile interface
+        run: python3 tools/build_mobile_bundle.py
+
+      - name: Generate and sync iOS project
+        run: |
+          set -euo pipefail
+          pnpm exec cap add ios
+          pnpm exec cap sync ios
+
+      - name: Apply native iOS shell and release metadata
+        env:
+          ADMOB_IOS_APP_ID: ${{ secrets.ADMOB_IOS_APP_ID }}
+        run: |
+          set -euo pipefail
+          PLIST="ios/App/App/Info.plist"
+          ICON_SOURCE="mobile-assets/AppIcon-512@2x.png"
+          ICON_TARGET="ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+
+          test -f "mobile-assets/SceneDelegate.swift"
+          test -f "$ICON_SOURCE"
+          cp "mobile-assets/SceneDelegate.swift" "ios/App/App/SceneDelegate.swift"
+          cp "$ICON_SOURCE" "$ICON_TARGET"
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName 'Football Match: HEX'" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string 'Football Match: HEX'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :GADApplicationIdentifier $ADMOB_IOS_APP_ID" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :GADApplicationIdentifier string $ADMOB_IOS_APP_ID" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :NSUserTrackingUsageDescription 'Reklamları daha ilgili hale getirmek için cihaz izni kullanılır.'" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :NSUserTrackingUsageDescription string 'Reklamları daha ilgili hale getirmek için cihaz izni kullanılır.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems array" "$PLIST" || true
+          /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0 dict" "$PLIST" || true
+          /usr/libexec/PlistBuddy -c "Set :SKAdNetworkItems:0:SKAdNetworkIdentifier cstr6suwn9.skadnetwork" "$PLIST" || \
+            /usr/libexec/PlistBuddy -c "Add :SKAdNetworkItems:0:SKAdNetworkIdentifier string cstr6suwn9.skadnetwork" "$PLIST"
+
+      - name: Install signing certificate and provisioning profile
+        id: signing
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.IOS_DISTRIBUTION_CERT_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERT_PASSWORD }}
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          set -euo pipefail
+          CERTIFICATE_PATH="$RUNNER_TEMP/distribution.p12"
+          PROFILE_SOURCE="$RUNNER_TEMP/app-store.mobileprovision"
+          PROFILE_PLIST="$RUNNER_TEMP/profile.plist"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+
+          printf '%s' "$CERTIFICATE_BASE64" | base64 -D > "$CERTIFICATE_PATH"
+          printf '%s' "$PROVISIONING_PROFILE_BASE64" | base64 -D > "$PROFILE_SOURCE"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" \
+            -P "$CERTIFICATE_PASSWORD" \
+            -A \
+            -t cert \
+            -f pkcs12 \
+            -k "$KEYCHAIN_PATH"
+          security set-key-partition-list \
+            -S apple-tool:,apple: \
+            -k "$KEYCHAIN_PASSWORD" \
+            "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+
+          security cms -D -i "$PROFILE_SOURCE" > "$PROFILE_PLIST"
+          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" "$PROFILE_PLIST")
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" "$PROFILE_PLIST")
+          PROFILE_TEAM=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" "$PROFILE_PLIST")
+          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST")
+
+          [[ "$PROFILE_TEAM" == "$APPLE_TEAM_ID" ]]
+          [[ "$PROFILE_APP_ID" == "$APPLE_TEAM_ID.$BUNDLE_ID" ]]
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          cp "$PROFILE_SOURCE" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+
+          echo "profile_uuid=$PROFILE_UUID" >> "$GITHUB_OUTPUT"
+          echo "profile_name=$PROFILE_NAME" >> "$GITHUB_OUTPUT"
+          echo "keychain_path=$KEYCHAIN_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Create App Store export options
+        env:
+          PROFILE_NAME: ${{ steps.signing.outputs.profile_name }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>destination</key>
+            <string>export</string>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>teamID</key>
+            <string>$APPLE_TEAM_ID</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>$BUNDLE_ID</key>
+              <string>$PROFILE_NAME</string>
+            </dict>
+          </dict>
+          </plist>
+          PLIST
+
+      - name: Archive signed iOS app
+        env:
+          PROFILE_NAME: ${{ steps.signing.outputs.profile_name }}
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/FootballMatchHEX.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
+            MARKETING_VERSION="$MARKETING_VERSION" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY='Apple Distribution' \
+            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+            archive
+
+      - name: Export signed IPA
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/export"
+          xcodebuild \
+            -exportArchive \
+            -archivePath "$RUNNER_TEMP/FootballMatchHEX.xcarchive" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+          IPA_FILES=("$RUNNER_TEMP"/export/*.ipa)
+          IPA_PATH="${IPA_FILES[0]}"
+          test -f "$IPA_PATH"
+          cp "$IPA_PATH" "Football-Match-HEX-${MARKETING_VERSION}-${GITHUB_RUN_NUMBER}.ipa"
+
+      - name: Install App Store Connect API key
+        env:
+          API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          printf '%s' "$API_KEY_BASE64" | base64 -D > \
+            "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
+          chmod 600 "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
+
+      - name: Validate signed IPA
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          IPA_FILES=(Football-Match-HEX-*.ipa)
+          IPA_PATH="${IPA_FILES[0]}"
+          test -f "$IPA_PATH"
+          xcrun altool --validate-app \
+            --file "$IPA_PATH" \
+            --type ios \
+            --apiKey "$API_KEY_ID" \
+            --apiIssuer "$API_ISSUER_ID"
+
+      - name: Upload build to TestFlight
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          IPA_FILES=(Football-Match-HEX-*.ipa)
+          IPA_PATH="${IPA_FILES[0]}"
+          test -f "$IPA_PATH"
+          xcrun altool --upload-app \
+            --file "$IPA_PATH" \
+            --type ios \
+            --apiKey "$API_KEY_ID" \
+            --apiIssuer "$API_ISSUER_ID"
+
+      - name: Upload signed IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Football-Match-HEX-signed-${{ github.run_number }}
+          path: Football-Match-HEX-*.ipa
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Clean signing material
+        if: always()
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          PROFILE_UUID: ${{ steps.signing.outputs.profile_uuid }}
+          KEYCHAIN_PATH: ${{ steps.signing.outputs.keychain_path }}
+        run: |
+          if [[ -n "${KEYCHAIN_PATH:-}" ]]; then
+            security delete-keychain "$KEYCHAIN_PATH" || true
+          fi
+          if [[ -n "${PROFILE_UUID:-}" ]]; then
+            rm -f "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          fi
+          if [[ -n "${API_KEY_ID:-}" ]]; then
+            rm -f "$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY_ID}.p8"
+          fi
